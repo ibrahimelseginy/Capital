@@ -79,8 +79,57 @@
     }
     .badge-investor { background: rgba(59, 130, 246, 0.1); color: #3b82f6; }
     .badge-entrepreneur { background: rgba(16, 185, 129, 0.1); color: #10b981; }
-    .badge-active { background: rgba(16, 185, 129, 0.1); color: #10b981; }
-    .badge-pending { background: rgba(245, 158, 11, 0.1); color: #f59e0b; }
+    .badge-active { background: rgba(16, 185, 129, 0.15); color: #059669; }
+    .badge-pending { background: rgba(245, 158, 11, 0.15); color: #d97706; }
+
+    /* Focus States for A11y */
+    .glass-card:focus-visible {
+        outline: 2px solid var(--action-primary);
+        outline-offset: 4px;
+    }
+
+    /* Staggered Animations */
+    .stagger-1 { animation: slideUpFade 0.5s ease-out forwards; animation-delay: 0.1s; opacity: 0; transform: translateY(10px); }
+    .stagger-2 { animation: slideUpFade 0.5s ease-out forwards; animation-delay: 0.2s; opacity: 0; transform: translateY(10px); }
+    .stagger-3 { animation: slideUpFade 0.5s ease-out forwards; animation-delay: 0.3s; opacity: 0; transform: translateY(10px); }
+    .stagger-4 { animation: slideUpFade 0.5s ease-out forwards; animation-delay: 0.4s; opacity: 0; transform: translateY(10px); }
+
+    @keyframes slideUpFade {
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Table Hover Enhancements */
+    .stc-table tbody tr {
+        transition: all 0.2s ease;
+    }
+    .stc-table tbody tr:hover {
+        background: rgba(196, 164, 119, 0.03);
+        transform: scale(1.002);
+    }
+    .stc-table tbody tr:hover td:first-child {
+        color: var(--action-primary);
+    }
+
+    /* Empty State */
+    .empty-state {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 3rem 1rem;
+        text-align: center;
+    }
+    .empty-state-icon {
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+        background: var(--bg-secondary);
+        color: var(--text-tertiary);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1rem;
+    }
 
     @media print {
         /* Hide unnecessary elements */
@@ -176,9 +225,8 @@
         </div>
     </div>
 
-    <!-- Stats Grid -->
     <div class="dashboard-grid">
-        <div class="glass-card" onclick="window.location.href='{{ route('admin.users') }}'" style="cursor: pointer;">
+        <div class="glass-card stagger-1" onclick="window.location.href='{{ route('admin.users') }}'" style="cursor: pointer;" tabindex="0" aria-label="{{ app()->getLocale() == 'ar' ? 'الذهاب لصفحة المستخدمين' : 'Go to users page' }}">
             <div class="stat-icon">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
             </div>
@@ -191,18 +239,18 @@
             </div>
         </div>
         
-        <div class="glass-card" onclick="window.location.href='{{ route('admin.projects') }}'" style="cursor: pointer;">
+        <div class="glass-card stagger-2" onclick="window.location.href='{{ route('admin.projects') }}'" style="cursor: pointer;" tabindex="0" aria-label="{{ app()->getLocale() == 'ar' ? 'الذهاب لصفحة المشاريع' : 'Go to projects page' }}">
             <div class="stat-icon">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
             </div>
             <h3 class="text-caption text-secondary">{{ app()->getLocale() == 'ar' ? 'إجمالي المشاريع' : 'Total Projects' }}</h3>
             <div class="text-h2 mt-2" style="font-weight: 700;">{{ number_format($metrics['total_projects']) }}</div>
-            <div class="mt-2 text-caption" style="color: #10b981;">
+            <div class="mt-2 text-caption" style="color: #059669;">
                 ↑ {{ $metrics['active_projects'] }} {{ app()->getLocale() == 'ar' ? 'مشاريع نشطة' : 'Active Projects' }}
             </div>
         </div>
         
-        <div class="glass-card" onclick="window.location.href='{{ route('admin.projects') }}'" style="cursor: pointer;">
+        <div class="glass-card stagger-3" onclick="window.location.href='{{ route('admin.projects') }}'" style="cursor: pointer;" tabindex="0" aria-label="{{ app()->getLocale() == 'ar' ? 'الذهاب لصفحة المشاريع لمعرفة الميزانيات' : 'Go to projects page for budgets' }}">
             <div class="stat-icon">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20"></path><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
             </div>
@@ -213,8 +261,8 @@
             </div>
         </div>
         
-        <div class="glass-card" onclick="window.location.href='{{ route('admin.requests') }}'" style="cursor: pointer;">
-            <div class="stat-icon" style="background: rgba(245, 158, 11, 0.1); color: #f59e0b;">
+        <div class="glass-card stagger-4" onclick="window.location.href='{{ route('admin.requests') }}'" style="cursor: pointer;" tabindex="0" aria-label="{{ app()->getLocale() == 'ar' ? 'الذهاب لصفحة الطلبات' : 'Go to requests page' }}">
+            <div class="stat-icon" style="background: rgba(245, 158, 11, 0.15); color: #d97706;">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
             </div>
             <h3 class="text-caption text-secondary">{{ app()->getLocale() == 'ar' ? 'طلبات قيد الانتظار' : 'Pending Requests' }}</h3>
@@ -229,29 +277,29 @@
 
     <!-- Charts Grid -->
     <div class="charts-grid">
-        <div class="glass-card">
+        <div class="glass-card stagger-1">
             <h3 class="text-h4 mb-4">{{ app()->getLocale() == 'ar' ? 'نمو المستخدمين' : 'User Growth' }}</h3>
             <div style="position: relative; height: 300px; width: 100%;">
-                <canvas id="userChart"></canvas>
+                <canvas id="userChart" role="img" aria-label="{{ app()->getLocale() == 'ar' ? 'رسم بياني يوضح نمو عدد المستخدمين خلال الأشهر الماضية' : 'Chart showing user growth over the past months' }}"></canvas>
             </div>
         </div>
-        <div class="glass-card">
+        <div class="glass-card stagger-2">
             <h3 class="text-h4 mb-4">{{ app()->getLocale() == 'ar' ? 'توزيع المشاريع' : 'Project Distribution' }}</h3>
             <div style="position: relative; height: 300px; width: 100%;">
-                <canvas id="projectChart"></canvas>
+                <canvas id="projectChart" role="img" aria-label="{{ app()->getLocale() == 'ar' ? 'رسم بياني لتوزيع المشاريع النشطة والمعلقة' : 'Chart showing distribution of active and pending projects' }}"></canvas>
             </div>
         </div>
     </div>
 
     <!-- Recent Activity Grid -->
     <div class="charts-grid">
-        <div class="glass-card" style="padding:0; overflow:hidden">
+        <div class="glass-card stagger-3" style="padding:0; overflow:hidden">
             <div style="padding:1.5rem; border-bottom:1px solid var(--border-default); display:flex; justify-content:space-between; align-items:center;">
                 <h3 class="text-h4 m-0">{{ app()->getLocale() == 'ar' ? 'أحدث المستخدمين' : 'Recent Users' }}</h3>
                 <a href="{{ route('admin.users') }}" class="text-caption text-accent" style="text-decoration:none">{{ app()->getLocale() == 'ar' ? 'عرض الكل' : 'View All' }}</a>
             </div>
             <div class="table-container">
-                <table class="stc-table">
+                <table class="stc-table" aria-label="{{ app()->getLocale() == 'ar' ? 'أحدث المستخدمين' : 'Recent Users Table' }}">
                     <thead>
                         <tr>
                             <th>{{ app()->getLocale() == 'ar' ? 'الاسم' : 'Name' }}</th>
@@ -270,7 +318,15 @@
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="3" class="text-center text-secondary py-4">{{ app()->getLocale() == 'ar' ? 'لا يوجد مستخدمين بعد' : 'No users found' }}</td>
+                            <td colspan="3">
+                                <div class="empty-state">
+                                    <div class="empty-state-icon">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" x2="19" y1="8" y2="14"/><line x1="22" x2="16" y1="11" y2="11"/></svg>
+                                    </div>
+                                    <h4 class="text-h5" style="margin-bottom:0.25rem;">{{ app()->getLocale() == 'ar' ? 'لا يوجد مستخدمين بعد' : 'No users found' }}</h4>
+                                    <p class="text-caption text-tertiary">{{ app()->getLocale() == 'ar' ? 'لم يقم أي مستخدم بالتسجيل حتى الآن.' : 'No users have registered yet.' }}</p>
+                                </div>
+                            </td>
                         </tr>
                         @endforelse
                     </tbody>
@@ -278,13 +334,13 @@
             </div>
         </div>
 
-        <div class="glass-card" style="padding:0; overflow:hidden">
+        <div class="glass-card stagger-4" style="padding:0; overflow:hidden">
             <div style="padding:1.5rem; border-bottom:1px solid var(--border-default); display:flex; justify-content:space-between; align-items:center;">
                 <h3 class="text-h4 m-0">{{ app()->getLocale() == 'ar' ? 'أحدث المشاريع' : 'Recent Projects' }}</h3>
                 <a href="{{ route('admin.projects') }}" class="text-caption text-accent" style="text-decoration:none">{{ app()->getLocale() == 'ar' ? 'عرض الكل' : 'View All' }}</a>
             </div>
             <div class="table-container">
-                <table class="stc-table">
+                <table class="stc-table" aria-label="{{ app()->getLocale() == 'ar' ? 'أحدث المشاريع' : 'Recent Projects Table' }}">
                     <thead>
                         <tr>
                             <th>{{ app()->getLocale() == 'ar' ? 'اسم المشروع' : 'Project Title' }}</th>
@@ -303,7 +359,15 @@
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="3" class="text-center text-secondary py-4">{{ app()->getLocale() == 'ar' ? 'لا يوجد مشاريع بعد' : 'No projects found' }}</td>
+                            <td colspan="3">
+                                <div class="empty-state">
+                                    <div class="empty-state-icon">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                                    </div>
+                                    <h4 class="text-h5" style="margin-bottom:0.25rem;">{{ app()->getLocale() == 'ar' ? 'لا يوجد مشاريع بعد' : 'No projects found' }}</h4>
+                                    <p class="text-caption text-tertiary">{{ app()->getLocale() == 'ar' ? 'لم يتم إضافة أي مشاريع للمنصة حتى الآن.' : 'No projects have been added to the platform yet.' }}</p>
+                                </div>
+                            </td>
                         </tr>
                         @endforelse
                     </tbody>
