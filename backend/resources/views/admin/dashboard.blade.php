@@ -81,6 +81,75 @@
     .badge-entrepreneur { background: rgba(16, 185, 129, 0.1); color: #10b981; }
     .badge-active { background: rgba(16, 185, 129, 0.1); color: #10b981; }
     .badge-pending { background: rgba(245, 158, 11, 0.1); color: #f59e0b; }
+
+    @media print {
+        /* Hide unnecessary elements */
+        .dashboard-sidebar, 
+        .dashboard-header, 
+        #global-search-modal, 
+        #cookie-banner, 
+        .btn, 
+        form,
+        .sidebar-user,
+        .sidebar-nav,
+        .sidebar-footer {
+            display: none !important;
+        }
+
+        /* Reset layouts for printing */
+        body, .dashboard-layout, .dashboard-main, .dashboard-content {
+            background: #fff !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            width: 100% !important;
+            min-height: auto !important;
+        }
+
+        .dashboard-layout {
+            display: block !important;
+        }
+
+        .dashboard-main {
+            margin-inline-start: 0 !important;
+        }
+
+        /* Format cards for printing */
+        .glass-card {
+            background: #fff !important;
+            border: 1px solid #e5e7eb !important;
+            box-shadow: none !important;
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
+            color: #000 !important;
+            break-inside: avoid;
+            page-break-inside: avoid;
+            margin-bottom: 1.5rem !important;
+            transform: none !important;
+        }
+
+        .glass-card:hover {
+            transform: none !important;
+            box-shadow: none !important;
+            border-color: #e5e7eb !important;
+        }
+
+        .text-secondary, .text-caption, p {
+            color: #4b5563 !important;
+        }
+
+        h1, h2, h3, .text-h2, .text-h4, th, td {
+            color: #000 !important;
+        }
+
+        /* Ensure charts display well */
+        canvas {
+            max-width: 100% !important;
+        }
+        
+        .charts-grid {
+            display: block !important;
+        }
+    }
 </style>
 
 <div class="fade-in">
@@ -99,7 +168,7 @@
 
     <!-- Stats Grid -->
     <div class="dashboard-grid">
-        <div class="glass-card">
+        <div class="glass-card" onclick="window.location.href='{{ route('admin.users') }}'" style="cursor: pointer;">
             <div class="stat-icon">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
             </div>
@@ -112,7 +181,7 @@
             </div>
         </div>
         
-        <div class="glass-card">
+        <div class="glass-card" onclick="window.location.href='{{ route('admin.projects') }}'" style="cursor: pointer;">
             <div class="stat-icon">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
             </div>
@@ -123,7 +192,7 @@
             </div>
         </div>
         
-        <div class="glass-card">
+        <div class="glass-card" onclick="window.location.href='{{ route('admin.projects') }}'" style="cursor: pointer;">
             <div class="stat-icon">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20"></path><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
             </div>
@@ -134,7 +203,7 @@
             </div>
         </div>
         
-        <div class="glass-card">
+        <div class="glass-card" onclick="window.location.href='{{ route('admin.requests') }}'" style="cursor: pointer;">
             <div class="stat-icon" style="background: rgba(245, 158, 11, 0.1); color: #f59e0b;">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
             </div>
