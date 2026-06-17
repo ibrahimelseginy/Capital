@@ -72,6 +72,14 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
     Route::post('/content', [AdminContentController::class, 'store'])->name('admin.content.store');
     Route::post('/content/{id}', [AdminContentController::class, 'update'])->name('admin.content.update');
     Route::delete('/content/{id}', [AdminContentController::class, 'destroy'])->name('admin.content.destroy');
+    
+    // Website Management Routes
+    Route::get('/website', [\App\Http\Controllers\AdminWebsiteController::class, 'index'])->name('admin.website');
+    Route::post('/website/articles', [\App\Http\Controllers\AdminWebsiteController::class, 'storeArticle'])->name('admin.website.articles.store');
+    Route::post('/website/jobs', [\App\Http\Controllers\AdminWebsiteController::class, 'storeJob'])->name('admin.website.jobs.store');
+    Route::post('/website/metrics', [\App\Http\Controllers\AdminWebsiteController::class, 'storeMetric'])->name('admin.website.metrics.store');
+    Route::post('/website/testimonials', [\App\Http\Controllers\AdminWebsiteController::class, 'storeTestimonial'])->name('admin.website.testimonials.store');
+    Route::delete('/website/{type}/{id}', [\App\Http\Controllers\AdminWebsiteController::class, 'destroy'])->name('admin.website.destroy');
 });
 
 // Entrepreneur Routes (Protected)
