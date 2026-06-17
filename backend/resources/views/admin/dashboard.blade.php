@@ -92,7 +92,8 @@
         form,
         .sidebar-user,
         .sidebar-nav,
-        .sidebar-footer {
+        .sidebar-footer,
+        .print-hide {
             display: none !important;
         }
 
@@ -162,7 +163,7 @@
 </style>
 
 <div class="fade-in">
-    <div class="d-flex justify-between items-center mb-8">
+    <div class="d-flex justify-between items-center mb-8 print-hide">
         <div>
             <h1 class="text-h2" style="font-weight: 700;">{{ app()->getLocale() == 'ar' ? 'نظرة عامة على النظام' : 'System Overview' }}</h1>
             <p class="text-secondary mt-1">{{ app()->getLocale() == 'ar' ? 'مرحباً بك في لوحة تحكم مدير النظام، إليك ملخص الأداء.' : 'Welcome to the admin dashboard, here is your performance summary.' }}</p>
