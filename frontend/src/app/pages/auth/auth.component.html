@@ -1,0 +1,213 @@
+<section class="min-h-screen d-flex" [ngStyle]="{'background':'var(--bg-primary)', 'overflow':'hidden', 'flex-direction': !isLogin && isAr ? 'row-reverse' : 'row'}">
+    
+  <!-- Branding Side (Login) -->
+  <div *ngIf="isLogin" class="auth-branding" style="flex:1;position:relative;background:linear-gradient(135deg, var(--color-soft-black) 0%, #000 100%);display:flex;flex-direction:column;justify-content:space-between;padding:var(--space-16);color:white;overflow:hidden">
+    <div style="position:absolute;top:-20%;left:-10%;width:80%;height:80%;background:radial-gradient(circle, var(--action-primary) 0%, transparent 60%);opacity:0.15;filter:blur(80px);border-radius:50%"></div>
+    <div style="position:absolute;bottom:-10%;right:-10%;width:70%;height:70%;background:radial-gradient(circle, var(--accent-gold) 0%, transparent 60%);opacity:0.1;filter:blur(60px);border-radius:50%"></div>
+    
+    <a routerLink="/" style="position:relative;z-index:2;display:inline-block;align-self:center;margin-top:120px;margin-bottom:var(--space-8);max-height:220px;overflow:hidden">
+      <img src="assets/Group 102.png" alt="Logo" height="220" style="height:220px;max-height:220px;width:auto;display:block">
+    </a>
+    
+    <div style="position:relative;z-index:2;max-width:520px;padding-bottom:var(--space-12)">
+      <svg xmlns="http://www.w3.org/2000/svg" width="54" height="54" viewBox="0 0 24 24" fill="none" stroke="var(--action-primary)" stroke-width="1" style="margin-bottom:var(--space-8);opacity:0.6"><path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z"/><path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3c0 1 0 1 1 1z"/></svg>
+      <p class="text-display-lg mb-8" style="color:#FFF;line-height:1.5;font-weight:var(--weight-medium);font-size:2.2rem">
+        {{ isAr ? 'نبني شركات تقنية صُممت لتقود المستقبل.' : 'Building technology companies designed to lead the future.' }}
+      </p>
+      <div style="color:var(--text-tertiary);letter-spacing:2px;text-transform:uppercase;font-size:1.1rem">
+        {{ isAr ? 'سفن تك كابيتال' : 'SEVEN TECH CAPITAL' }}
+      </div>
+    </div>
+  </div>
+
+  <!-- Branding Side (Register) -->
+  <div *ngIf="!isLogin" class="reg-branding" style="flex:1;position:relative;background:linear-gradient(135deg, #0f1115 0%, #000 100%);display:flex;flex-direction:column;justify-content:space-between;padding:var(--space-16);color:white;overflow:hidden">
+    <div style="position:absolute;top:-10%;left:-20%;width:90%;height:90%;background:radial-gradient(circle, var(--accent-gold) 0%, transparent 60%);opacity:0.12;filter:blur(80px);border-radius:50%"></div>
+    <div style="position:absolute;bottom:-20%;right:-10%;width:80%;height:80%;background:radial-gradient(circle, var(--action-primary) 0%, transparent 60%);opacity:0.1;filter:blur(60px);border-radius:50%"></div>
+    
+    <a routerLink="/" style="position:relative;z-index:2;display:inline-block;align-self:center;margin-top:120px;margin-bottom:var(--space-8);max-height:220px;overflow:hidden">
+      <img src="assets/Group 102.png" alt="Logo" height="220" style="height:220px;max-height:220px;width:auto;display:block">
+    </a>
+    
+    <div style="position:relative;z-index:2;max-width:520px;padding-bottom:var(--space-12)">
+      <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--action-primary)" stroke-width="1.5" style="margin-bottom:var(--space-8);opacity:0.6"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+      <p class="text-display-lg mb-8" style="color:#FFF;line-height:1.4;font-weight:var(--weight-medium);font-size:2rem">
+        {{ isAr ? 'نجمع بين رأس المال والاستراتيجية لبناء المستقبل.' : 'Uniting capital and strategy to build the future.' }}
+      </p>
+      <div style="color:var(--text-tertiary);letter-spacing:2px;text-transform:uppercase;font-size:0.9rem">
+        {{ isAr ? 'انضم إلينا اليوم' : 'JOIN US TODAY' }}
+      </div>
+    </div>
+  </div>
+
+  <!-- Form Side (Login) -->
+  <div *ngIf="isLogin" style="flex:1;display:flex;align-items:center;justify-content:center;padding:var(--space-8);position:relative">
+    <a routerLink="/" class="auth-logo-mobile" style="position:absolute;top:var(--space-8);left:var(--space-8)">
+      <img src="assets/Group 102.png" alt="Logo" height="48">
+    </a>
+
+    <div class="reveal" style="max-width:440px;width:100%;padding-top:var(--space-12)">
+      <div class="mb-12">
+        <h1 class="text-display-lg mb-4" style="font-weight:var(--weight-bold);letter-spacing:-1px">
+          {{ isAr ? 'مرحباً بعودتك' : 'Welcome Back' }}
+        </h1>
+        <p class="text-body-lg text-secondary">
+          {{ isAr ? 'سجل الدخول إلى حسابك في سفن تك كابيتال.' : 'Sign in to your SEVEN TECH CAPITAL account.' }}
+        </p>
+      </div>
+      
+      <form class="d-flex flex-col gap-6" (ngSubmit)="submitLogin($event)">
+        <div class="form-group" style="position:relative">
+          <label class="form-label text-caption" style="color:var(--text-secondary);margin-bottom:var(--space-2);font-weight:var(--weight-medium)">
+            {{ isAr ? 'البريد الإلكتروني' : 'Email Address' }}
+          </label>
+          <div style="position:relative">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="position:absolute;top:50%;transform:translateY(-50%);color:var(--text-tertiary);pointer-events:none" [ngStyle]="{'right': isAr ? '18px' : 'auto', 'left': isAr ? 'auto' : '18px'}"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+            <input type="email" class="form-input auth-input" [ngStyle]="{'padding-right': isAr ? '3.5rem' : '1.1rem', 'padding-left': isAr ? '1.1rem' : '3.5rem'}" style="width:100%;padding:1.1rem;background:var(--bg-secondary);border:1px solid transparent;border-radius:var(--radius-lg);transition:all 0.3s ease;font-size:1rem" placeholder="you@example.com" required>
+          </div>
+        </div>
+        
+        <div class="form-group" style="position:relative">
+          <div class="d-flex justify-between items-center mb-2">
+            <label class="form-label text-caption" style="color:var(--text-secondary);margin:0;font-weight:var(--weight-medium)">
+              {{ isAr ? 'كلمة المرور' : 'Password' }}
+            </label>
+            <a routerLink="/forgot-password" class="text-caption" style="color:var(--action-primary);font-weight:var(--weight-medium);text-decoration:none">
+              {{ isAr ? 'هل نسيت كلمة المرور؟' : 'Forgot password?' }}
+            </a>
+          </div>
+          <div style="position:relative">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="position:absolute;top:50%;transform:translateY(-50%);color:var(--text-tertiary);pointer-events:none" [ngStyle]="{'right': isAr ? '18px' : 'auto', 'left': isAr ? 'auto' : '18px'}"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            <input type="password" class="form-input auth-input" [ngStyle]="{'padding-right': isAr ? '3.5rem' : '1.1rem', 'padding-left': isAr ? '1.1rem' : '3.5rem'}" style="width:100%;padding:1.1rem;background:var(--bg-secondary);border:1px solid transparent;border-radius:var(--radius-lg);transition:all 0.3s ease;font-size:1rem" placeholder="••••••••" required>
+          </div>
+        </div>
+
+        <div class="form-check mt-2">
+          <label class="d-flex items-center gap-3 cursor-pointer" style="cursor:pointer">
+            <div style="position:relative;display:flex;align-items:center">
+              <input type="checkbox" style="width:22px;height:22px;border-radius:6px;border:2px solid var(--border-default);appearance:none;outline:none;cursor:pointer;background:var(--bg-surface);transition:all 0.2s" onchange="this.style.background=this.checked?'var(--action-primary)':'var(--bg-surface)';this.style.borderColor=this.checked?'var(--action-primary)':'var(--border-default)';this.nextElementSibling.style.opacity=this.checked?1:0;this.nextElementSibling.style.transform=this.checked?'scale(1)':'scale(0.5)'">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="position:absolute;left:4px;pointer-events:none;opacity:0;transform:scale(0.5);transition:all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275)"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <span class="text-body-sm text-secondary select-none">{{ isAr ? 'تذكرني' : 'Remember me' }}</span>
+          </label>
+        </div>
+        
+        <button type="submit" class="btn btn-primary w-full mt-6" style="font-size:1.1rem;padding:1.2rem;border-radius:var(--radius-lg);box-shadow:0 8px 24px rgba(196,164,119,0.3)">
+          {{ isAr ? 'تسجيل الدخول' : 'Sign In' }}
+        </button>
+      </form>
+      
+      <div class="text-center" style="margin-top:40px;">
+        <p class="text-body-sm text-secondary">
+          {{ isAr ? 'ليس لديك حساب؟' : 'Don\'t have an account?' }} 
+          <a [href]="'http://127.0.0.1:8000/register?lang=' + currentLang" style="color:var(--text-primary);font-weight:var(--weight-semibold);text-decoration:none;margin-inline-start:var(--space-2)">
+            {{ isAr ? 'إنشاء حساب' : 'Create Account' }}
+          </a>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Form Side (Register) -->
+  <div *ngIf="!isLogin" class="reg-form-container" style="flex:1;display:flex;align-items:flex-start;justify-content:center;padding:var(--space-12);padding-top:10vh;position:relative;overflow-y:auto;max-height:100vh">
+    <a routerLink="/" class="reg-logo-mobile" style="position:absolute;top:var(--space-8);left:var(--space-8)">
+      <img src="assets/Group 102.png" alt="Logo" height="48">
+    </a>
+
+    <div class="reveal" style="max-width:560px;width:100%;margin:0 auto">
+      <div class="mb-10 text-center" style="margin-bottom: 3rem;">
+        <h1 class="text-h2 mb-3" style="font-weight:var(--weight-bold);letter-spacing:-0.5px">
+          {{ isAr ? 'إنشاء حساب جديد' : 'Create Your Account' }}
+        </h1>
+        <p class="text-body-lg text-secondary">
+          {{ isAr ? 'انضم إلى منظومة سفن تك كابيتال.' : 'Join the SEVEN TECH CAPITAL ecosystem.' }}
+        </p>
+      </div>
+
+      <!-- Account Type Selection -->
+      <div class="d-flex gap-4 mb-8" id="account-type-selector" style="margin-top: 2rem;">
+        <div class="flex-1 account-type-btn" [class.selected]="accountType === 'investor'" (click)="setAccountType('investor')">
+          <div class="account-type-icon" [ngStyle]="{'color': accountType === 'investor' ? 'var(--action-primary)' : 'var(--text-secondary)'}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+          </div>
+          <div class="text-body-sm" style="font-weight:var(--weight-semibold)">{{ isAr ? 'مستثمر' : 'Investor' }}</div>
+        </div>
+        <div class="flex-1 account-type-btn" [class.selected]="accountType === 'entrepreneur'" (click)="setAccountType('entrepreneur')">
+          <div class="account-type-icon" [ngStyle]="{'color': accountType === 'entrepreneur' ? 'var(--action-primary)' : 'var(--text-secondary)'}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg>
+          </div>
+          <div class="text-body-sm" style="font-weight:var(--weight-semibold)">{{ isAr ? 'رائد أعمال' : 'Entrepreneur' }}</div>
+        </div>
+        <div class="flex-1 account-type-btn" [class.selected]="accountType === 'admin'" (click)="setAccountType('admin')">
+          <div class="account-type-icon" [ngStyle]="{'color': accountType === 'admin' ? 'var(--action-primary)' : 'var(--text-secondary)'}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>
+          </div>
+          <div class="text-body-sm" style="font-weight:var(--weight-semibold)">{{ isAr ? 'مسؤول النظام' : 'Admin' }}</div>
+        </div>
+      </div>
+
+      <form class="d-flex flex-col gap-5" (ngSubmit)="submitRegister($event)">
+        <div class="grid-2" style="gap:var(--space-5)">
+          <div class="form-group">
+            <label class="form-label text-caption" style="color:var(--text-secondary);font-weight:var(--weight-medium)">{{ isAr ? 'الاسم الأول' : 'First Name' }}</label>
+            <input type="text" class="form-input reg-input" style="padding:1rem;background:var(--bg-secondary);border:1px solid transparent;border-radius:var(--radius-lg);font-size:1rem" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label text-caption" style="color:var(--text-secondary);font-weight:var(--weight-medium)">{{ isAr ? 'اسم العائلة' : 'Last Name' }}</label>
+            <input type="text" class="form-input reg-input" style="padding:1rem;background:var(--bg-secondary);border:1px solid transparent;border-radius:var(--radius-lg);font-size:1rem" required>
+          </div>
+        </div>
+        
+        <div class="grid-2" style="gap:var(--space-5)">
+          <div class="form-group">
+            <label class="form-label text-caption" style="color:var(--text-secondary);font-weight:var(--weight-medium)">{{ isAr ? 'البريد الإلكتروني' : 'Email Address' }}</label>
+            <input type="email" class="form-input reg-input" style="padding:1rem;background:var(--bg-secondary);border:1px solid transparent;border-radius:var(--radius-lg);font-size:1rem" placeholder="you@example.com" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label text-caption" style="color:var(--text-secondary);font-weight:var(--weight-medium)">{{ isAr ? 'رقم الهاتف' : 'Phone Number' }}</label>
+            <input type="tel" class="form-input reg-input" style="padding:1rem;background:var(--bg-secondary);border:1px solid transparent;border-radius:var(--radius-lg);font-size:1rem" dir="ltr">
+          </div>
+        </div>
+
+        <div class="grid-2" style="gap:var(--space-5)">
+          <div class="form-group">
+            <label class="form-label text-caption" style="color:var(--text-secondary);font-weight:var(--weight-medium)">{{ isAr ? 'كلمة المرور' : 'Password' }}</label>
+            <input type="password" class="form-input reg-input" style="padding:1rem;background:var(--bg-secondary);border:1px solid transparent;border-radius:var(--radius-lg);font-size:1rem" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label text-caption" style="color:var(--text-secondary);font-weight:var(--weight-medium)">{{ isAr ? 'تأكيد كلمة المرور' : 'Confirm Password' }}</label>
+            <input type="password" class="form-input reg-input" style="padding:1rem;background:var(--bg-secondary);border:1px solid transparent;border-radius:var(--radius-lg);font-size:1rem" required>
+          </div>
+        </div>
+
+        <div class="form-check mt-3 mb-2">
+          <label class="d-flex items-start gap-3 cursor-pointer" style="cursor:pointer">
+            <div style="position:relative;display:flex;align-items:center;margin-top:2px">
+              <input type="checkbox" style="width:22px;height:22px;border-radius:6px;border:2px solid var(--border-default);appearance:none;outline:none;cursor:pointer;background:var(--bg-surface);transition:all 0.2s" required onchange="this.style.background=this.checked?'var(--action-primary)':'var(--bg-surface)';this.style.borderColor=this.checked?'var(--action-primary)':'var(--border-default)';this.nextElementSibling.style.opacity=this.checked?1:0;this.nextElementSibling.style.transform=this.checked?'scale(1)':'scale(0.5)'">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="position:absolute;left:4px;pointer-events:none;opacity:0;transform:scale(0.5);transition:all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275)"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <span class="text-body-sm text-secondary select-none" style="line-height:1.6">
+              {{ isAr ? 'أوافق على ' : 'I agree to the ' }}
+              <a href="#/terms" style="color:var(--action-primary);text-decoration:none">{{ isAr ? 'شروط الخدمة' : 'Terms of Service' }}</a>
+              {{ isAr ? ' و ' : ' and ' }}
+              <a href="#/privacy" style="color:var(--action-primary);text-decoration:none">{{ isAr ? 'سياسة الخصوصية' : 'Privacy Policy' }}</a>
+            </span>
+          </label>
+        </div>
+        
+        <button type="submit" class="btn btn-primary w-full mt-2" style="font-size:1.1rem;padding:1.2rem;border-radius:var(--radius-lg);box-shadow:0 8px 24px rgba(196,164,119,0.3)">
+          {{ isAr ? 'إنشاء الحساب' : 'Create Account' }}
+        </button>
+      </form>
+      
+      <div class="text-center" style="margin-top:40px;">
+        <p class="text-body-sm text-secondary">
+          {{ isAr ? 'لديك حساب بالفعل؟' : 'Already have an account?' }} 
+          <a [href]="'http://127.0.0.1:8000/login?lang=' + currentLang" style="color:var(--text-primary);font-weight:var(--weight-semibold);text-decoration:none;margin-inline-start:var(--space-2)">
+            {{ isAr ? 'تسجيل الدخول' : 'Sign In' }}
+          </a>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>

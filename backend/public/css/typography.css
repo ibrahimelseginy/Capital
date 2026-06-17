@@ -1,0 +1,196 @@
+/* ========================================================
+   SEVEN TECH CAPITAL — Typography System
+   17-level bilingual type scale (EN: Inter, AR: IBM Plex Sans Arabic)
+   ======================================================== */
+
+/* ─── Display ─── */
+.text-display-xxl {
+  font-size: var(--text-display-xxl);
+  font-weight: var(--weight-bold);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+}
+
+.text-display-xl {
+  font-size: var(--text-display-xl);
+  font-weight: var(--weight-bold);
+  line-height: 1.15;
+  letter-spacing: var(--tracking-tight);
+}
+
+/* ─── Headings ─── */
+.text-h1 {
+  font-size: var(--text-h1);
+  font-weight: var(--weight-bold);
+  line-height: 1.2;
+  letter-spacing: var(--tracking-tight);
+}
+
+.text-h2 {
+  font-size: var(--text-h2);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-snug);
+}
+
+.text-h3 {
+  font-size: var(--text-h3);
+  font-weight: var(--weight-semibold);
+  line-height: 1.3;
+}
+
+.text-h4 {
+  font-size: var(--text-h4);
+  font-weight: var(--weight-semibold);
+  line-height: 1.35;
+}
+
+.text-h5 {
+  font-size: var(--text-h5);
+  font-weight: var(--weight-semibold);
+  line-height: 1.4;
+}
+
+/* ─── Body ─── */
+.text-body-lg {
+  font-size: var(--text-body-lg);
+  font-weight: var(--weight-regular);
+  line-height: var(--leading-relaxed);
+}
+
+.text-body {
+  font-size: var(--text-body);
+  font-weight: var(--weight-regular);
+  line-height: var(--leading-relaxed);
+}
+
+.text-body-sm {
+  font-size: var(--text-body-sm);
+  font-weight: var(--weight-regular);
+  line-height: var(--leading-normal);
+}
+
+/* ─── Utility Type ─── */
+.text-caption {
+  font-size: var(--text-caption);
+  font-weight: var(--weight-regular);
+  line-height: var(--leading-normal);
+  color: var(--text-secondary);
+}
+
+.text-overline {
+  font-size: var(--text-overline);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-normal);
+  letter-spacing: var(--tracking-wider);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.text-label {
+  font-size: var(--text-label);
+  font-weight: var(--weight-medium);
+  line-height: 1.4;
+}
+
+.text-button {
+  font-size: var(--text-button);
+  font-weight: var(--weight-semibold);
+  line-height: 1;
+  letter-spacing: var(--tracking-wide);
+}
+
+.text-stat {
+  font-size: var(--text-stat);
+  font-weight: var(--weight-bold);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  font-variant-numeric: tabular-nums;
+}
+
+.text-table-header {
+  font-size: var(--text-table-header);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-normal);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.text-form-helper {
+  font-size: var(--text-form-helper);
+  font-weight: var(--weight-regular);
+  line-height: var(--leading-normal);
+  color: var(--text-secondary);
+}
+
+/* ─── Color Modifiers ─── */
+.text-primary { color: var(--text-primary); }
+.text-secondary { color: var(--text-secondary); }
+.text-tertiary { color: var(--text-tertiary); }
+.text-accent { color: var(--action-primary); }
+.text-gold { color: var(--accent-gold); }
+.text-success { color: var(--color-success); }
+.text-warning { color: var(--color-warning); }
+.text-error { color: var(--color-error); }
+
+/* ─── Text Utilities ─── */
+.text-balance { text-wrap: balance; }
+.text-pretty { text-wrap: pretty; }
+.text-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.text-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.text-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ─── Number Display ─── */
+.tabular-nums { font-variant-numeric: tabular-nums; }
+.proportional-nums { font-variant-numeric: proportional-nums; }
+
+/* ─── Arabic RTL Typography Adjustments ─── */
+[dir="rtl"] {
+  --font-family: var(--font-ar);
+}
+
+[dir="rtl"] .text-display-xxl { line-height: 1.3; }
+[dir="rtl"] .text-display-xl { line-height: 1.35; }
+[dir="rtl"] .text-h1 { line-height: 1.4; }
+[dir="rtl"] .text-h2 { line-height: 1.4; }
+[dir="rtl"] .text-h3 { line-height: 1.45; }
+[dir="rtl"] .text-h4 { line-height: 1.5; }
+[dir="rtl"] .text-h5 { line-height: 1.5; }
+[dir="rtl"] .text-body-lg { line-height: var(--leading-loose); }
+[dir="rtl"] .text-body { line-height: var(--leading-loose); }
+[dir="rtl"] .text-body-sm { line-height: 1.7; }
+[dir="rtl"] .text-caption { line-height: 1.7; }
+
+[dir="rtl"] .text-overline {
+  text-transform: none;
+  letter-spacing: var(--tracking-normal);
+}
+
+/* Arabic: no text-transform uppercase (doesn't apply) */
+[dir="rtl"] .text-table-header {
+  text-transform: none;
+  letter-spacing: var(--tracking-normal);
+}
+
+/* Ensure consistent reading width */
+.prose {
+  max-width: 68ch;
+}
+
+[dir="rtl"] .prose {
+  max-width: 55ch; /* Arabic characters are wider */
+}

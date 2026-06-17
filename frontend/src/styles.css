@@ -1,0 +1,9 @@
+/* You can add global styles to this file, and also import other style files */
+@import 'assets/styles/tokens.css';
+@import 'assets/styles/reset.css';
+@import 'assets/styles/typography.css';
+@import 'assets/styles/layout.css';
+@import 'assets/styles/components.css';
+@import 'assets/styles/utilities.css';
+
+/* If there are any page-specific global styles, import them here or in their respective components */

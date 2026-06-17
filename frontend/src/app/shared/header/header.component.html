@@ -1,0 +1,126 @@
+<header class="site-header" id="main-header" role="banner">
+  <div class="header-inner">
+    <!-- Logo -->
+    <a routerLink="/" class="header-logo" aria-label="SEVEN TECH CAPITAL Home">
+      <img src="assets/images/Group 102.png" alt="SEVEN TECH CAPITAL" id="header-logo" height="48">
+    </a>
+
+    <!-- Desktop Navigation -->
+    <nav class="header-nav" role="navigation" aria-label="Main navigation">
+      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="header-nav-link"
+        data-i18n="nav_home">Home</a>
+      <a routerLink="/partners" routerLinkActive="active" class="header-nav-link" data-i18n="nav_partners">Partners</a>
+      <a routerLink="/investors" routerLinkActive="active" class="header-nav-link"
+        data-i18n="nav_investors">Investors</a>
+      <a routerLink="/events" routerLinkActive="active" class="header-nav-link" data-i18n="nav_events">Events</a>
+      <a routerLink="/blogs" routerLinkActive="active" class="header-nav-link" data-i18n="nav_blogs">Blogs</a>
+      <a routerLink="/jobs" routerLinkActive="active" class="header-nav-link" data-i18n="nav_jobs">Jobs</a>
+      <a routerLink="/branches" routerLinkActive="active" class="header-nav-link" data-i18n="nav_contact">Contact</a>
+    </nav>
+
+    <!-- Header Actions -->
+    <div class="header-actions">
+      <!-- Search -->
+      <button class="header-action-btn" aria-label="Search" (click)="toggleSearch()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+          fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8" />
+          <path d="m21 21-4.3-4.3" />
+        </svg>
+      </button>
+
+      <!-- Language Toggle -->
+      <button class="lang-toggle" (click)="toggleLanguage()" aria-label="Toggle language">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10" />
+          <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
+          <path d="M2 12h20" />
+        </svg>
+        <span class="lang-label">{{ currentLang === 'ar' ? 'English' : 'عربي' }}</span>
+      </button>
+
+      <!-- Theme Toggle -->
+      <button class="header-action-btn" (click)="toggleTheme()" aria-label="Toggle theme">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
+        </svg>
+      </button>
+
+      <!-- Sign In -->
+      <a [href]="'http://127.0.0.1:8000/login?lang=' + currentLang" class="header-signin hide-tablet-down" data-i18n="nav_signin">Sign In</a>
+
+      <!-- Create Account CTA -->
+      <a [href]="'http://127.0.0.1:8000/register?lang=' + currentLang" class="header-cta hide-tablet-down" data-i18n="nav_create">Create Account</a>
+
+      <!-- Mobile Menu Button -->
+      <button class="mobile-menu-btn" (click)="toggleMobileMenu()" aria-label="Open menu"
+        [attr.aria-expanded]="isMobileMenuOpen">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="4" x2="20" y1="12" y2="12" />
+          <line x1="4" x2="20" y1="6" y2="6" />
+          <line x1="4" x2="20" y1="18" y2="18" />
+        </svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- Mobile Overlay -->
+<div class="mobile-overlay" [class.active]="isMobileMenuOpen" (click)="toggleMobileMenu()"></div>
+
+<!-- Mobile Drawer -->
+<aside class="mobile-drawer" [class.active]="isMobileMenuOpen" role="dialog" aria-label="Mobile navigation">
+  <div class="mobile-drawer-header">
+    <img src="assets/images/Group 97.png" alt="SEVEN TECH CAPITAL" height="28">
+    <button class="mobile-drawer-close" (click)="toggleMobileMenu()" aria-label="Close menu">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M18 6 6 18" />
+        <path d="m6 6 12 12" />
+      </svg>
+    </button>
+  </div>
+  <nav class="mobile-drawer-nav" aria-label="Mobile navigation links">
+    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="mobile-nav-link"
+      (click)="toggleMobileMenu()" data-i18n="nav_home">Home</a>
+    <a routerLink="/partners" routerLinkActive="active" class="mobile-nav-link" (click)="toggleMobileMenu()"
+      data-i18n="nav_partners">Partners</a>
+    <a routerLink="/investors" routerLinkActive="active" class="mobile-nav-link" (click)="toggleMobileMenu()"
+      data-i18n="nav_investors">Investors</a>
+    <a routerLink="/events" routerLinkActive="active" class="mobile-nav-link" (click)="toggleMobileMenu()"
+      data-i18n="nav_events">Events</a>
+    <a routerLink="/blogs" routerLinkActive="active" class="mobile-nav-link" (click)="toggleMobileMenu()"
+      data-i18n="nav_blogs">Blogs</a>
+    <a routerLink="/jobs" routerLinkActive="active" class="mobile-nav-link" (click)="toggleMobileMenu()"
+      data-i18n="nav_jobs">Jobs</a>
+    <a routerLink="/branches" routerLinkActive="active" class="mobile-nav-link" (click)="toggleMobileMenu()"
+      data-i18n="nav_contact">Contact</a>
+  </nav>
+  <div class="mobile-drawer-footer">
+    <a [href]="'http://127.0.0.1:8000/login?lang=' + currentLang" (click)="toggleMobileMenu()" class="btn btn-secondary w-full" data-i18n="nav_signin">Sign
+      In</a>
+    <a [href]="'http://127.0.0.1:8000/register?lang=' + currentLang" (click)="toggleMobileMenu()" class="btn btn-primary w-full" data-i18n="nav_create">Create
+      Account</a>
+    <div class="mobile-drawer-actions">
+      <button class="header-action-btn" (click)="toggleTheme()" aria-label="Toggle theme">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
+        </svg>
+      </button>
+      <button class="lang-toggle" (click)="toggleLanguage()" aria-label="Toggle language">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10" />
+          <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
+          <path d="M2 12h20" />
+        </svg>
+        <span class="lang-label">{{ currentLang === 'ar' ? 'English' : 'عربي' }}</span>
+      </button>
+    </div>
+  </div>
+</aside>
