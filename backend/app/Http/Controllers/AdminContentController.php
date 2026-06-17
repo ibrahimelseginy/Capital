@@ -18,25 +18,41 @@ class AdminContentController extends Controller
     {
         $request->validate([
             'title' => 'required|string|max:255',
-            'type' => 'required|in:image,video,text',
+            'type' => 'required|in:image,video,text,youtube',
             'section' => 'nullable|string',
-            'file' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg,mp4,mov,avi|max:50000',
+            'files' => 'nullable|array',
+            'files.*' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg,mp4,mov,avi|max:50000',
+            'youtube_urls' => 'nullable|array',
+            'youtube_urls.*' => 'nullable|url',
             'text_content' => 'nullable|string',
         ]);
 
-        $filePath = null;
+        $filePaths = [];
 
-        if ($request->hasFile('file')) {
-            $filePath = $request->file('file')->store('content', 'public');
+        if (in_array($request->type, ['image', 'video'])) {
+            if ($request->hasFile('files')) {
+                foreach ($request->file('files') as $file) {
+                    $filePaths[] = $file->store('content', 'public');
+                }
+            }
+        } elseif ($request->type === 'youtube') {
+            if ($request->has('youtube_urls')) {
+                // Filter out empty URLs
+                $filePaths = array_filter($request->youtube_urls, function($val) {
+                    return !empty($val);
+                });
+                // Reindex array
+                $filePaths = array_values($filePaths);
+            }
         } elseif ($request->type === 'text') {
-            $filePath = $request->text_content;
+            $filePaths = [$request->text_content]; // Keep it as an array to maintain consistency
         }
 
         Content::create([
             'title' => $request->title,
             'type' => $request->type,
             'section' => $request->section,
-            'file_path' => $filePath,
+            'file_path' => $filePaths, // now cast to array JSON natively
         ]);
 
         return redirect()->back()->with('success', app()->getLocale() == 'ar' ? 'تمت إضافة المحتوى بنجاح' : 'Content added successfully');
@@ -63,8 +79,13 @@ class AdminContentController extends Controller
     {
         $content = Content::findOrFail($id);
         
-        if ($content->type !== 'text' && $content->file_path) {
-            Storage::disk('public')->delete($content->file_path);
+        // Handle deletion of actual files
+        if (in_array($content->type, ['image', 'video']) && is_array($content->file_path)) {
+            foreach ($content->file_path as $path) {
+                if (Storage::disk('public')->exists($path)) {
+                    Storage::disk('public')->delete($path);
+                }
+            }
         }
 
         $content->delete();
@@ -75,7 +96,6 @@ class AdminContentController extends Controller
     public function apiIndex()
     {
         $contents = Content::all();
-        // format them maybe by section
         $grouped = $contents->groupBy('section');
         return response()->json($grouped);
     }

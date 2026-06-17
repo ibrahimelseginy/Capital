@@ -436,6 +436,18 @@
             </form>
           </div>
         `;
+      } else if (r.status !== 'Pending' && r.update_url) {
+        actionButtons = `
+          <div class="d-flex justify-center">
+            <form action="${r.update_url}" method="POST" style="margin:0;">
+                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                <input type="hidden" name="status" value="${r.pending_val}">
+                <button type="submit" class="action-icon-btn" title="${isAr ? 'تراجع' : 'Undo'}">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7v6h6"/><path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"/></svg>
+                </button>
+            </form>
+          </div>
+        `;
       }
 
       let detailsHtml = `<div><strong>${isAr ? 'السبب:' : 'Details:'}</strong> ${r.reason}</div>`;

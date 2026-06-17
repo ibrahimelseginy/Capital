@@ -238,6 +238,17 @@
                         </button>
                     </form>
                 </div>
+                @else
+                <div class="d-flex gap-2">
+                    <form action="{{ route('admin.projects.status', $project->id) }}" method="POST" style="margin:0;">
+                        @csrf
+                        <input type="hidden" name="status" value="Pending">
+                        <button class="btn btn-secondary" style="padding: 0.4rem 1rem; font-size: 0.8rem; color: var(--text-secondary); border-color: var(--border-default); display: flex; align-items: center; gap: 4px;" title="{{ app()->getLocale() == 'ar' ? 'تراجع عن الإجراء' : 'Undo Action' }}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7v6h6"/><path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"/></svg>
+                            {{ app()->getLocale() == 'ar' ? 'تراجع' : 'Undo' }}
+                        </button>
+                    </form>
+                </div>
                 @endif
             </div>
         </div>

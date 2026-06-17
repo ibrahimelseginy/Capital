@@ -68,7 +68,8 @@ class AdminController extends Controller
                 'created_at' => $n->created_at->format('M d, Y'),
                 'update_url' => route('admin.ndas.status', $n->id),
                 'approve_val' => 'signed',
-                'reject_val' => 'rejected'
+                'reject_val' => 'rejected',
+                'pending_val' => 'pending'
             ];
         });
 
@@ -86,7 +87,8 @@ class AdminController extends Controller
                 'created_at' => $e->created_at->format('M d, Y'),
                 'update_url' => route('admin.exits.status', $e->id),
                 'approve_val' => 'Completed',
-                'reject_val' => 'Rejected'
+                'reject_val' => 'Rejected',
+                'pending_val' => 'Under Review'
             ];
         });
 
