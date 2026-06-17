@@ -15,4 +15,9 @@ class Project extends Model
     {
         return $this->hasMany(Report::class);
     }
+
+    public function ndas()
+    {
+        return $this->hasMany(Nda::class);
+    }
 }

@@ -10,6 +10,10 @@ class AdminController extends Controller
 {
     public function index()
     {
+        $pending_ndas = \App\Models\Nda::where('status', 'pending')->get();
+        $pending_exits = \App\Models\ExitRequest::where('status', 'Under Review')->get();
+        $pending_projects = Project::where('status', 'Pending')->get();
+
         $metrics = [
             'total_users' => User::count(),
             'total_investors' => User::where('role', 'investor')->count(),
@@ -17,14 +21,36 @@ class AdminController extends Controller
             'total_projects' => Project::count(),
             'active_projects' => Project::where('status', 'Active')->count(),
             'total_portfolio_value' => Project::sum('budget') ?? 0,
-            'pending_ndas' => \App\Models\Nda::where('status', 'pending')->count(),
-            'pending_exit_requests' => \App\Models\ExitRequest::where('status', 'Under Review')->count(),
+            'pending_ndas' => $pending_ndas->count(),
+            'pending_exit_requests' => $pending_exits->count(),
+            'total_exit_value' => \App\Models\ExitRequest::sum('amount') ?? 0,
+            'total_content' => \App\Models\Content::count()
         ];
 
-        $recent_users = User::orderBy('created_at', 'desc')->take(5)->get();
-        $recent_projects = Project::orderBy('created_at', 'desc')->take(5)->get();
+        // Smart Alerts
+        $alerts = [];
+        if ($pending_ndas->count() > 5) {
+            $alerts[] = ['type' => 'warning', 'message' => app()->getLocale() == 'ar' ? 'يوجد تراكم في طلبات اتفاقية السرية (أكثر من 5 طلبات).' : 'There is a backlog of NDA requests (more than 5).'];
+        }
+        if ($pending_exits->count() > 0) {
+            $alerts[] = ['type' => 'error', 'message' => app()->getLocale() == 'ar' ? "يوجد {$pending_exits->count()} طلبات تخارج بانتظار المراجعة." : "There are {$pending_exits->count()} exit requests pending review."];
+        }
+        if ($pending_projects->count() > 2) {
+            $alerts[] = ['type' => 'info', 'message' => app()->getLocale() == 'ar' ? 'يوجد مشاريع جديدة بانتظار الاعتماد.' : 'There are new projects pending approval.'];
+        }
 
-        return view('admin.dashboard', compact('metrics', 'recent_users', 'recent_projects'));
+        // Activity Log
+        $recent_ndas = \App\Models\Nda::with(['user', 'project'])->latest()->take(5)->get()->map(function($i) { return ['type' => 'nda', 'model' => $i, 'date' => $i->created_at]; });
+        $recent_docs = \App\Models\Document::with(['user'])->latest()->take(5)->get()->map(function($i) { return ['type' => 'document', 'model' => $i, 'date' => $i->created_at]; });
+        $recent_exits = \App\Models\ExitRequest::with(['user', 'project'])->latest()->take(5)->get()->map(function($i) { return ['type' => 'exit', 'model' => $i, 'date' => $i->created_at]; });
+        $activities = collect($recent_ndas)->merge($recent_docs)->merge($recent_exits)->sortByDesc('date')->take(6)->values();
+
+        $recent_users = User::orderBy('created_at', 'desc')->take(5)->get();
+        
+        // Top Projects by NDAs
+        $top_projects = Project::withCount('ndas')->orderByDesc('ndas_count')->take(5)->get();
+
+        return view('admin.dashboard', compact('metrics', 'recent_users', 'top_projects', 'activities', 'alerts'));
     }
 
     public function projects()
@@ -42,11 +68,19 @@ class AdminController extends Controller
     public function updateUser(Request $request, $id)
     {
         $request->validate([
-            'role' => 'required|in:investor,entrepreneur,admin'
+            'role' => 'required|in:investor,entrepreneur,admin',
+            'name' => 'nullable|string|max:255',
+            'password' => 'nullable|string|min:6'
         ]);
         
         $user = User::findOrFail($id);
         $user->role = $request->role;
+        if ($request->filled('name')) {
+            $user->name = $request->name;
+        }
+        if ($request->filled('password')) {
+            $user->password = \Illuminate\Support\Facades\Hash::make($request->password);
+        }
         $user->save();
         
         return back()->with('success', app()->getLocale() == 'ar' ? 'تم تحديث بيانات المستخدم بنجاح.' : 'User details updated successfully.');

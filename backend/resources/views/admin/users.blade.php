@@ -218,8 +218,8 @@
                 <button type="button" onclick="showUserDetails(`{{ addslashes($user->name) }}`, `{{ addslashes($user->email) }}`, `{{ ucfirst($user->role) }}`, `{{ $user->created_at->format('M d, Y') }}`)">
                     {{ app()->getLocale() == 'ar' ? 'التفاصيل' : 'View' }}
                 </button>
-                <button type="button" onclick="showEditUser({{ $user->id }}, '{{ $user->role }}')">
-                    {{ app()->getLocale() == 'ar' ? 'تعديل الصلاحية' : 'Edit Role' }}
+                <button type="button" onclick="showEditUser({{ $user->id }}, '{{ $user->role }}', `{{ addslashes($user->name) }}`)">
+                    {{ app()->getLocale() == 'ar' ? 'تعديل البيانات' : 'Edit' }}
                 </button>
             </div>
         </div>
@@ -281,17 +281,25 @@
     <div id="editUserModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.4); backdrop-filter: blur(8px); z-index:999; align-items:center; justify-content:center; padding:1rem; opacity: 0; transition: opacity 0.3s ease;">
         <div class="glass-card" style="width:100%; max-width:450px; background:var(--bg-primary); transform: translateY(20px); transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);">
             <div class="d-flex justify-between items-center mb-6">
-                <h3 class="text-h3 m-0" style="font-weight: 700;">{{ app()->getLocale() == 'ar' ? 'تعديل الصلاحيات' : 'Edit Role' }}</h3>
+                <h3 class="text-h3 m-0" style="font-weight: 700;">{{ app()->getLocale() == 'ar' ? 'تعديل بيانات المستخدم' : 'Edit User' }}</h3>
                 <button onclick="closeModal('editUserModal')" style="background:var(--bg-secondary); border:none; width:36px; height:36px; border-radius:50%; cursor:pointer; color:var(--text-primary); display:flex; align-items:center; justify-content:center; transition: all 0.2s;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                 </button>
             </div>
             
-            <form id="editUserForm" method="POST" class="d-flex flex-col gap-5">
+            <form id="editUserForm" method="POST" class="d-flex flex-col gap-4">
                 @csrf
                 <div>
-                    <label class="text-caption" style="font-weight: 600; margin-bottom: 0.75rem; display: block;">{{ app()->getLocale() == 'ar' ? 'دور المستخدم' : 'User Role' }}</label>
-                    <select name="role" id="editUserRole" class="form-input" style="width:100%; padding:1rem; border-radius:var(--radius-lg); background:var(--bg-surface); box-shadow: var(--shadow-sm);">
+                    <label class="text-caption" style="font-weight: 600; margin-bottom: 0.5rem; display: block;">{{ app()->getLocale() == 'ar' ? 'اسم المستخدم' : 'User Name' }}</label>
+                    <input type="text" name="name" id="editUserName" class="form-input" style="width:100%; padding:0.8rem 1rem; border-radius:var(--radius-lg); background:var(--bg-surface); box-shadow: var(--shadow-sm);" required>
+                </div>
+                <div>
+                    <label class="text-caption" style="font-weight: 600; margin-bottom: 0.5rem; display: block;">{{ app()->getLocale() == 'ar' ? 'كلمة المرور الجديدة (اختياري)' : 'New Password (Optional)' }}</label>
+                    <input type="password" name="password" id="editUserPassword" class="form-input" placeholder="********" style="width:100%; padding:0.8rem 1rem; border-radius:var(--radius-lg); background:var(--bg-surface); box-shadow: var(--shadow-sm);">
+                </div>
+                <div>
+                    <label class="text-caption" style="font-weight: 600; margin-bottom: 0.5rem; display: block;">{{ app()->getLocale() == 'ar' ? 'دور المستخدم' : 'User Role' }}</label>
+                    <select name="role" id="editUserRole" class="form-input" style="width:100%; padding:0.8rem 1rem; border-radius:var(--radius-lg); background:var(--bg-surface); box-shadow: var(--shadow-sm);">
                         <option value="investor">Investor / مستثمر</option>
                         <option value="entrepreneur">Entrepreneur / رائد أعمال</option>
                         <option value="admin">Admin / مدير</option>
@@ -344,8 +352,10 @@ function showUserDetails(name, email, role, date) {
     openModal('userDetailsModal');
 }
 
-function showEditUser(id, currentRole) {
+function showEditUser(id, currentRole, currentName) {
     document.getElementById('editUserRole').value = currentRole;
+    document.getElementById('editUserName').value = currentName;
+    document.getElementById('editUserPassword').value = '';
     document.getElementById('editUserForm').action = `/admin/users/${id}`;
     
     openModal('editUserModal');

@@ -227,7 +227,7 @@
             </div>
 
             <!-- Media Upload (Images/Videos) -->
-            <div id="fileUploadWrapper">
+            <div id="fileUploadWrapper" style="margin-top: 1.5rem;">
                 <div class="upload-zone" id="dropZone">
                     <input type="file" name="files[]" class="hidden-input" id="fileInput" multiple onchange="updateFileName(this)">
                     <div class="upload-icon">
