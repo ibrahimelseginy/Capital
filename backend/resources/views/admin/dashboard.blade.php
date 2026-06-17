@@ -85,7 +85,7 @@
     @media print {
         /* Hide unnecessary elements */
         .dashboard-sidebar, 
-        .dashboard-header, 
+        .dashboard-topbar, 
         #global-search-modal, 
         #cookie-banner, 
         .btn, 
@@ -148,6 +148,15 @@
         
         .charts-grid {
             display: block !important;
+        }
+        
+        /* Hide browser default header and footer */
+        @page {
+            margin: 0; /* Removing margin removes the default browser headers and footers */
+        }
+        
+        body {
+            margin: 1cm; /* Add some padding back to the content so it's not sticking to the physical paper edges */
         }
     }
 </style>
