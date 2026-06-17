@@ -8,17 +8,17 @@
     .glass-card {
         background: var(--bg-surface);
         border: 1px solid var(--border-default);
-        border-radius: var(--radius-lg);
+        border-radius: var(--radius-xl);
         padding: 1.5rem;
-        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
+        box-shadow: var(--shadow-md);
         backdrop-filter: blur(12px);
         -webkit-backdrop-filter: blur(12px);
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
     .glass-card:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 12px 32px rgba(196, 164, 119, 0.1);
-        border-color: rgba(196, 164, 119, 0.3);
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-card-hover);
+        border-color: var(--border-strong);
     }
     .stat-icon {
         width: 48px;
@@ -103,7 +103,7 @@
         transition: all 0.2s ease;
     }
     .stc-table tbody tr:hover {
-        background: rgba(196, 164, 119, 0.03);
+        background: var(--bg-secondary);
         transform: scale(1.002);
     }
     .stc-table tbody tr:hover td:first-child {

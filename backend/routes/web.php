@@ -27,6 +27,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // API Routes
 Route::get('/api/content', [AdminContentController::class, 'apiIndex'])->name('api.content');
+Route::get('/api/v1/website/home', [\App\Http\Controllers\Api\WebsiteApiController::class, 'home'])->name('api.website.home');
 
 // Investor Routes (Protected)
 Route::middleware(['auth', 'role:investor'])->prefix('dashboard')->group(function () {
