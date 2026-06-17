@@ -6,8 +6,6 @@ use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\EntrepreneurController;
-use App\Http\Controllers\AdminContentController;
-
 Route::get('/', function () {
     return redirect('/login');
 });
@@ -27,7 +25,6 @@ Route::post('/register', [AuthController::class, 'register'])->name('register.po
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // API Routes
-Route::get('/api/content', [AdminContentController::class, 'apiIndex'])->name('api.content');
 
 // Investor Routes (Protected)
 Route::middleware(['auth', 'role:investor'])->prefix('dashboard')->group(function () {
@@ -64,12 +61,6 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
     Route::get('/files', [AdminController::class, 'files'])->name('admin.files');
     Route::post('/documents', [AdminController::class, 'storeDocument'])->name('admin.documents.store');
     Route::post('/reports', [AdminController::class, 'storeReport'])->name('admin.reports.store');
-    
-    // CMS Routes
-    Route::get('/content', [AdminContentController::class, 'index'])->name('admin.content');
-    Route::post('/content', [AdminContentController::class, 'store'])->name('admin.content.store');
-    Route::post('/content/{id}', [AdminContentController::class, 'update'])->name('admin.content.update');
-    Route::delete('/content/{id}', [AdminContentController::class, 'destroy'])->name('admin.content.destroy');
 });
 
 // Entrepreneur Routes (Protected)
