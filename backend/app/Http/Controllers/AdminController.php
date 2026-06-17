@@ -213,4 +213,18 @@ class AdminController extends Controller
 
         return back()->with('success', app()->getLocale() == 'ar' ? 'تم رفع التقرير بنجاح.' : 'Report uploaded successfully.');
     }
+
+    public function showDocument($id)
+    {
+        $file = \App\Models\Document::with(['project', 'user'])->findOrFail($id);
+        $file->is_document = true;
+        return view('admin.file-show', compact('file'));
+    }
+
+    public function showReport($id)
+    {
+        $file = \App\Models\Report::with(['project', 'user'])->findOrFail($id);
+        $file->is_document = false;
+        return view('admin.file-show', compact('file'));
+    }
 }

@@ -62,7 +62,9 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
     Route::post('/exit-requests/{id}/status', [AdminController::class, 'updateExitStatus'])->name('admin.exits.status');
     Route::get('/files', [AdminController::class, 'files'])->name('admin.files');
     Route::post('/documents', [AdminController::class, 'storeDocument'])->name('admin.documents.store');
+    Route::get('/documents/{id}', [AdminController::class, 'showDocument'])->name('admin.documents.show');
     Route::post('/reports', [AdminController::class, 'storeReport'])->name('admin.reports.store');
+    Route::get('/reports/{id}', [AdminController::class, 'showReport'])->name('admin.reports.show');
     
     // CMS Routes
     Route::get('/content', [AdminContentController::class, 'index'])->name('admin.content');
