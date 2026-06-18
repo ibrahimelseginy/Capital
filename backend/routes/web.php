@@ -64,8 +64,10 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
     Route::get('/files', [AdminController::class, 'files'])->name('admin.files');
     Route::post('/documents', [AdminController::class, 'storeDocument'])->name('admin.documents.store');
     Route::get('/documents/{id}', [AdminController::class, 'showDocument'])->name('admin.documents.show');
+    Route::delete('/documents/{id}', [AdminController::class, 'destroyDocument'])->name('admin.documents.destroy');
     Route::post('/reports', [AdminController::class, 'storeReport'])->name('admin.reports.store');
     Route::get('/reports/{id}', [AdminController::class, 'showReport'])->name('admin.reports.show');
+    Route::delete('/reports/{id}', [AdminController::class, 'destroyReport'])->name('admin.reports.destroy');
     
     // CMS Routes
     Route::get('/content', [AdminContentController::class, 'index'])->name('admin.content');

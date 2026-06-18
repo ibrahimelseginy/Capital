@@ -70,17 +70,30 @@ class AdminController extends Controller
         $request->validate([
             'role' => 'required|in:investor,entrepreneur,admin',
             'name' => 'nullable|string|max:255',
-            'password' => 'nullable|string|min:6'
+            'email' => 'required|email|max:255|unique:users,email,' . $id,
+            'password' => 'nullable|string|min:6',
+            'profile_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
         
         $user = User::findOrFail($id);
         $user->role = $request->role;
+        $user->email = $request->email;
+        
         if ($request->filled('name')) {
             $user->name = $request->name;
         }
         if ($request->filled('password')) {
             $user->password = \Illuminate\Support\Facades\Hash::make($request->password);
         }
+        
+        if ($request->hasFile('profile_image')) {
+            if ($user->profile_image) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($user->profile_image);
+            }
+            $path = $request->file('profile_image')->store('profiles', 'public');
+            $user->profile_image = $path;
+        }
+        
         $user->save();
         
         return back()->with('success', app()->getLocale() == 'ar' ? 'تم تحديث بيانات المستخدم بنجاح.' : 'User details updated successfully.');
@@ -260,5 +273,24 @@ class AdminController extends Controller
         $file = \App\Models\Report::with(['project', 'user'])->findOrFail($id);
         $file->is_document = false;
         return view('admin.file-show', compact('file'));
+    }
+    public function destroyDocument($id)
+    {
+        $document = \App\Models\Document::findOrFail($id);
+        if ($document->file_path) {
+            \Illuminate\Support\Facades\Storage::disk('public')->delete($document->file_path);
+        }
+        $document->delete();
+        return redirect()->route('admin.files')->with('success', app()->getLocale() == 'ar' ? 'تم حذف المستند بنجاح.' : 'Document deleted successfully.');
+    }
+
+    public function destroyReport($id)
+    {
+        $report = \App\Models\Report::findOrFail($id);
+        if ($report->file_path) {
+            \Illuminate\Support\Facades\Storage::disk('public')->delete($report->file_path);
+        }
+        $report->delete();
+        return redirect()->route('admin.files')->with('success', app()->getLocale() == 'ar' ? 'تم حذف التقرير بنجاح.' : 'Report deleted successfully.');
     }
 }

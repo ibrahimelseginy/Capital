@@ -195,11 +195,25 @@
     </div>
     @endif
 
+    @if($errors->any())
+    <div style="background: var(--color-error-bg); color: var(--color-error); padding: 1rem 1.5rem; border-radius: var(--radius-lg); margin-bottom: 2rem; border: 1px solid rgba(239, 68, 68, 0.2);">
+        <div style="display:flex; align-items:center; gap: 1rem; margin-bottom: 0.5rem;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+            <span style="font-weight: 600;">{{ app()->getLocale() == 'ar' ? 'يوجد أخطاء في الإدخال:' : 'There are input errors:' }}</span>
+        </div>
+        <ul style="margin: 0; padding-inline-start: 2rem; font-size: 0.9rem;">
+            @foreach($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
+
     <!-- Modern Users Directory Grid -->
     <div class="users-grid" id="usersContainer">
         @forelse($users as $index => $user)
         <div class="user-card stagger-item" style="animation-delay: {{ 0.05 * ($index + 1) }}s;" data-name="{{ strtolower($user->name) }}" data-email="{{ strtolower($user->email) }}">
-            <div class="user-avatar" style="border-color: {{ $user->role === 'investor' ? 'rgba(59,130,246,0.2)' : ($user->role === 'entrepreneur' ? 'rgba(16,185,129,0.2)' : 'rgba(245,158,11,0.2)') }}">
+            <div class="user-avatar" style="border-color: {{ $user->role === 'investor' ? 'rgba(59,130,246,0.2)' : ($user->role === 'entrepreneur' ? 'rgba(16,185,129,0.2)' : 'rgba(245,158,11,0.2)') }}; {{ $user->profile_image ? 'background-image: url('.Storage::url($user->profile_image).'); background-size: cover; background-position: center; color: transparent;' : '' }}">
                 {{ strtoupper(substr($user->name, 0, 2)) }}
             </div>
             
@@ -215,10 +229,10 @@
             </div>
 
             <div class="user-actions" style="z-index: 1;">
-                <button type="button" onclick="showUserDetails(`{{ addslashes($user->name) }}`, `{{ addslashes($user->email) }}`, `{{ ucfirst($user->role) }}`, `{{ $user->created_at->format('M d, Y') }}`)">
+                <button type="button" onclick="showUserDetails(`{{ addslashes($user->name) }}`, `{{ addslashes($user->email) }}`, `{{ ucfirst($user->role) }}`, `{{ $user->created_at->format('M d, Y') }}`, `{{ $user->profile_image ? Storage::url($user->profile_image) : '' }}`)">
                     {{ app()->getLocale() == 'ar' ? 'التفاصيل' : 'View' }}
                 </button>
-                <button type="button" onclick="showEditUser({{ $user->id }}, '{{ $user->role }}', `{{ addslashes($user->name) }}`)">
+                <button type="button" onclick="showEditUser({{ $user->id }}, '{{ $user->role }}', `{{ addslashes($user->name) }}`, `{{ addslashes($user->email) }}`)">
                     {{ app()->getLocale() == 'ar' ? 'تعديل البيانات' : 'Edit' }}
                 </button>
             </div>
@@ -252,7 +266,7 @@
             </div>
             
             <div class="d-flex flex-col items-center mb-6 text-center">
-                <div id="modalUserInitials" style="width:88px;height:88px;border-radius:50%;background:var(--bg-secondary);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:32px;color:var(--action-primary); box-shadow: var(--shadow-sm); margin-bottom: 1rem;">
+                <div id="modalUserInitials" style="width:88px;height:88px;border-radius:50%;background:var(--bg-secondary);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:32px;color:var(--action-primary); box-shadow: var(--shadow-sm); margin-bottom: 1rem; background-size: cover; background-position: center;">
                     --
                 </div>
                 <div id="modalUserName" class="text-h3" style="font-weight:700"></div>
@@ -287,11 +301,15 @@
                 </button>
             </div>
             
-            <form id="editUserForm" method="POST" class="d-flex flex-col gap-4">
+            <form id="editUserForm" method="POST" enctype="multipart/form-data" class="d-flex flex-col gap-4">
                 @csrf
                 <div>
                     <label class="text-caption" style="font-weight: 600; margin-bottom: 0.5rem; display: block;">{{ app()->getLocale() == 'ar' ? 'اسم المستخدم' : 'User Name' }}</label>
                     <input type="text" name="name" id="editUserName" class="form-input" style="width:100%; padding:0.8rem 1rem; border-radius:var(--radius-lg); background:var(--bg-surface); box-shadow: var(--shadow-sm);" required>
+                </div>
+                <div>
+                    <label class="text-caption" style="font-weight: 600; margin-bottom: 0.5rem; display: block;">{{ app()->getLocale() == 'ar' ? 'البريد الإلكتروني' : 'Email Address' }}</label>
+                    <input type="email" name="email" id="editUserEmail" class="form-input" style="width:100%; padding:0.8rem 1rem; border-radius:var(--radius-lg); background:var(--bg-surface); box-shadow: var(--shadow-sm);" required>
                 </div>
                 <div>
                     <label class="text-caption" style="font-weight: 600; margin-bottom: 0.5rem; display: block;">{{ app()->getLocale() == 'ar' ? 'كلمة المرور الجديدة (اختياري)' : 'New Password (Optional)' }}</label>
@@ -304,6 +322,10 @@
                         <option value="entrepreneur">Entrepreneur / رائد أعمال</option>
                         <option value="admin">Admin / مدير</option>
                     </select>
+                </div>
+                <div>
+                    <label class="text-caption" style="font-weight: 600; margin-bottom: 0.5rem; display: block;">{{ app()->getLocale() == 'ar' ? 'صورة الملف الشخصي' : 'Profile Image' }}</label>
+                    <input type="file" name="profile_image" id="editUserProfileImage" accept="image/*" class="form-input" style="width:100%; padding:0.6rem 1rem; border-radius:var(--radius-lg); background:var(--bg-surface); box-shadow: var(--shadow-sm);">
                 </div>
 
                 <div class="mt-6 d-flex gap-3 justify-end">
@@ -342,8 +364,18 @@ function filterUsers() {
     }
 }
 
-function showUserDetails(name, email, role, date) {
-    document.getElementById('modalUserInitials').innerText = name.substring(0, 2).toUpperCase();
+function showUserDetails(name, email, role, date, imagePath) {
+    const avatar = document.getElementById('modalUserInitials');
+    if (imagePath) {
+        avatar.style.backgroundImage = `url(${imagePath})`;
+        avatar.style.color = 'transparent';
+        avatar.innerText = name.substring(0, 2).toUpperCase();
+    } else {
+        avatar.style.backgroundImage = 'none';
+        avatar.style.color = 'var(--action-primary)';
+        avatar.innerText = name.substring(0, 2).toUpperCase();
+    }
+
     document.getElementById('modalUserName').innerText = name;
     document.getElementById('modalUserEmail').innerText = email;
     document.getElementById('modalUserRole').innerHTML = `<span class="badge badge-${role.toLowerCase()}">${role}</span>`;
@@ -352,10 +384,12 @@ function showUserDetails(name, email, role, date) {
     openModal('userDetailsModal');
 }
 
-function showEditUser(id, currentRole, currentName) {
+function showEditUser(id, currentRole, currentName, currentEmail) {
     document.getElementById('editUserRole').value = currentRole;
     document.getElementById('editUserName').value = currentName;
+    document.getElementById('editUserEmail').value = currentEmail;
     document.getElementById('editUserPassword').value = '';
+    document.getElementById('editUserProfileImage').value = '';
     document.getElementById('editUserForm').action = `/admin/users/${id}`;
     
     openModal('editUserModal');

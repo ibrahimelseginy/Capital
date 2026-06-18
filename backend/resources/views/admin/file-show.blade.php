@@ -176,10 +176,14 @@
                             {{ app()->getLocale() == 'ar' ? 'تحميل الملف' : 'Download File' }}
                         </a>
                     @endif
-                    <button class="btn btn-secondary btn-icon" style="width: 100%; border-radius: var(--radius-full); color: var(--color-error); border-color: rgba(239, 68, 68, 0.3);" onclick="alert('{{ app()->getLocale() == 'ar' ? 'سيتم حذف الملف من هنا' : 'Delete file functionality' }}')">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
-                        {{ app()->getLocale() == 'ar' ? 'حذف الملف' : 'Delete File' }}
-                    </button>
+                    <form action="{{ $file->is_document ? route('admin.documents.destroy', $file->id) : route('admin.reports.destroy', $file->id) }}" method="POST" style="width: 100%;" onsubmit="return confirm('{{ app()->getLocale() == 'ar' ? 'هل أنت متأكد أنك تريد حذف هذا الملف؟ لا يمكن التراجع عن هذا الإجراء.' : 'Are you sure you want to delete this file? This action cannot be undone.' }}');">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-secondary btn-icon" style="width: 100%; border-radius: var(--radius-full); color: var(--color-error); border-color: rgba(239, 68, 68, 0.3);">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                            {{ app()->getLocale() == 'ar' ? 'حذف الملف' : 'Delete File' }}
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>
