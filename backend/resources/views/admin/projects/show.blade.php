@@ -96,7 +96,6 @@
     <div class="nav-tabs">
         <div class="nav-tab active" onclick="switchTab('overview')">{{ app()->getLocale() == 'ar' ? 'نظرة عامة' : 'Overview' }}</div>
         <div class="nav-tab" onclick="switchTab('metrics')">{{ app()->getLocale() == 'ar' ? 'معدلات النمو' : 'Growth Metrics' }}</div>
-        <div class="nav-tab" onclick="switchTab('consultants')">{{ app()->getLocale() == 'ar' ? 'الاستشاريين' : 'Consultants' }}</div>
         <div class="nav-tab" onclick="switchTab('files')">{{ app()->getLocale() == 'ar' ? 'الملفات والتقارير' : 'Files & Reports' }}</div>
         <div class="nav-tab" onclick="switchTab('exits')">{{ app()->getLocale() == 'ar' ? 'طلبات التخارج' : 'Exit Requests' }}</div>
     </div>
@@ -142,27 +141,33 @@
             </div>
             
             @if($project->teamMembers->count() > 0)
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
                 @foreach($project->teamMembers as $member)
-                <div class="glass-card" style="position:relative; padding: 1.5rem;">
-                    <div class="d-flex items-center gap-3">
-                        <div style="width: 48px; height: 48px; border-radius: 50%; background: var(--action-primary); color: white; display: flex; align-items: center; justify-content: center; overflow: hidden; font-weight: bold; font-size: 1.2rem; flex-shrink: 0;">
+                <div class="glass-card team-member-card" style="position:relative; padding: 1.5rem; border-left: 4px solid var(--action-primary); transition: transform 0.3s ease, box-shadow 0.3s ease; display: flex; align-items: center; justify-content: space-between;">
+                    <div class="d-flex items-center gap-4">
+                        <div style="width: 56px; height: 56px; border-radius: 12px; background: linear-gradient(135deg, var(--action-primary), var(--action-secondary)); color: white; display: flex; align-items: center; justify-content: center; overflow: hidden; font-weight: bold; font-size: 1.4rem; flex-shrink: 0; box-shadow: 0 4px 10px rgba(196,164,119,0.3);">
                             @if($member->avatar)
                                 <img src="{{ Storage::url($member->avatar) }}" style="width: 100%; height: 100%; object-fit: cover;">
                             @else
                                 {{ mb_strtoupper(mb_substr($member->name, 0, 2)) }}
                             @endif
                         </div>
-                        <div style="flex:1">
-                            <strong class="text-secondary d-block mb-1" style="font-size: 0.85rem;">{{ $member->pivot->role }}</strong>
-                            <div class="text-h6" style="font-weight: 600; margin: 0;">{{ $member->name }}</div>
+                        <div>
+                            <div class="text-caption" style="color: var(--action-primary); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.2rem; font-size: 0.75rem;">
+                                {{ $member->pivot->role }}
+                            </div>
+                            <div class="text-h6" style="font-weight: 600; margin: 0; color: var(--text-primary);">
+                                {{ $member->name }}
+                            </div>
                         </div>
-                        <form action="{{ route('admin.projects.team.destroy', ['id' => $project->id, 'user_id' => $member->id]) }}" method="POST" onsubmit="return confirm('{{ app()->getLocale() == 'ar' ? 'هل أنت متأكد من حذف العضو من هذا المشروع؟' : 'Are you sure you want to remove this member from the project?' }}');" style="margin:0;">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-secondary" style="padding: 0.2rem 0.5rem; font-size: 0.8rem; color: var(--color-error); border-color: rgba(239, 68, 68, 0.3);">{{ app()->getLocale() == 'ar' ? 'حذف' : 'Remove' }}</button>
-                        </form>
                     </div>
+                    <form action="{{ route('admin.projects.team.destroy', ['id' => $project->id, 'user_id' => $member->id]) }}" method="POST" onsubmit="return confirm('{{ app()->getLocale() == 'ar' ? 'هل أنت متأكد من إزالة هذا العضو من الفريق؟' : 'Are you sure you want to remove this member from the team?' }}');" style="margin:0;">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="action-icon-btn delete" title="{{ app()->getLocale() == 'ar' ? 'حذف العضو' : 'Remove Member' }}" style="background: rgba(239, 68, 68, 0.1); color: #ef4444; border: none; width: 36px; height: 36px;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"></path><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                        </button>
+                    </form>
                 </div>
                 @endforeach
             </div>
@@ -203,49 +208,6 @@
         @else
         <div class="glass-card text-center text-secondary py-12">
             {{ app()->getLocale() == 'ar' ? 'لا توجد مؤشرات نمو مضافة حتى الآن.' : 'No growth metrics added yet.' }}
-        </div>
-        @endif
-    </div>
-
-    <!-- Consultants Tab -->
-    <div id="consultants" class="tab-content">
-        <div class="d-flex justify-between items-center mb-6">
-            <h3 class="text-h4 m-0">{{ app()->getLocale() == 'ar' ? 'الاستشاريين' : 'Consultants' }}</h3>
-            <button class="btn btn-primary" onclick="openModal('addConsultantModal')">{{ app()->getLocale() == 'ar' ? 'إضافة استشاري' : 'Add Consultant' }}</button>
-        </div>
-        
-        @if($project->consultants->count() > 0)
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
-            @foreach($project->consultants as $consultant)
-            <div class="glass-card d-flex gap-4 items-center">
-                <div style="width:50px; height:50px; border-radius:50%; background:var(--action-primary); color:white; display:flex; align-items:center; justify-content:center; font-size:1.2rem; font-weight:700;">
-                    {{ strtoupper(substr($consultant->name, 0, 2)) }}
-                </div>
-                <div style="flex:1">
-                    <h4 class="m-0" style="font-weight:600;">{{ $consultant->name }}</h4>
-                    <div class="text-caption text-secondary">{{ $consultant->role }}</div>
-                    @if($consultant->description)
-                    <p class="text-caption mt-1" style="color:var(--text-tertiary);">{{ $consultant->description }}</p>
-                    @endif
-                </div>
-                <div class="d-flex gap-2">
-                    <button class="btn btn-secondary" style="padding: 0.3rem; border-radius: 50%;" onclick="showEditConsultantModal({{ $consultant->id }}, `{{ addslashes($consultant->name) }}`, `{{ addslashes($consultant->role) }}`, `{{ addslashes($consultant->description) }}`)" title="{{ app()->getLocale() == 'ar' ? 'تعديل' : 'Edit' }}">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
-                    </button>
-                    <form action="{{ route('admin.projects.consultants.destroy', $consultant->id) }}" method="POST" style="margin:0;" onsubmit="return confirm('{{ app()->getLocale() == 'ar' ? 'هل أنت متأكد من الحذف؟' : 'Are you sure?' }}');">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-secondary" style="padding: 0.3rem; border-radius: 50%; color: var(--color-error); border-color: rgba(239, 68, 68, 0.3);" title="{{ app()->getLocale() == 'ar' ? 'حذف' : 'Delete' }}">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
-                        </button>
-                    </form>
-                </div>
-            </div>
-            @endforeach
-        </div>
-        @else
-        <div class="glass-card text-center text-secondary py-12">
-            {{ app()->getLocale() == 'ar' ? 'لا يوجد استشاريين مضافين حتى الآن.' : 'No consultants added yet.' }}
         </div>
         @endif
     </div>
@@ -391,63 +353,38 @@
 
     <!-- Add Team Member Modal -->
     <div id="addTeamMemberModal" class="modal">
-        <div class="modal-content" style="max-width: 500px;">
-            <div class="d-flex justify-between items-center mb-6">
-                <h3 class="text-h4 m-0">{{ app()->getLocale() == 'ar' ? 'إضافة عضو لفريق الإدارة' : 'Add Team Member' }}</h3>
-                <button class="btn btn-secondary" style="padding: 0.5rem;" onclick="closeModal('addTeamMemberModal')">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        <div class="modal-content" style="max-width: 500px; padding: 2.5rem; border-radius: 20px;">
+            <div class="d-flex justify-between items-center mb-6" style="border-bottom: 1px solid rgba(196,164,119,0.2); padding-bottom: 1rem;">
+                <h3 class="text-h4 m-0" style="color: var(--action-primary);">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle; margin-inline-end: 0.5rem;"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><line x1="19" y1="8" x2="19" y2="14"></line><line x1="22" y1="11" x2="16" y2="11"></line></svg>
+                    {{ app()->getLocale() == 'ar' ? 'إضافة عضو جديد للفريق' : 'Add New Team Member' }}
+                </h3>
+                <button class="action-icon-btn" style="border:none; background:transparent; box-shadow:none;" onclick="closeModal('addTeamMemberModal')">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                 </button>
             </div>
             <form action="{{ route('admin.projects.team.store', $project->id) }}" method="POST">
                 @csrf
-                <div class="mb-4">
-                    <label class="text-caption" style="font-weight: 600; margin-bottom: 0.5rem; display: block;">{{ app()->getLocale() == 'ar' ? 'اختيار المستخدم' : 'Select User' }}</label>
-                    <select name="user_id" class="form-input" style="width: 100%;" required>
-                        <option value="">{{ app()->getLocale() == 'ar' ? 'اختر...' : 'Select...' }}</option>
+                <div class="mb-5">
+                    <label class="text-caption" style="font-weight: 600; margin-bottom: 0.8rem; display: block; color: var(--text-primary);">{{ app()->getLocale() == 'ar' ? 'اختيار العضو من المستخدمين' : 'Select User' }}</label>
+                    <select name="user_id" class="form-input" style="width: 100%; padding: 1rem; border-radius: 12px; border: 1px solid rgba(196,164,119,0.3); background: rgba(196,164,119,0.02);" required>
+                        <option value="">{{ app()->getLocale() == 'ar' ? '— اختر مستخدم —' : '— Select User —' }}</option>
                         @foreach($users as $user)
                             <option value="{{ $user->id }}">{{ $user->name }} ({{ $user->email }})</option>
                         @endforeach
                     </select>
                 </div>
                 <div class="mb-6">
-                    <label class="text-caption" style="font-weight: 600; margin-bottom: 0.5rem; display: block;">{{ app()->getLocale() == 'ar' ? 'المسمى الوظيفي (الدور)' : 'Role' }}</label>
-                    <input type="text" name="role" class="form-input" style="width: 100%;" placeholder="{{ app()->getLocale() == 'ar' ? 'مثال: مدير مشروع، محاسب، استشاري' : 'e.g. Project Manager, Accountant, Consultant' }}" required>
+                    <label class="text-caption" style="font-weight: 600; margin-bottom: 0.8rem; display: block; color: var(--text-primary);">{{ app()->getLocale() == 'ar' ? 'المسمى الوظيفي في المشروع' : 'Project Role' }}</label>
+                    <input type="text" name="role" class="form-input" style="width: 100%; padding: 1rem; border-radius: 12px; border: 1px solid rgba(196,164,119,0.3); background: rgba(196,164,119,0.02);" placeholder="{{ app()->getLocale() == 'ar' ? 'مثال: مدير تقني، مستشار مالي، إلخ...' : 'e.g. Tech Lead, Financial Consultant, etc...' }}" required>
                 </div>
-                <div class="d-flex justify-end gap-3">
-                    <button type="button" class="btn btn-secondary" onclick="closeModal('addTeamMemberModal')">{{ app()->getLocale() == 'ar' ? 'إلغاء' : 'Cancel' }}</button>
-                    <button type="submit" class="btn btn-primary">{{ app()->getLocale() == 'ar' ? 'إضافة' : 'Add' }}</button>
+                <div class="d-flex justify-end gap-3 mt-8">
+                    <button type="button" class="btn btn-secondary" style="padding: 0.8rem 2rem; border-radius: 10px;" onclick="closeModal('addTeamMemberModal')">{{ app()->getLocale() == 'ar' ? 'إلغاء' : 'Cancel' }}</button>
+                    <button type="submit" class="btn btn-primary" style="padding: 0.8rem 2rem; border-radius: 10px; background: linear-gradient(135deg, var(--action-primary), var(--action-secondary));">{{ app()->getLocale() == 'ar' ? 'إضافة للفريق' : 'Add to Team' }}</button>
                 </div>
             </form>
         </div>
     </div>
-
-<!-- Add Consultant Modal -->
-<div id="addConsultantModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.4); backdrop-filter: blur(8px); z-index:999; align-items:center; justify-content:center; padding:1rem; opacity: 0; transition: opacity 0.3s ease;">
-    <div class="glass-card" style="width:100%; max-width:450px; background:var(--bg-primary); transform: translateY(20px); transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);">
-        <h3 class="text-h3 mb-6" style="font-weight: 700;">{{ app()->getLocale() == 'ar' ? 'إضافة استشاري للمشروع' : 'Add Consultant' }}</h3>
-        <form action="{{ route('admin.projects.consultants.store', $project->id) }}" method="POST">
-            @csrf
-            <div class="d-flex flex-col gap-4">
-                <div>
-                    <label class="text-caption font-semibold">{{ app()->getLocale() == 'ar' ? 'اسم الاستشاري' : 'Name' }}</label>
-                    <input type="text" name="name" class="form-input w-full" required>
-                </div>
-                <div>
-                    <label class="text-caption font-semibold">{{ app()->getLocale() == 'ar' ? 'الدور / المسمى (مثال: خبير مالي)' : 'Role' }}</label>
-                    <input type="text" name="role" class="form-input w-full">
-                </div>
-                <div>
-                    <label class="text-caption font-semibold">{{ app()->getLocale() == 'ar' ? 'وصف أو ملاحظات' : 'Description' }}</label>
-                    <textarea name="description" class="form-input w-full" rows="3"></textarea>
-                </div>
-            </div>
-            <div class="mt-8 d-flex justify-end gap-3">
-                <button type="button" class="btn btn-secondary" onclick="closeModal('addConsultantModal')">{{ app()->getLocale() == 'ar' ? 'إلغاء' : 'Cancel' }}</button>
-                <button type="submit" class="btn btn-primary">{{ app()->getLocale() == 'ar' ? 'إضافة' : 'Add' }}</button>
-            </div>
-        </form>
-    </div>
-</div>
 
 <!-- Add Exit Request Modal -->
 <div id="addExitModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.4); backdrop-filter: blur(8px); z-index:999; align-items:center; justify-content:center; padding:1rem; opacity: 0; transition: opacity 0.3s ease;">
@@ -532,23 +469,6 @@
     </div>
 </div>
 
-<!-- Edit Consultant Modal -->
-<div id="editConsultantModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.4); backdrop-filter: blur(8px); z-index:999; align-items:center; justify-content:center; padding:1rem; opacity: 0; transition: opacity 0.3s ease;">
-    <div class="glass-card" style="width:100%; max-width:450px; background:var(--bg-primary); transform: translateY(20px); transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);">
-        <h3 class="text-h3 mb-6" style="font-weight: 700;">{{ app()->getLocale() == 'ar' ? 'تعديل بيانات الاستشاري' : 'Edit Consultant' }}</h3>
-        <form id="editConsultantForm" method="POST">
-            @csrf
-            @method('PUT')
-            <div class="d-flex flex-col gap-4">
-                <div>
-                    <label class="text-caption font-semibold">{{ app()->getLocale() == 'ar' ? 'اسم الاستشاري' : 'Name' }}</label>
-                    <input type="text" name="name" id="editConsultantName" class="form-input w-full" required>
-                </div>
-                <div>
-                    <label class="text-caption font-semibold">{{ app()->getLocale() == 'ar' ? 'الدور / المسمى' : 'Role' }}</label>
-                    <input type="text" name="role" id="editConsultantRole" class="form-input w-full">
-                </div>
-                <div>
                     <label class="text-caption font-semibold">{{ app()->getLocale() == 'ar' ? 'وصف أو ملاحظات' : 'Description' }}</label>
                     <textarea name="description" id="editConsultantDesc" class="form-input w-full" rows="3"></textarea>
                 </div>
@@ -721,13 +641,7 @@ function showEditMetricModal(id, label, value, prefix, suffix) {
     openModal('editMetricModal');
 }
 
-function showEditConsultantModal(id, name, role, desc) {
-    document.getElementById('editConsultantForm').action = '/admin/projects/consultants/' + id;
-    document.getElementById('editConsultantName').value = name;
-    document.getElementById('editConsultantRole').value = role;
-    document.getElementById('editConsultantDesc').value = desc;
-    openModal('editConsultantModal');
-}
+
 
 function showEditExitModal(id, userId, date, type, amount, status) {
     document.getElementById('editExitForm').action = '/admin/projects/exits/' + id;
