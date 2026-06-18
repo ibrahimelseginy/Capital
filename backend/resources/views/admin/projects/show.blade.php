@@ -352,14 +352,14 @@
 </div>
 
     <!-- Add Team Member Modal -->
-    <div id="addTeamMemberModal" class="modal">
-        <div class="modal-content" style="max-width: 500px; padding: 2.5rem; border-radius: 20px;">
+    <div id="addTeamMemberModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.4); backdrop-filter: blur(8px); z-index:999; align-items:center; justify-content:center; padding:1rem; opacity: 0; transition: opacity 0.3s ease;">
+        <div class="glass-card" style="width:100%; max-width:500px; background:var(--bg-primary); transform: translateY(20px); transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); padding: 2.5rem; border-radius: 20px;">
             <div class="d-flex justify-between items-center mb-6" style="border-bottom: 1px solid rgba(196,164,119,0.2); padding-bottom: 1rem;">
                 <h3 class="text-h4 m-0" style="color: var(--action-primary);">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle; margin-inline-end: 0.5rem;"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><line x1="19" y1="8" x2="19" y2="14"></line><line x1="22" y1="11" x2="16" y2="11"></line></svg>
                     {{ app()->getLocale() == 'ar' ? 'إضافة عضو جديد للفريق' : 'Add New Team Member' }}
                 </h3>
-                <button class="action-icon-btn" style="border:none; background:transparent; box-shadow:none;" onclick="closeModal('addTeamMemberModal')">
+                <button class="action-icon-btn" style="border:none; background:transparent; box-shadow:none;" onclick="closeModal('addTeamMemberModal')" type="button">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                 </button>
             </div>
@@ -469,17 +469,7 @@
     </div>
 </div>
 
-                    <label class="text-caption font-semibold">{{ app()->getLocale() == 'ar' ? 'وصف أو ملاحظات' : 'Description' }}</label>
-                    <textarea name="description" id="editConsultantDesc" class="form-input w-full" rows="3"></textarea>
-                </div>
-            </div>
-            <div class="mt-8 d-flex justify-end gap-3">
-                <button type="button" class="btn btn-secondary" onclick="closeModal('editConsultantModal')">{{ app()->getLocale() == 'ar' ? 'إلغاء' : 'Cancel' }}</button>
-                <button type="submit" class="btn btn-primary">{{ app()->getLocale() == 'ar' ? 'حفظ التعديلات' : 'Save Changes' }}</button>
-            </div>
-        </form>
-    </div>
-</div>
+
 
 <!-- Edit Exit Request Modal -->
 <div id="editExitModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.4); backdrop-filter: blur(8px); z-index:999; align-items:center; justify-content:center; padding:1rem; opacity: 0; transition: opacity 0.3s ease;">

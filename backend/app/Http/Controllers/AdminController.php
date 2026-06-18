@@ -73,7 +73,7 @@ class AdminController extends Controller
             'name' => 'nullable|string|max:255',
             'email' => 'required|email|max:255|unique:users,email,' . $id,
             'password' => 'nullable|string|min:6',
-            'profile_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
+            'profile_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:20480'
         ]);
         
         $user = User::findOrFail($id);
@@ -184,7 +184,7 @@ class AdminController extends Controller
             'shareholders_count' => 'nullable|integer',
             'total_shares' => 'nullable|integer',
             'status' => 'required|in:Active,Rejected,Pending',
-            'image' => 'nullable|image|max:5120',
+            'image' => 'nullable|image|max:20480',
         ]);
 
         $data = $request->except(['image']);
@@ -238,7 +238,7 @@ class AdminController extends Controller
             'shareholders_count' => 'nullable|integer',
             'total_shares' => 'nullable|integer',
             'status' => 'required|in:Active,Rejected,Pending',
-            'image' => 'nullable|image|max:5120',
+            'image' => 'nullable|image|max:20480',
         ]);
         
         $project = Project::findOrFail($id);
@@ -336,7 +336,7 @@ class AdminController extends Controller
 
     public function storeProjectDocument(Request $request, $id)
     {
-        $request->validate(['title' => 'required|string|max:255', 'type' => 'required|string|max:255', 'file' => 'required|file|max:10240', 'user_id' => 'nullable|exists:users,id']);
+        $request->validate(['title' => 'required|string|max:255', 'type' => 'required|string|max:255', 'file' => 'required|file|max:51200', 'user_id' => 'nullable|exists:users,id']);
         $path = $request->file('file')->store('documents', 'public');
         \App\Models\Document::create(['project_id' => $id, 'user_id' => $request->user_id, 'title' => $request->title, 'type' => $request->type, 'file_path' => $path]);
         return back()->with('success', app()->getLocale() == 'ar' ? 'تم رفع المستند بنجاح.' : 'Document uploaded successfully.');
@@ -354,7 +354,7 @@ class AdminController extends Controller
 
     public function storeProjectReport(Request $request, $id)
     {
-        $request->validate(['title' => 'required|string|max:255', 'period' => 'required|string|max:255', 'file' => 'required|file|max:10240', 'user_id' => 'nullable|exists:users,id']);
+        $request->validate(['title' => 'required|string|max:255', 'period' => 'required|string|max:255', 'file' => 'required|file|max:51200', 'user_id' => 'nullable|exists:users,id']);
         $path = $request->file('file')->store('reports', 'public');
         \App\Models\Report::create(['project_id' => $id, 'user_id' => $request->user_id, 'title' => $request->title, 'period' => $request->period, 'file_path' => $path]);
         return back()->with('success', app()->getLocale() == 'ar' ? 'تم رفع التقرير بنجاح.' : 'Report uploaded successfully.');
@@ -388,9 +388,9 @@ class AdminController extends Controller
             'attendees_count' => 'nullable|integer',
             'speaker_name' => 'nullable|string',
             'duration' => 'nullable|string',
-            'speaker_profile' => 'nullable|image|max:5120',
-            'invitation_card' => 'nullable|file|max:5120',
-            'qr_code' => 'nullable|image|max:5120',
+            'speaker_profile' => 'nullable|image|max:20480',
+            'invitation_card' => 'nullable|file|max:20480',
+            'qr_code' => 'nullable|image|max:20480',
         ]);
 
         $data = $request->except(['speaker_profile', 'invitation_card', 'qr_code']);
@@ -422,9 +422,9 @@ class AdminController extends Controller
             'attendees_count' => 'nullable|integer',
             'speaker_name' => 'nullable|string',
             'duration' => 'nullable|string',
-            'speaker_profile' => 'nullable|image|max:5120',
-            'invitation_card' => 'nullable|file|max:5120',
-            'qr_code' => 'nullable|image|max:5120',
+            'speaker_profile' => 'nullable|image|max:20480',
+            'invitation_card' => 'nullable|file|max:20480',
+            'qr_code' => 'nullable|image|max:20480',
         ]);
 
         $event = \App\Models\Event::findOrFail($id);
@@ -487,7 +487,7 @@ class AdminController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'type' => 'required|string',
-            'file' => 'required|file|max:10240',
+            'file' => 'required|file|max:51200',
             'status' => 'required|string',
             'project_id' => 'nullable|exists:projects,id',
             'user_id' => 'nullable|exists:users,id',
@@ -513,7 +513,7 @@ class AdminController extends Controller
             'title' => 'required|string|max:255',
             'period' => 'required|string',
             'type' => 'required|string',
-            'file' => 'required|file|max:10240',
+            'file' => 'required|file|max:51200',
             'status' => 'required|string',
             'project_id' => 'nullable|exists:projects,id',
             'user_id' => 'nullable|exists:users,id',

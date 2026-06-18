@@ -117,6 +117,23 @@
 
     .stagger-item { opacity: 0; animation: slideUpFade 0.6s ease forwards; }
     @keyframes slideUpFade { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    
+    .visual-invitation-card {
+        width: 360px;
+        min-height: 480px;
+        background: linear-gradient(135deg, #161616 0%, #0c0c0c 100%);
+        border: 2px solid #c4a477;
+        border-radius: 20px;
+        padding: 24px;
+        color: #fff;
+        position: relative;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        box-sizing: border-box;
+    }
 </style>
 
 <div class="fade-in">
@@ -184,6 +201,9 @@
                 <div class="d-flex gap-2">
                     <button type="button" class="action-icon-btn edit" title="{{ app()->getLocale() == 'ar' ? 'تعديل' : 'Edit' }}" onclick='showEditEventModal(@json($event))'>
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                    </button>
+                    <button type="button" class="action-icon-btn edit" style="color:var(--accent-gold); border-color:rgba(196,164,119,0.3);" title="{{ app()->getLocale() == 'ar' ? 'بطاقة الدعوة والـ QR' : 'Invitation Card & QR' }}" onclick='previewInvitationCard(@json($event))'>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><rect x="7" y="7" width="3" height="3"/><rect x="14" y="7" width="3" height="3"/><rect x="7" y="14" width="3" height="3"/><rect x="14" y="14" width="3" height="3"/></svg>
                     </button>
                     <form action="{{ route('admin.events.destroy', $event->id) }}" method="POST" style="margin:0;" onsubmit="return confirm('{{ app()->getLocale() == 'ar' ? 'هل أنت متأكد من الحذف؟' : 'Are you sure?' }}');">
                         @csrf
@@ -372,9 +392,143 @@
             </form>
         </div>
     </div>
+    
+    <!-- Invitation Card Modal -->
+    <div id="invitationCardModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); backdrop-filter: blur(12px); z-index:9999; align-items:center; justify-content:center; padding:1rem; opacity: 0; transition: opacity 0.3s ease; overflow-y:auto;">
+        <div class="glass-card" style="width:100%; max-width:440px; background:var(--bg-primary); transform: translateY(20px); transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); display: flex; flex-direction: column; align-items: center;">
+            <div class="d-flex justify-between items-center mb-6 w-full">
+                <h3 class="text-h3 m-0" style="font-weight: 700; font-size: 1.25rem;">{{ app()->getLocale() == 'ar' ? 'بطاقة الدعوة والـ QR' : 'Invitation Card & QR' }}</h3>
+                <button onclick="closeModal('invitationCardModal')" style="background:var(--bg-secondary); border:none; width:36px; height:36px; border-radius:50%; cursor:pointer; color:var(--text-primary); display:flex; align-items:center; justify-content:center;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
+            </div>
+            
+            <div id="captureCardArea" style="padding: 10px; background: transparent;">
+                <div class="visual-invitation-card" id="previewCard">
+                    <!-- Decorative Gold Corner Accents -->
+                    <div style="position: absolute; top: 0; left: 0; width: 40px; height: 40px; border-top: 3px solid #c4a477; border-left: 3px solid #c4a477; border-top-left-radius: 20px; opacity: 0.8;"></div>
+                    <div style="position: absolute; top: 0; right: 0; width: 40px; height: 40px; border-top: 3px solid #c4a477; border-right: 3px solid #c4a477; border-top-right-radius: 20px; opacity: 0.8;"></div>
+                    <div style="position: absolute; bottom: 0; left: 0; width: 40px; height: 40px; border-bottom: 3px solid #c4a477; border-left: 3px solid #c4a477; border-bottom-left-radius: 20px; opacity: 0.8;"></div>
+                    <div style="position: absolute; bottom: 0; right: 0; width: 40px; height: 40px; border-bottom: 3px solid #c4a477; border-right: 3px solid #c4a477; border-bottom-right-radius: 20px; opacity: 0.8;"></div>
+
+                    <!-- Brand / Logo Header -->
+                    <div style="text-align: center; border-bottom: 1px solid rgba(196, 164, 119, 0.2); padding-bottom: 15px; margin-bottom: 15px;">
+                        <div style="font-size: 20px; font-weight: 800; color: #c4a477; letter-spacing: 3px; font-family: 'Cairo', sans-serif;">CAPITAL</div>
+                        <div style="font-size: 9px; color: #888; letter-spacing: 2px; margin-top: 3px; text-transform: uppercase;">{{ app()->getLocale() == 'ar' ? 'منصة الاستثمار الحصرية' : 'Exclusive Investment Platform' }}</div>
+                    </div>
+
+                    <!-- Event Details -->
+                    <div style="text-align: center; flex-grow: 1; display: flex; flex-direction: column; justify-content: center; padding: 10px 0;">
+                        <span style="font-size: 10px; color: #c4a477; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600; display: block; margin-bottom: 8px;">{{ app()->getLocale() == 'ar' ? 'دعوة رسمية لحضور' : 'OFFICIAL INVITATION TO' }}</span>
+                        <h4 id="cardEventTitle" style="font-size: 18px; font-weight: 700; color: #fff; margin: 0 0 10px 0; line-height: 1.4; font-family: 'Cairo', sans-serif;">-</h4>
+                        <div id="cardSpeakerSection" style="margin-bottom: 15px;">
+                            <span style="font-size: 11px; color: #888;">{{ app()->getLocale() == 'ar' ? 'بمشاركة المتحدث:' : 'With Speaker:' }}</span>
+                            <div id="cardSpeakerName" style="font-size: 14px; font-weight: 600; color: #c4a477; margin-top: 2px;">-</div>
+                        </div>
+                    </div>
+
+                    <!-- Info Grid -->
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; border-top: 1px dashed rgba(196, 164, 119, 0.2); border-bottom: 1px dashed rgba(196, 164, 119, 0.2); padding: 12px 0; margin-bottom: 15px; text-align: {{ app()->getLocale() == 'ar' ? 'right' : 'left' }};">
+                        <div>
+                            <div style="font-size: 9px; color: #888;">{{ app()->getLocale() == 'ar' ? 'التاريخ والوقت' : 'DATE & TIME' }}</div>
+                            <div id="cardDateTime" style="font-size: 11px; font-weight: 600; color: #ddd; margin-top: 2px;">-</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 9px; color: #888;">{{ app()->getLocale() == 'ar' ? 'الموقع' : 'LOCATION' }}</div>
+                            <div id="cardLocation" style="font-size: 11px; font-weight: 600; color: #ddd; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">-</div>
+                        </div>
+                    </div>
+
+                    <!-- QR Section -->
+                    <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; margin-top: 10px;">
+                        <div style="background: #fff; padding: 10px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center;">
+                            <img id="cardQrImage" src="" alt="QR Code" style="width: 120px; height: 120px; display: block; border: none;">
+                        </div>
+                        <span style="font-size: 9px; color: #666; margin-top: 10px; letter-spacing: 1px; text-transform: uppercase;">{{ app()->getLocale() == 'ar' ? 'يرجى إبراز الرمز عند الدخول' : 'SCAN QR AT THE ENTRANCE' }}</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-8 d-flex justify-stretch gap-3 w-full">
+                <button type="button" class="btn btn-secondary" onclick="closeModal('invitationCardModal')" style="flex: 1; padding: 0.75rem 1.5rem; border-radius: var(--radius-full);">{{ app()->getLocale() == 'ar' ? 'إغلاق' : 'Close' }}</button>
+                <button type="button" class="btn btn-primary" id="downloadCardBtn" style="flex: 1; padding: 0.75rem 1.5rem; border-radius: var(--radius-full); display: inline-flex; align-items: center; justify-content: center; gap: 8px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+                    <span>{{ app()->getLocale() == 'ar' ? 'تحميل كارت الدعوة' : 'Download Card' }}</span>
+                </button>
+            </div>
+        </div>
+    </div>
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script>
+function previewInvitationCard(eventObj) {
+    document.getElementById('cardEventTitle').innerText = eventObj.title;
+    if (eventObj.speaker_name) {
+        document.getElementById('cardSpeakerSection').style.display = 'block';
+        document.getElementById('cardSpeakerName').innerText = eventObj.speaker_name;
+    } else {
+        document.getElementById('cardSpeakerSection').style.display = 'none';
+    }
+    
+    const eventDate = eventObj.event_date ? eventObj.event_date.split(' ')[0] : '';
+    const eventTime = eventObj.time ? (' | ' + eventObj.time) : '';
+    document.getElementById('cardDateTime').innerText = eventDate + eventTime;
+    document.getElementById('cardLocation').innerText = eventObj.location;
+    
+    const qrUrl = eventObj.qr_code 
+        ? ('/storage/' + eventObj.qr_code) 
+        : ('https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' + encodeURIComponent('Event: ' + eventObj.title + '\nDate: ' + eventDate + '\nLocation: ' + eventObj.location));
+    
+    document.getElementById('cardQrImage').src = qrUrl;
+    
+    if (eventObj.invitation_card) {
+        document.getElementById('previewCard').style.backgroundImage = `url('/storage/${eventObj.invitation_card}')`;
+        document.getElementById('previewCard').style.backgroundSize = 'cover';
+        document.getElementById('previewCard').style.backgroundPosition = 'center';
+    } else {
+        document.getElementById('previewCard').style.backgroundImage = 'linear-gradient(135deg, #161616 0%, #0c0c0c 100%)';
+    }
+    
+    openModal('invitationCardModal');
+}
+
+// Download Card listener
+document.addEventListener('DOMContentLoaded', () => {
+    const downloadCardBtn = document.getElementById('downloadCardBtn');
+    if (downloadCardBtn) {
+        downloadCardBtn.addEventListener('click', () => {
+            const card = document.getElementById('captureCardArea');
+            const btnText = downloadCardBtn.querySelector('span');
+            const originalText = btnText.innerText;
+            
+            downloadCardBtn.disabled = true;
+            btnText.innerText = "{{ app()->getLocale() == 'ar' ? 'جاري التحميل...' : 'Downloading...' }}";
+            
+            html2canvas(card, {
+                useCORS: true,
+                backgroundColor: null,
+                scale: 2
+            }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = `Invitation_${document.getElementById('cardEventTitle').innerText.replace(/\s+/g, '_')}.png`;
+                link.href = canvas.toDataURL('image/png');
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                
+                downloadCardBtn.disabled = false;
+                btnText.innerText = originalText;
+            }).catch(err => {
+                console.error('Canvas capture error:', err);
+                downloadCardBtn.disabled = false;
+                btnText.innerText = originalText;
+                alert('حدث خطأ أثناء تحميل الكارت.');
+            });
+        });
+    }
+});
+
 function filterEvents() {
     const query = document.getElementById('eventSearch').value.toLowerCase();
     const cards = document.querySelectorAll('.project-card');
