@@ -40,4 +40,11 @@ class Project extends Model
     {
         return $this->hasMany(ProjectConsultant::class);
     }
+
+    public function teamMembers()
+    {
+        return $this->belongsToMany(User::class, 'project_user')
+                    ->withPivot('role')
+                    ->withTimestamps();
+    }
 }

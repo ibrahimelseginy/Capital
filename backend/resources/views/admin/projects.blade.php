@@ -239,7 +239,19 @@
                     <a href="{{ route('admin.projects.show', $project->id) }}" class="action-icon-btn" title="{{ app()->getLocale() == 'ar' ? 'عرض التفاصيل' : 'View Details' }}" style="text-decoration:none;">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
                     </a>
-                    <button type="button" class="action-icon-btn edit" title="{{ app()->getLocale() == 'ar' ? 'تعديل' : 'Edit' }}" onclick="showEditProjectModal({{ $project->id }}, `{{ addslashes($project->title) }}`, `{{ addslashes($project->description) }}`, {{ $project->budget ?? 0 }}, `{{ addslashes($project->sub_category) }}`, {{ $project->capital ?? 0 }}, {{ $project->investors_count ?? 0 }}, {{ $project->shareholders_count ?? 0 }}, {{ $project->funding_ask ?? 0 }}, {{ $project->total_shares ?? 0 }}, `{{ $project->status }}`, `{{ addslashes($project->project_manager) }}`, `{{ addslashes($project->account_manager) }}`, `{{ addslashes($project->financial_manager) }}`, `{{ addslashes($project->executive_manager) }}`)">
+                    <button type="button" class="action-icon-btn edit" title="{{ app()->getLocale() == 'ar' ? 'تعديل' : 'Edit' }}" onclick="showEditProjectModal(
+                        {{ $project->id }}, 
+                        '{{ addslashes($project->title) }}', 
+                        '{{ addslashes($project->description) }}', 
+                        '{{ $project->budget }}', 
+                        '{{ addslashes($project->sub_category) }}',
+                        '{{ $project->capital }}',
+                        '{{ $project->investors_count }}',
+                        '{{ $project->shareholders_count }}',
+                        '{{ $project->funding_ask }}',
+                        '{{ $project->total_shares }}',
+                        '{{ $project->status }}'
+                    )">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
                     </button>
                     <form action="{{ route('admin.projects.destroy', $project->id) }}" method="POST" style="margin:0;" onsubmit="return confirm('{{ app()->getLocale() == 'ar' ? 'هل أنت متأكد من حذف هذا المشروع؟' : 'Are you sure you want to delete this project?' }}');">
@@ -374,7 +386,7 @@
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                 </button>
             </div>
-            <form id="editProjectForm" method="POST">
+            <form id="editProjectForm" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="d-flex flex-col gap-4">
                     <div class="d-flex gap-4">
@@ -391,6 +403,10 @@
                         <label class="text-caption" style="font-weight: 600; margin-bottom: 0.5rem; display: block;">{{ app()->getLocale() == 'ar' ? 'الوصف (Profile)' : 'Description (Profile)' }}</label>
                         <textarea name="description" id="editProjectDesc" class="form-input" required style="width:100%; padding:0.8rem 1rem;" rows="4"></textarea>
                     </div>
+                    <div>
+                        <label class="text-caption" style="font-weight: 600; margin-bottom: 0.5rem; display: block;">{{ app()->getLocale() == 'ar' ? 'صورة المشروع' : 'Project Image' }}</label>
+                        <input type="file" name="image" accept="image/*" class="form-input" style="width:100%; padding:0.8rem 1rem;">
+                    </div>
                     <div class="d-flex gap-4">
                         <div style="flex:1">
                             <label class="text-caption" style="font-weight: 600; margin-bottom: 0.5rem; display: block;">{{ app()->getLocale() == 'ar' ? 'الميزانية المستهدفة' : 'Target Budget' }} ($)</label>
@@ -403,26 +419,7 @@
                     </div>
                     <div style="background: rgba(196,164,119,0.1); border: 1px solid rgba(196,164,119,0.3); border-radius: var(--radius-lg); padding: 1.5rem; margin-top: 0.5rem;">
                         <h4 class="text-h5" style="margin-bottom: 1rem;">{{ app()->getLocale() == 'ar' ? 'فريق إدارة المشروع' : 'Project Management Team' }}</h4>
-                        <div class="d-flex gap-4 mb-4">
-                            <div style="flex:1">
-                                <label class="text-caption" style="font-weight: 600; margin-bottom: 0.5rem; display: block;">{{ app()->getLocale() == 'ar' ? 'مدير المشروع' : 'Project Manager' }}</label>
-                                <input type="text" name="project_manager" id="editProjectManager" class="form-input" style="width:100%; padding:0.8rem 1rem;">
-                            </div>
-                            <div style="flex:1">
-                                <label class="text-caption" style="font-weight: 600; margin-bottom: 0.5rem; display: block;">{{ app()->getLocale() == 'ar' ? 'مدير الحسابات' : 'Account Manager' }}</label>
-                                <input type="text" name="account_manager" id="editAccountManager" class="form-input" style="width:100%; padding:0.8rem 1rem;">
-                            </div>
-                        </div>
-                        <div class="d-flex gap-4">
-                            <div style="flex:1">
-                                <label class="text-caption" style="font-weight: 600; margin-bottom: 0.5rem; display: block;">{{ app()->getLocale() == 'ar' ? 'مدير مالي (استشاري)' : 'Financial Manager' }}</label>
-                                <input type="text" name="financial_manager" id="editFinancialManager" class="form-input" style="width:100%; padding:0.8rem 1rem;">
-                            </div>
-                            <div style="flex:1">
-                                <label class="text-caption" style="font-weight: 600; margin-bottom: 0.5rem; display: block;">{{ app()->getLocale() == 'ar' ? 'مدير تنفيذي (استشاري)' : 'Executive Manager' }}</label>
-                                <input type="text" name="executive_manager" id="editExecutiveManager" class="form-input" style="width:100%; padding:0.8rem 1rem;">
-                            </div>
-                        </div>
+
                     </div>
                     <div class="d-flex gap-4">
                         <div style="flex:1">
@@ -469,7 +466,7 @@
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                 </button>
             </div>
-            <form action="{{ route('admin.projects.store') }}" method="POST">
+            <form action="{{ route('admin.projects.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="d-flex flex-col gap-4">
                     <div class="d-flex gap-4">
@@ -486,6 +483,10 @@
                         <label class="text-caption" style="font-weight: 600; margin-bottom: 0.5rem; display: block;">{{ app()->getLocale() == 'ar' ? 'الوصف (Profile)' : 'Description (Profile)' }}</label>
                         <textarea name="description" class="form-input" required style="width:100%; padding:0.8rem 1rem;" rows="4"></textarea>
                     </div>
+                    <div>
+                        <label class="text-caption" style="font-weight: 600; margin-bottom: 0.5rem; display: block;">{{ app()->getLocale() == 'ar' ? 'صورة المشروع' : 'Project Image' }}</label>
+                        <input type="file" name="image" accept="image/*" class="form-input" style="width:100%; padding:0.8rem 1rem;">
+                    </div>
                     <div class="d-flex gap-4">
                         <div style="flex:1">
                             <label class="text-caption" style="font-weight: 600; margin-bottom: 0.5rem; display: block;">{{ app()->getLocale() == 'ar' ? 'الميزانية المستهدفة' : 'Target Budget' }} ($)</label>
@@ -498,26 +499,7 @@
                     </div>
                     <div style="background: rgba(196,164,119,0.1); border: 1px solid rgba(196,164,119,0.3); border-radius: var(--radius-lg); padding: 1.5rem; margin-top: 0.5rem;">
                         <h4 class="text-h5" style="margin-bottom: 1rem;">{{ app()->getLocale() == 'ar' ? 'فريق إدارة المشروع' : 'Project Management Team' }}</h4>
-                        <div class="d-flex gap-4 mb-4">
-                            <div style="flex:1">
-                                <label class="text-caption" style="font-weight: 600; margin-bottom: 0.5rem; display: block;">{{ app()->getLocale() == 'ar' ? 'مدير المشروع' : 'Project Manager' }}</label>
-                                <input type="text" name="project_manager" class="form-input" style="width:100%; padding:0.8rem 1rem;">
-                            </div>
-                            <div style="flex:1">
-                                <label class="text-caption" style="font-weight: 600; margin-bottom: 0.5rem; display: block;">{{ app()->getLocale() == 'ar' ? 'مدير الحسابات' : 'Account Manager' }}</label>
-                                <input type="text" name="account_manager" class="form-input" style="width:100%; padding:0.8rem 1rem;">
-                            </div>
-                        </div>
-                        <div class="d-flex gap-4">
-                            <div style="flex:1">
-                                <label class="text-caption" style="font-weight: 600; margin-bottom: 0.5rem; display: block;">{{ app()->getLocale() == 'ar' ? 'مدير مالي (استشاري)' : 'Financial Manager' }}</label>
-                                <input type="text" name="financial_manager" class="form-input" style="width:100%; padding:0.8rem 1rem;">
-                            </div>
-                            <div style="flex:1">
-                                <label class="text-caption" style="font-weight: 600; margin-bottom: 0.5rem; display: block;">{{ app()->getLocale() == 'ar' ? 'مدير تنفيذي (استشاري)' : 'Executive Manager' }}</label>
-                                <input type="text" name="executive_manager" class="form-input" style="width:100%; padding:0.8rem 1rem;">
-                            </div>
-                        </div>
+
                     </div>
                     <div class="d-flex gap-4">
                         <div style="flex:1">
@@ -602,7 +584,7 @@ function showProjectDetails(title, desc, budget, status, date, subCategory, capi
     openModal('projectDetailsModal');
 }
 
-function showEditProjectModal(id, title, description, budget, sub_category, capital, investors_count, shareholders_count, funding_ask, total_shares, status, pm, am, fm, em) {
+function showEditProjectModal(id, title, description, budget, sub_category, capital, investors_count, shareholders_count, funding_ask, total_shares, status) {
     document.getElementById('editProjectForm').action = '/admin/projects/' + id + '/update';
     document.getElementById('editProjectTitle').value = title;
     document.getElementById('editProjectDesc').value = description;
@@ -614,10 +596,6 @@ function showEditProjectModal(id, title, description, budget, sub_category, capi
     document.getElementById('editProjectFundingAsk').value = funding_ask;
     document.getElementById('editProjectTotalShares').value = total_shares;
     document.getElementById('editProjectStatus').value = status;
-    document.getElementById('editProjectManager').value = pm;
-    document.getElementById('editAccountManager').value = am;
-    document.getElementById('editFinancialManager').value = fm;
-    document.getElementById('editExecutiveManager').value = em;
     
     openModal('editProjectModal');
 }

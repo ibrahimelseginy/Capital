@@ -55,8 +55,9 @@ class AdminController extends Controller
 
     public function projects()
     {
-        $projects = Project::all();
-        return view('admin.projects', compact('projects'));
+        $projects = Project::with(['projectManager', 'accountManager', 'financialManager', 'executiveManager'])->get();
+        $users = User::all();
+        return view('admin.projects', compact('projects', 'users'));
     }
 
     public function users()
@@ -183,23 +184,16 @@ class AdminController extends Controller
             'shareholders_count' => 'nullable|integer',
             'total_shares' => 'nullable|integer',
             'status' => 'required|in:Active,Rejected,Pending',
-            'project_manager' => 'nullable|string|max:255',
-            'account_manager' => 'nullable|string|max:255',
-            'financial_manager' => 'nullable|string|max:255',
-            'executive_manager' => 'nullable|string|max:255',
+            'project_manager_id' => 'nullable|exists:users,id',
+            'account_manager_id' => 'nullable|exists:users,id',
+            'financial_manager_id' => 'nullable|exists:users,id',
+            'executive_manager_id' => 'nullable|exists:users,id',
             'image' => 'nullable|image|max:5120',
-            'project_manager_image' => 'nullable|image|max:5120',
-            'account_manager_image' => 'nullable|image|max:5120',
-            'financial_manager_image' => 'nullable|image|max:5120',
-            'executive_manager_image' => 'nullable|image|max:5120',
         ]);
 
-        $data = $request->except(['image', 'project_manager_image', 'account_manager_image', 'financial_manager_image', 'executive_manager_image']);
-        $imageFields = ['image', 'project_manager_image', 'account_manager_image', 'financial_manager_image', 'executive_manager_image'];
-        foreach ($imageFields as $field) {
-            if ($request->hasFile($field)) {
-                $data[$field] = $request->file($field)->store('projects', 'public');
-            }
+        $data = $request->except(['image']);
+        if ($request->hasFile('image')) {
+            $data['image'] = $request->file('image')->store('projects', 'public');
         }
 
         Project::create($data);
@@ -220,29 +214,21 @@ class AdminController extends Controller
             'shareholders_count' => 'nullable|integer',
             'total_shares' => 'nullable|integer',
             'status' => 'required|in:Active,Rejected,Pending',
-            'project_manager' => 'nullable|string|max:255',
-            'account_manager' => 'nullable|string|max:255',
-            'financial_manager' => 'nullable|string|max:255',
-            'executive_manager' => 'nullable|string|max:255',
+            'project_manager_id' => 'nullable|exists:users,id',
+            'account_manager_id' => 'nullable|exists:users,id',
+            'financial_manager_id' => 'nullable|exists:users,id',
+            'executive_manager_id' => 'nullable|exists:users,id',
             'image' => 'nullable|image|max:5120',
-            'project_manager_image' => 'nullable|image|max:5120',
-            'account_manager_image' => 'nullable|image|max:5120',
-            'financial_manager_image' => 'nullable|image|max:5120',
-            'executive_manager_image' => 'nullable|image|max:5120',
         ]);
         
         $project = Project::findOrFail($id);
         
-        $data = $request->except(['image', 'project_manager_image', 'account_manager_image', 'financial_manager_image', 'executive_manager_image']);
-        $imageFields = ['image', 'project_manager_image', 'account_manager_image', 'financial_manager_image', 'executive_manager_image'];
-        foreach ($imageFields as $field) {
-            if ($request->hasFile($field)) {
-                // Delete old image if exists
-                if ($project->$field && \Illuminate\Support\Facades\Storage::disk('public')->exists($project->$field)) {
-                    \Illuminate\Support\Facades\Storage::disk('public')->delete($project->$field);
-                }
-                $data[$field] = $request->file($field)->store('projects', 'public');
+        $data = $request->except(['image']);
+        if ($request->hasFile('image')) {
+            if ($project->image && \Illuminate\Support\Facades\Storage::disk('public')->exists($project->image)) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($project->image);
             }
+            $data['image'] = $request->file('image')->store('projects', 'public');
         }
 
         $project->update($data);

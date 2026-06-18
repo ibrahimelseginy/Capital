@@ -66,13 +66,20 @@
 
 <div class="fade-in">
     <div class="d-flex justify-between items-center mb-6">
-        <div>
-            <a href="{{ route('admin.projects') }}" class="text-secondary d-flex items-center gap-2 mb-2" style="text-decoration:none;">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
-                {{ app()->getLocale() == 'ar' ? 'العودة للمشاريع' : 'Back to Projects' }}
-            </a>
-            <h1 class="text-h2 m-0" style="font-weight: 700;">{{ $project->title }}</h1>
-            <p class="text-secondary mt-1">{{ $project->sub_category }}</p>
+        <div class="d-flex gap-4 items-center">
+            @if($project->image)
+            <div style="width: 80px; height: 80px; border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-md);">
+                <img src="{{ Storage::url($project->image) }}" alt="Project" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+            @endif
+            <div>
+                <a href="{{ route('admin.projects') }}" class="text-secondary d-flex items-center gap-2 mb-2" style="text-decoration:none;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+                    {{ app()->getLocale() == 'ar' ? 'العودة للمشاريع' : 'Back to Projects' }}
+                </a>
+                <h1 class="text-h2 m-0" style="font-weight: 700;">{{ $project->title }}</h1>
+                <p class="text-secondary mt-1">{{ $project->sub_category }}</p>
+            </div>
         </div>
         <span class="badge badge-{{ strtolower($project->status) == 'active' ? 'active' : 'pending' }}" style="padding: 0.5rem 1rem; font-size: 1rem;">
             {{ ucfirst($project->status) }}
@@ -131,21 +138,68 @@
         <div class="glass-card mb-6" style="background: rgba(196,164,119,0.05); border: 1px solid rgba(196,164,119,0.2);">
             <h3 class="text-h4 mb-4">{{ app()->getLocale() == 'ar' ? 'فريق إدارة المشروع' : 'Project Management Team' }}</h3>
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem;">
-                <div>
-                    <strong class="text-secondary d-block mb-1">{{ app()->getLocale() == 'ar' ? 'مدير المشروع' : 'Project Manager' }}</strong>
-                    <div class="text-h5" style="font-weight: 600;">{{ $project->project_manager ?? '--' }}</div>
+                <div class="d-flex items-center gap-3">
+                    <div style="width: 48px; height: 48px; border-radius: 50%; background: var(--action-primary); color: white; display: flex; align-items: center; justify-content: center; overflow: hidden; font-weight: bold; font-size: 1.2rem; flex-shrink: 0;">
+                        @if($project->projectManager && $project->projectManager->avatar)
+                            <img src="{{ Storage::url($project->projectManager->avatar) }}" style="width: 100%; height: 100%; object-fit: cover;">
+                        @elseif($project->projectManager)
+                            {{ mb_strtoupper(mb_substr($project->projectManager->name, 0, 2)) }}
+                        @else
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                        @endif
+                    </div>
+                    <div>
+                        <strong class="text-secondary d-block mb-1" style="font-size: 0.85rem;">{{ app()->getLocale() == 'ar' ? 'مدير المشروع' : 'Project Manager' }}</strong>
+                        <div class="text-h6" style="font-weight: 600; margin: 0;">{{ $project->projectManager->name ?? '--' }}</div>
+                    </div>
                 </div>
-                <div>
-                    <strong class="text-secondary d-block mb-1">{{ app()->getLocale() == 'ar' ? 'مدير الحسابات' : 'Account Manager' }}</strong>
-                    <div class="text-h5" style="font-weight: 600;">{{ $project->account_manager ?? '--' }}</div>
+
+                <div class="d-flex items-center gap-3">
+                    <div style="width: 48px; height: 48px; border-radius: 50%; background: var(--action-primary); color: white; display: flex; align-items: center; justify-content: center; overflow: hidden; font-weight: bold; font-size: 1.2rem; flex-shrink: 0;">
+                        @if($project->accountManager && $project->accountManager->avatar)
+                            <img src="{{ Storage::url($project->accountManager->avatar) }}" style="width: 100%; height: 100%; object-fit: cover;">
+                        @elseif($project->accountManager)
+                            {{ mb_strtoupper(mb_substr($project->accountManager->name, 0, 2)) }}
+                        @else
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                        @endif
+                    </div>
+                    <div>
+                        <strong class="text-secondary d-block mb-1" style="font-size: 0.85rem;">{{ app()->getLocale() == 'ar' ? 'مدير الحسابات' : 'Account Manager' }}</strong>
+                        <div class="text-h6" style="font-weight: 600; margin: 0;">{{ $project->accountManager->name ?? '--' }}</div>
+                    </div>
                 </div>
-                <div>
-                    <strong class="text-secondary d-block mb-1">{{ app()->getLocale() == 'ar' ? 'مدير مالي (استشاري)' : 'Financial Manager' }}</strong>
-                    <div class="text-h5" style="font-weight: 600;">{{ $project->financial_manager ?? '--' }}</div>
+
+                <div class="d-flex items-center gap-3">
+                    <div style="width: 48px; height: 48px; border-radius: 50%; background: var(--action-primary); color: white; display: flex; align-items: center; justify-content: center; overflow: hidden; font-weight: bold; font-size: 1.2rem; flex-shrink: 0;">
+                        @if($project->financialManager && $project->financialManager->avatar)
+                            <img src="{{ Storage::url($project->financialManager->avatar) }}" style="width: 100%; height: 100%; object-fit: cover;">
+                        @elseif($project->financialManager)
+                            {{ mb_strtoupper(mb_substr($project->financialManager->name, 0, 2)) }}
+                        @else
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                        @endif
+                    </div>
+                    <div>
+                        <strong class="text-secondary d-block mb-1" style="font-size: 0.85rem;">{{ app()->getLocale() == 'ar' ? 'مدير مالي (استشاري)' : 'Financial Manager' }}</strong>
+                        <div class="text-h6" style="font-weight: 600; margin: 0;">{{ $project->financialManager->name ?? '--' }}</div>
+                    </div>
                 </div>
-                <div>
-                    <strong class="text-secondary d-block mb-1">{{ app()->getLocale() == 'ar' ? 'مدير تنفيذي (استشاري)' : 'Executive Manager' }}</strong>
-                    <div class="text-h5" style="font-weight: 600;">{{ $project->executive_manager ?? '--' }}</div>
+
+                <div class="d-flex items-center gap-3">
+                    <div style="width: 48px; height: 48px; border-radius: 50%; background: var(--action-primary); color: white; display: flex; align-items: center; justify-content: center; overflow: hidden; font-weight: bold; font-size: 1.2rem; flex-shrink: 0;">
+                        @if($project->executiveManager && $project->executiveManager->avatar)
+                            <img src="{{ Storage::url($project->executiveManager->avatar) }}" style="width: 100%; height: 100%; object-fit: cover;">
+                        @elseif($project->executiveManager)
+                            {{ mb_strtoupper(mb_substr($project->executiveManager->name, 0, 2)) }}
+                        @else
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                        @endif
+                    </div>
+                    <div>
+                        <strong class="text-secondary d-block mb-1" style="font-size: 0.85rem;">{{ app()->getLocale() == 'ar' ? 'مدير تنفيذي (استشاري)' : 'Executive Manager' }}</strong>
+                        <div class="text-h6" style="font-weight: 600; margin: 0;">{{ $project->executiveManager->name ?? '--' }}</div>
+                    </div>
                 </div>
             </div>
         </div>
