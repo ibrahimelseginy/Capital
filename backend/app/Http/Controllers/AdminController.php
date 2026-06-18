@@ -391,6 +391,7 @@ class AdminController extends Controller
             'speaker_profile' => 'nullable|image|max:20480',
             'invitation_card' => 'nullable|file|max:20480',
             'qr_code' => 'nullable|image|max:20480',
+            'speakers' => 'nullable|array',
         ]);
 
         $data = $request->except(['speaker_profile', 'invitation_card', 'qr_code']);
@@ -403,6 +404,64 @@ class AdminController extends Controller
         }
         if ($request->hasFile('qr_code')) {
             $data['qr_code'] = $request->file('qr_code')->store('events/qr', 'public');
+        }
+
+        // Process dynamic speakers list
+        $speakersData = [];
+        if ($request->has('speakers') && is_array($request->speakers)) {
+            foreach ($request->speakers as $index => $sp) {
+                $name = $sp['name'] ?? '';
+                $nameAr = $sp['name_ar'] ?? '';
+                $role = $sp['role'] ?? '';
+                $roleAr = $sp['role_ar'] ?? '';
+                $imagePath = '';
+                
+                if ($request->hasFile("speakers.{$index}.image_file")) {
+                    $imagePath = '/storage/' . $request->file("speakers.{$index}.image_file")->store('events/speakers', 'public');
+                } elseif (!empty($sp['existing_image'])) {
+                    $imagePath = $sp['existing_image'];
+                } else {
+                    $imagePath = 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop';
+                }
+
+                if (!empty($name) || !empty($nameAr)) {
+                    $speakersData[] = [
+                        'name' => $name,
+                        'name_ar' => $nameAr,
+                        'role' => $role,
+                        'role_ar' => $roleAr,
+                        'image' => $imagePath
+                    ];
+                }
+            }
+        }
+
+        // If no speakers in list but legacy speaker_name is passed
+        if (empty($speakersData) && $request->filled('speaker_name')) {
+            $speakersData[] = [
+                'name' => $request->speaker_name,
+                'name_ar' => $request->speaker_name,
+                'role' => 'Speaker',
+                'role_ar' => 'متحدث',
+                'image' => isset($data['speaker_profile']) ? '/storage/' . $data['speaker_profile'] : 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop'
+            ];
+        }
+
+        if (!empty($speakersData)) {
+            $data['speakers'] = json_encode($speakersData);
+            // Update backward compatibility speaker_name
+            $names = array_filter(array_column($speakersData, 'name'));
+            if (empty($names)) {
+                $names = array_filter(array_column($speakersData, 'name_ar'));
+            }
+            $data['speaker_name'] = implode(', ', $names);
+            
+            $firstImg = $speakersData[0]['image'] ?? '';
+            if (strpos($firstImg, '/storage/') === 0) {
+                $data['speaker_profile'] = substr($firstImg, 9);
+            } else {
+                $data['speaker_profile'] = $firstImg;
+            }
         }
 
         \App\Models\Event::create($data);
@@ -425,6 +484,7 @@ class AdminController extends Controller
             'speaker_profile' => 'nullable|image|max:20480',
             'invitation_card' => 'nullable|file|max:20480',
             'qr_code' => 'nullable|image|max:20480',
+            'speakers' => 'nullable|array',
         ]);
 
         $event = \App\Models\Event::findOrFail($id);
@@ -441,6 +501,66 @@ class AdminController extends Controller
         if ($request->hasFile('qr_code')) {
             if ($event->qr_code) \Illuminate\Support\Facades\Storage::disk('public')->delete($event->qr_code);
             $data['qr_code'] = $request->file('qr_code')->store('events/qr', 'public');
+        }
+
+        // Process dynamic speakers list
+        $speakersData = [];
+        if ($request->has('speakers') && is_array($request->speakers)) {
+            foreach ($request->speakers as $index => $sp) {
+                $name = $sp['name'] ?? '';
+                $nameAr = $sp['name_ar'] ?? '';
+                $role = $sp['role'] ?? '';
+                $roleAr = $sp['role_ar'] ?? '';
+                $imagePath = '';
+                
+                if ($request->hasFile("speakers.{$index}.image_file")) {
+                    $imagePath = '/storage/' . $request->file("speakers.{$index}.image_file")->store('events/speakers', 'public');
+                } elseif (!empty($sp['existing_image'])) {
+                    $imagePath = $sp['existing_image'];
+                } else {
+                    $imagePath = 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop';
+                }
+
+                if (!empty($name) || !empty($nameAr)) {
+                    $speakersData[] = [
+                        'name' => $name,
+                        'name_ar' => $nameAr,
+                        'role' => $role,
+                        'role_ar' => $roleAr,
+                        'image' => $imagePath
+                    ];
+                }
+            }
+        }
+
+        // If no speakers in list but legacy speaker_name is passed
+        if (empty($speakersData) && $request->filled('speaker_name')) {
+            $speakersData[] = [
+                'name' => $request->speaker_name,
+                'name_ar' => $request->speaker_name,
+                'role' => 'Speaker',
+                'role_ar' => 'متحدث',
+                'image' => isset($data['speaker_profile']) ? '/storage/' . $data['speaker_profile'] : ($event->speaker_profile ? '/storage/' . $event->speaker_profile : 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop')
+            ];
+        }
+
+        if (!empty($speakersData)) {
+            $data['speakers'] = json_encode($speakersData);
+            // Update backward compatibility speaker_name
+            $names = array_filter(array_column($speakersData, 'name'));
+            if (empty($names)) {
+                $names = array_filter(array_column($speakersData, 'name_ar'));
+            }
+            $data['speaker_name'] = implode(', ', $names);
+            
+            $firstImg = $speakersData[0]['image'] ?? '';
+            if (strpos($firstImg, '/storage/') === 0) {
+                $data['speaker_profile'] = substr($firstImg, 9);
+            } else {
+                $data['speaker_profile'] = $firstImg;
+            }
+        } else {
+            $data['speakers'] = null;
         }
 
         $event->update($data);

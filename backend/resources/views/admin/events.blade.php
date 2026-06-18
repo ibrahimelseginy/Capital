@@ -234,22 +234,16 @@
         <div class="glass-card" style="width:100%; max-width:650px; background:var(--bg-primary); transform: translateY(20px); transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); max-height: 90vh; overflow-y: auto;">
             <div class="d-flex justify-between items-center mb-6">
                 <h3 class="text-h3 m-0" style="font-weight: 700;">{{ app()->getLocale() == 'ar' ? 'إضافة فعالية جديدة' : 'Add New Event' }}</h3>
-                <button onclick="closeModal('addEventModal')" style="background:var(--bg-secondary); border:none; width:36px; height:36px; border-radius:50%; cursor:pointer; color:var(--text-primary); display:flex; align-items:center; justify-content:center;">
+                <button type="button" onclick="closeModal('addEventModal')" style="background:var(--bg-secondary); border:none; width:36px; height:36px; border-radius:50%; cursor:pointer; color:var(--text-primary); display:flex; align-items:center; justify-content:center;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                 </button>
             </div>
             <form action="{{ route('admin.events.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="d-flex flex-col gap-4">
-                    <div class="d-flex gap-4">
-                        <div style="flex:1">
-                            <label class="text-caption" style="font-weight: 600; margin-bottom: 0.5rem; display: block;">{{ app()->getLocale() == 'ar' ? 'عنوان الفعالية' : 'Title' }}</label>
-                            <input type="text" name="title" class="form-input" required style="width:100%; padding:0.8rem 1rem;">
-                        </div>
-                        <div style="flex:1">
-                            <label class="text-caption" style="font-weight: 600; margin-bottom: 0.5rem; display: block;">{{ app()->getLocale() == 'ar' ? 'الاسبيكر (Speaker)' : 'Speaker' }}</label>
-                            <input type="text" name="speaker_name" class="form-input" style="width:100%; padding:0.8rem 1rem;">
-                        </div>
+                    <div style="flex:1">
+                        <label class="text-caption" style="font-weight: 600; margin-bottom: 0.5rem; display: block;">{{ app()->getLocale() == 'ar' ? 'عنوان الفعالية' : 'Title' }}</label>
+                        <input type="text" name="title" class="form-input" required style="width:100%; padding:0.8rem 1rem;">
                     </div>
                     <div class="d-flex gap-4">
                         <div style="flex:1">
@@ -285,17 +279,23 @@
                             <input type="text" name="access_type" class="form-input" value="Open" required style="width:100%; padding:0.8rem 1rem;">
                         </div>
                     </div>
+
+                    <!-- Speakers list builder -->
+                    <div style="border: 1px solid var(--border-default); border-radius: var(--radius-lg); padding: 1.25rem; background: var(--bg-secondary); margin-top: 0.5rem; margin-bottom: 0.5rem;">
+                        <div class="d-flex justify-between items-center mb-3">
+                            <h4 class="text-body m-0" style="font-weight: 700; color: var(--text-primary);">{{ app()->getLocale() == 'ar' ? 'المتحدثون (Speakers)' : 'Speakers' }}</h4>
+                            <button type="button" class="btn btn-secondary btn-sm" onclick="addSpeakerInput('addEventModal')" style="border-radius: var(--radius-md); font-size: 11px; padding: 4px 10px;">
+                                + {{ app()->getLocale() == 'ar' ? 'إضافة متحدث' : 'Add Speaker' }}
+                            </button>
+                        </div>
+                        <div id="addEventModal_speakersContainer" class="d-flex flex-col gap-3">
+                            <!-- Dynamic speaker fields go here -->
+                        </div>
+                    </div>
+
                     <div style="background: rgba(196,164,119,0.1); border: 1px solid rgba(196,164,119,0.3); border-radius: var(--radius-lg); padding: 1.5rem; margin-top: 0.5rem;">
                         <h4 class="text-h5" style="margin-bottom: 1rem;">{{ app()->getLocale() == 'ar' ? 'مرفقات الفعالية' : 'Event Attachments' }}</h4>
                         <div class="d-flex gap-4 flex-wrap">
-                            <div style="flex:1; min-width: 180px;">
-                                <label class="text-caption" style="font-weight: 600; margin-bottom: 0.5rem; display: block;">{{ app()->getLocale() == 'ar' ? 'صورة الاسبيكر (Profile)' : 'Speaker Profile' }}</label>
-                                <input type="file" name="speaker_profile" class="form-input" accept="image/*" style="width:100%; padding:0.5rem;">
-                            </div>
-                            <div style="flex:1; min-width: 180px;">
-                                <label class="text-caption" style="font-weight: 600; margin-bottom: 0.5rem; display: block;">{{ app()->getLocale() == 'ar' ? 'كارت الدعوة (Invitation)' : 'Invitation Card' }}</label>
-                                <input type="file" name="invitation_card" class="form-input" style="width:100%; padding:0.5rem;">
-                            </div>
                             <div style="flex:1; min-width: 180px;">
                                 <label class="text-caption" style="font-weight: 600; margin-bottom: 0.5rem; display: block;">{{ app()->getLocale() == 'ar' ? 'الـ QR Code' : 'QR Code' }}</label>
                                 <input type="file" name="qr_code" class="form-input" accept="image/*" style="width:100%; padding:0.5rem;">
@@ -310,28 +310,21 @@
             </form>
         </div>
     </div>
-
     <!-- Edit Event Modal -->
     <div id="editEventModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.4); backdrop-filter: blur(8px); z-index:999; align-items:center; justify-content:center; padding:1rem; opacity: 0; transition: opacity 0.3s ease; overflow-y:auto;">
         <div class="glass-card" style="width:100%; max-width:650px; background:var(--bg-primary); transform: translateY(20px); transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); max-height: 90vh; overflow-y: auto;">
             <div class="d-flex justify-between items-center mb-6">
                 <h3 class="text-h3 m-0" style="font-weight: 700;">{{ app()->getLocale() == 'ar' ? 'تعديل الفعالية' : 'Edit Event' }}</h3>
-                <button onclick="closeModal('editEventModal')" style="background:var(--bg-secondary); border:none; width:36px; height:36px; border-radius:50%; cursor:pointer; color:var(--text-primary); display:flex; align-items:center; justify-content:center;">
+                <button type="button" onclick="closeModal('editEventModal')" style="background:var(--bg-secondary); border:none; width:36px; height:36px; border-radius:50%; cursor:pointer; color:var(--text-primary); display:flex; align-items:center; justify-content:center;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                 </button>
             </div>
             <form id="editEventForm" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="d-flex flex-col gap-4">
-                    <div class="d-flex gap-4">
-                        <div style="flex:1">
-                            <label class="text-caption" style="font-weight: 600; margin-bottom: 0.5rem; display: block;">{{ app()->getLocale() == 'ar' ? 'العنوان' : 'Title' }}</label>
-                            <input type="text" name="title" id="editTitle" class="form-input" required style="width:100%; padding:0.8rem 1rem;">
-                        </div>
-                        <div style="flex:1">
-                            <label class="text-caption" style="font-weight: 600; margin-bottom: 0.5rem; display: block;">{{ app()->getLocale() == 'ar' ? 'الاسبيكر (Speaker)' : 'Speaker' }}</label>
-                            <input type="text" name="speaker_name" id="editSpeakerName" class="form-input" style="width:100%; padding:0.8rem 1rem;">
-                        </div>
+                    <div style="flex:1">
+                        <label class="text-caption" style="font-weight: 600; margin-bottom: 0.5rem; display: block;">{{ app()->getLocale() == 'ar' ? 'العنوان' : 'Title' }}</label>
+                        <input type="text" name="title" id="editTitle" class="form-input" required style="width:100%; padding:0.8rem 1rem;">
                     </div>
                     <div class="d-flex gap-4">
                         <div style="flex:1">
@@ -367,17 +360,23 @@
                             <input type="text" name="access_type" id="editAccess" class="form-input" required style="width:100%; padding:0.8rem 1rem;">
                         </div>
                     </div>
+
+                    <!-- Speakers list builder -->
+                    <div style="border: 1px solid var(--border-default); border-radius: var(--radius-lg); padding: 1.25rem; background: var(--bg-secondary); margin-top: 0.5rem; margin-bottom: 0.5rem;">
+                        <div class="d-flex justify-between items-center mb-3">
+                            <h4 class="text-body m-0" style="font-weight: 700; color: var(--text-primary);">{{ app()->getLocale() == 'ar' ? 'المتحدثون (Speakers)' : 'Speakers' }}</h4>
+                            <button type="button" class="btn btn-secondary btn-sm" onclick="addSpeakerInput('editEventModal')" style="border-radius: var(--radius-md); font-size: 11px; padding: 4px 10px;">
+                                + {{ app()->getLocale() == 'ar' ? 'إضافة متحدث' : 'Add Speaker' }}
+                            </button>
+                        </div>
+                        <div id="editEventModal_speakersContainer" class="d-flex flex-col gap-3">
+                            <!-- Dynamic speaker fields go here -->
+                        </div>
+                    </div>
+
                     <div style="background: rgba(196,164,119,0.1); border: 1px solid rgba(196,164,119,0.3); border-radius: var(--radius-lg); padding: 1.5rem; margin-top: 0.5rem;">
                         <h4 class="text-h5" style="margin-bottom: 1rem;">{{ app()->getLocale() == 'ar' ? 'مرفقات الفعالية (اختياري للتبديل)' : 'Event Attachments (Optional to replace)' }}</h4>
                         <div class="d-flex gap-4 flex-wrap">
-                            <div style="flex:1; min-width: 180px;">
-                                <label class="text-caption" style="font-weight: 600; margin-bottom: 0.5rem; display: block;">{{ app()->getLocale() == 'ar' ? 'تغيير صورة الاسبيكر' : 'Change Speaker Profile' }}</label>
-                                <input type="file" name="speaker_profile" class="form-input" accept="image/*" style="width:100%; padding:0.5rem;">
-                            </div>
-                            <div style="flex:1; min-width: 180px;">
-                                <label class="text-caption" style="font-weight: 600; margin-bottom: 0.5rem; display: block;">{{ app()->getLocale() == 'ar' ? 'تغيير كارت الدعوة' : 'Change Invitation Card' }}</label>
-                                <input type="file" name="invitation_card" class="form-input" style="width:100%; padding:0.5rem;">
-                            </div>
                             <div style="flex:1; min-width: 180px;">
                                 <label class="text-caption" style="font-weight: 600; margin-bottom: 0.5rem; display: block;">{{ app()->getLocale() == 'ar' ? 'تغيير الـ QR Code' : 'Change QR Code' }}</label>
                                 <input type="file" name="qr_code" class="form-input" accept="image/*" style="width:100%; padding:0.5rem;">
@@ -395,61 +394,63 @@
     
     <!-- Invitation Card Modal -->
     <div id="invitationCardModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); backdrop-filter: blur(12px); z-index:9999; align-items:center; justify-content:center; padding:1rem; opacity: 0; transition: opacity 0.3s ease; overflow-y:auto;">
-        <div class="glass-card" style="width:100%; max-width:440px; background:var(--bg-primary); transform: translateY(20px); transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); display: flex; flex-direction: column; align-items: center;">
+        <div class="glass-card" style="width:100%; max-width:440px; background:var(--bg-primary); transform: translateY(20px); transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); display: flex; flex-direction: column; align-items: center; border: 1px solid var(--border-default);">
             <div class="d-flex justify-between items-center mb-6 w-full">
                 <h3 class="text-h3 m-0" style="font-weight: 700; font-size: 1.25rem;">{{ app()->getLocale() == 'ar' ? 'بطاقة الدعوة والـ QR' : 'Invitation Card & QR' }}</h3>
-                <button onclick="closeModal('invitationCardModal')" style="background:var(--bg-secondary); border:none; width:36px; height:36px; border-radius:50%; cursor:pointer; color:var(--text-primary); display:flex; align-items:center; justify-content:center;">
+                <button type="button" onclick="closeModal('invitationCardModal')" style="background:var(--bg-secondary); border:none; width:36px; height:36px; border-radius:50%; cursor:pointer; color:var(--text-primary); display:flex; align-items:center; justify-content:center;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                 </button>
             </div>
             
             <div id="captureCardArea" style="padding: 10px; background: transparent;">
-                <div class="visual-invitation-card" id="previewCard">
-                    <!-- Decorative Gold Corner Accents -->
-                    <div style="position: absolute; top: 0; left: 0; width: 40px; height: 40px; border-top: 3px solid #c4a477; border-left: 3px solid #c4a477; border-top-left-radius: 20px; opacity: 0.8;"></div>
-                    <div style="position: absolute; top: 0; right: 0; width: 40px; height: 40px; border-top: 3px solid #c4a477; border-right: 3px solid #c4a477; border-top-right-radius: 20px; opacity: 0.8;"></div>
-                    <div style="position: absolute; bottom: 0; left: 0; width: 40px; height: 40px; border-bottom: 3px solid #c4a477; border-left: 3px solid #c4a477; border-bottom-left-radius: 20px; opacity: 0.8;"></div>
-                    <div style="position: absolute; bottom: 0; right: 0; width: 40px; height: 40px; border-bottom: 3px solid #c4a477; border-right: 3px solid #c4a477; border-bottom-right-radius: 20px; opacity: 0.8;"></div>
-
-                    <!-- Brand / Logo Header -->
-                    <div style="text-align: center; border-bottom: 1px solid rgba(196, 164, 119, 0.2); padding-bottom: 15px; margin-bottom: 15px;">
-                        <div style="font-size: 20px; font-weight: 800; color: #c4a477; letter-spacing: 3px; font-family: 'Cairo', sans-serif;">CAPITAL</div>
-                        <div style="font-size: 9px; color: #888; letter-spacing: 2px; margin-top: 3px; text-transform: uppercase;">{{ app()->getLocale() == 'ar' ? 'منصة الاستثمار الحصرية' : 'Exclusive Investment Platform' }}</div>
+                <div class="visual-invitation-card" id="previewCard" style="width: 380px; min-height: 520px; background: linear-gradient(135deg, #0d0b07 0%, #1c1710 50%, #0d0b07 100%); border: 2px solid transparent; background-origin: border-box; background-clip: content-box, border-box; background-image: linear-gradient(135deg, #0d0b07, #0d0b07), linear-gradient(135deg, #c4a477, #f7e7c4, #c4a477); border-radius: 24px; padding: 28px; color: #fff; position: relative; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.8); overflow: hidden; display: flex; flex-direction: column; justify-content: space-between; box-sizing: border-box; font-family: 'Cairo', 'Inter', sans-serif;">
+                    
+                    <!-- Decorative Gold Accents inside card -->
+                    <div style="position: absolute; top: 12px; left: 12px; right: 12px; bottom: 12px; border: 1px solid rgba(196, 164, 119, 0.15); border-radius: 16px; pointer-events: none; z-index: 1;"></div>
+                    
+                    <!-- Card Top Header -->
+                    <div style="text-align: center; border-bottom: 1px solid rgba(196, 164, 119, 0.25); padding-bottom: 16px; margin-bottom: 16px; z-index: 2; position: relative;">
+                        <div style="font-size: 22px; font-weight: 900; color: #c4a477; letter-spacing: 4px; font-family: 'Cairo', sans-serif; text-shadow: 0 2px 4px rgba(0,0,0,0.4);">CAPITAL</div>
+                        <div style="font-size: 9px; color: #a89f91; letter-spacing: 2.5px; margin-top: 4px; text-transform: uppercase; font-weight: 600;">{{ app()->getLocale() == 'ar' ? 'منصة الاستثمار الحصرية' : 'Exclusive Investment Platform' }}</div>
                     </div>
 
-                    <!-- Event Details -->
-                    <div style="text-align: center; flex-grow: 1; display: flex; flex-direction: column; justify-content: center; padding: 10px 0;">
-                        <span style="font-size: 10px; color: #c4a477; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600; display: block; margin-bottom: 8px;">{{ app()->getLocale() == 'ar' ? 'دعوة رسمية لحضور' : 'OFFICIAL INVITATION TO' }}</span>
-                        <h4 id="cardEventTitle" style="font-size: 18px; font-weight: 700; color: #fff; margin: 0 0 10px 0; line-height: 1.4; font-family: 'Cairo', sans-serif;">-</h4>
-                        <div id="cardSpeakerSection" style="margin-bottom: 15px;">
-                            <span style="font-size: 11px; color: #888;">{{ app()->getLocale() == 'ar' ? 'بمشاركة المتحدث:' : 'With Speaker:' }}</span>
-                            <div id="cardSpeakerName" style="font-size: 14px; font-weight: 600; color: #c4a477; margin-top: 2px;">-</div>
+                    <!-- Event Description & Title -->
+                    <div style="text-align: center; flex-grow: 1; display: flex; flex-direction: column; justify-content: center; padding: 8px 0; z-index: 2; position: relative;">
+                        <span style="font-size: 10px; color: #c4a477; text-transform: uppercase; letter-spacing: 2px; font-weight: 700; display: block; margin-bottom: 8px; text-shadow: 0 1px 2px rgba(0,0,0,0.3);">{{ app()->getLocale() == 'ar' ? 'دعوة رسمية لحضور' : 'OFFICIAL INVITATION TO' }}</span>
+                        <h4 id="cardEventTitle" style="font-size: 19px; font-weight: 800; color: #fff; margin: 0 0 16px 0; line-height: 1.4; font-family: 'Cairo', sans-serif; text-shadow: 0 2px 4px rgba(0,0,0,0.5);"> - </h4>
+                        
+                        <!-- Speakers list container inside Card -->
+                        <div id="cardSpeakerSection" style="margin-bottom: 16px; display: flex; flex-direction: column; align-items: center; width: 100%;">
+                            <span style="font-size: 11px; color: #a89f91; margin-bottom: 8px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">{{ app()->getLocale() == 'ar' ? 'المتحدثون المميزون' : 'Featured Speakers' }}</span>
+                            <div id="cardSpeakersList" style="display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; width: 100%;">
+                                <!-- Speakers items will be dynamically populated here -->
+                            </div>
                         </div>
                     </div>
 
                     <!-- Info Grid -->
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; border-top: 1px dashed rgba(196, 164, 119, 0.2); border-bottom: 1px dashed rgba(196, 164, 119, 0.2); padding: 12px 0; margin-bottom: 15px; text-align: {{ app()->getLocale() == 'ar' ? 'right' : 'left' }};">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; border-top: 1px dashed rgba(196, 164, 119, 0.25); border-bottom: 1px dashed rgba(196, 164, 119, 0.25); padding: 14px 0; margin-bottom: 16px; text-align: center; z-index: 2; position: relative;">
                         <div>
-                            <div style="font-size: 9px; color: #888;">{{ app()->getLocale() == 'ar' ? 'التاريخ والوقت' : 'DATE & TIME' }}</div>
-                            <div id="cardDateTime" style="font-size: 11px; font-weight: 600; color: #ddd; margin-top: 2px;">-</div>
+                            <div style="font-size: 9px; color: #a89f91; font-weight: 700; letter-spacing: 0.5px;">{{ app()->getLocale() == 'ar' ? 'التاريخ والوقت' : 'DATE & TIME' }}</div>
+                            <div id="cardDateTime" style="font-size: 11px; font-weight: 700; color: #eaeaea; margin-top: 4px;"> - </div>
                         </div>
                         <div>
-                            <div style="font-size: 9px; color: #888;">{{ app()->getLocale() == 'ar' ? 'الموقع' : 'LOCATION' }}</div>
-                            <div id="cardLocation" style="font-size: 11px; font-weight: 600; color: #ddd; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">-</div>
+                            <div style="font-size: 9px; color: #a89f91; font-weight: 700; letter-spacing: 0.5px;">{{ app()->getLocale() == 'ar' ? 'الموقع' : 'LOCATION' }}</div>
+                            <div id="cardLocation" style="font-size: 11px; font-weight: 700; color: #eaeaea; margin-top: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"> - </div>
                         </div>
                     </div>
 
                     <!-- QR Section -->
-                    <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; margin-top: 10px;">
-                        <div style="background: #fff; padding: 10px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center;">
-                            <img id="cardQrImage" src="" alt="QR Code" style="width: 120px; height: 120px; display: block; border: none;">
+                    <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; margin-top: 6px; z-index: 2; position: relative;">
+                        <div style="background: #fff; padding: 8px; border-radius: 14px; box-shadow: 0 10px 30px rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; border: 2px solid #c4a477;">
+                            <img id="cardQrImage" src="" alt="QR Code" style="width: 110px; height: 110px; display: block; border: none;">
                         </div>
-                        <span style="font-size: 9px; color: #666; margin-top: 10px; letter-spacing: 1px; text-transform: uppercase;">{{ app()->getLocale() == 'ar' ? 'يرجى إبراز الرمز عند الدخول' : 'SCAN QR AT THE ENTRANCE' }}</span>
+                        <span style="font-size: 9px; color: #c4a477; margin-top: 10px; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 700; text-shadow: 0 1px 2px rgba(0,0,0,0.3);">{{ app()->getLocale() == 'ar' ? 'يرجى إبراز الرمز عند الدخول' : 'SCAN QR AT THE ENTRANCE' }}</span>
                     </div>
                 </div>
             </div>
             
-            <div class="mt-8 d-flex justify-stretch gap-3 w-full">
+            <div class="mt-8 d-flex justify-stretch gap-3 w-full" style="padding: 0 10px 10px 10px;">
                 <button type="button" class="btn btn-secondary" onclick="closeModal('invitationCardModal')" style="flex: 1; padding: 0.75rem 1.5rem; border-radius: var(--radius-full);">{{ app()->getLocale() == 'ar' ? 'إغلاق' : 'Close' }}</button>
                 <button type="button" class="btn btn-primary" id="downloadCardBtn" style="flex: 1; padding: 0.75rem 1.5rem; border-radius: var(--radius-full); display: inline-flex; align-items: center; justify-content: center; gap: 8px;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
@@ -462,13 +463,118 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script>
+let speakerIndexCount = {
+    addEventModal: 0,
+    editEventModal: 0
+};
+
+function addSpeakerInput(modalId, data = null) {
+    const container = document.getElementById(modalId + '_speakersContainer');
+    if (!container) return;
+
+    const index = speakerIndexCount[modalId]++;
+    const rowId = `${modalId}_speaker_row_${index}`;
+
+    const nameVal = data ? (data.name || '') : '';
+    const nameArVal = data ? (data.name_ar || '') : '';
+    const roleVal = data ? (data.role || '') : '';
+    const roleArVal = data ? (data.role_ar || '') : '';
+    const existingImage = data ? (data.image || '') : '';
+
+    const isAr = "{{ app()->getLocale() == 'ar' }}" === "1";
+
+    let imgPreview = '';
+    if (existingImage) {
+        imgPreview = `<img src="${existingImage}" style="width:36px; height:36px; border-radius:50%; object-fit:cover; border:1px solid var(--border-default); margin-inline-end: 8px;">`;
+    }
+
+    const html = `
+        <div class="speaker-row p-3" id="${rowId}" style="background: var(--bg-surface); border: 1px solid var(--border-default); border-radius: var(--radius-lg); position: relative; animation: fadeIn 0.2s ease; margin-bottom: 8px;">
+            <button type="button" class="action-icon-btn reject" onclick="document.getElementById('${rowId}').remove()" style="position: absolute; top: 8px; ${isAr?'left:8px':'right:8px'}; width: 24px; height: 24px; border-radius: 50%; border:1px solid var(--border-default); display:flex; align-items:center; justify-content:center; cursor:pointer; background:var(--bg-secondary); color:var(--text-secondary);">
+                <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 5px;">
+                <div>
+                    <label style="font-size: 10px; font-weight:600; display: block; margin-bottom: 2px; color:var(--text-secondary);">${isAr ? 'الاسم (EN)' : 'Name (EN)'}</label>
+                    <input type="text" name="speakers[${index}][name]" value="${nameVal}" class="form-input" style="width: 100%; padding: 0.4rem 0.6rem; font-size: 12px;" required>
+                </div>
+                <div>
+                    <label style="font-size: 10px; font-weight:600; display: block; margin-bottom: 2px; color:var(--text-secondary);">${isAr ? 'الاسم (AR)' : 'Name (AR)'}</label>
+                    <input type="text" name="speakers[${index}][name_ar]" value="${nameArVal}" class="form-input" style="width: 100%; padding: 0.4rem 0.6rem; font-size: 12px;" required>
+                </div>
+                <div>
+                    <label style="font-size: 10px; font-weight:600; display: block; margin-bottom: 2px; color:var(--text-secondary);">${isAr ? 'الدور (EN)' : 'Role (EN)'}</label>
+                    <input type="text" name="speakers[${index}][role]" value="${roleVal}" class="form-input" style="width: 100%; padding: 0.4rem 0.6rem; font-size: 12px;">
+                </div>
+                <div>
+                    <label style="font-size: 10px; font-weight:600; display: block; margin-bottom: 2px; color:var(--text-secondary);">${isAr ? 'الدور (AR)' : 'Role (AR)'}</label>
+                    <input type="text" name="speakers[${index}][role_ar]" value="${roleArVal}" class="form-input" style="width: 100%; padding: 0.4rem 0.6rem; font-size: 12px;">
+                </div>
+                <div style="grid-column: span 2;">
+                    <label style="font-size: 10px; font-weight:600; display: block; margin-bottom: 2px; color:var(--text-secondary);">${isAr ? 'صورة المتحدث' : 'Speaker Photo'}</label>
+                    <div class="d-flex items-center gap-2">
+                        ${imgPreview}
+                        <input type="file" name="speakers[${index}][image_file]" class="form-input" accept="image/*" style="width: 100%; padding: 0.3rem 0.5rem; font-size: 11px;">
+                        <input type="hidden" name="speakers[${index}][existing_image]" value="${existingImage}">
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+
+    container.insertAdjacentHTML('beforeend', html);
+}
+
 function previewInvitationCard(eventObj) {
     document.getElementById('cardEventTitle').innerText = eventObj.title;
-    if (eventObj.speaker_name) {
-        document.getElementById('cardSpeakerSection').style.display = 'block';
-        document.getElementById('cardSpeakerName').innerText = eventObj.speaker_name;
+    
+    // Clear speakers
+    const speakersList = document.getElementById('cardSpeakersList');
+    speakersList.innerHTML = '';
+    
+    let speakers = [];
+    if (eventObj.speakers) {
+        try {
+            speakers = typeof eventObj.speakers === 'string' ? JSON.parse(eventObj.speakers) : eventObj.speakers;
+        } catch (e) {
+            console.error('Error parsing speakers:', e);
+        }
+    }
+    
+    const isAr = "{{ app()->getLocale() == 'ar' }}" === "1";
+
+    if (Array.isArray(speakers) && speakers.length > 0) {
+        speakers.forEach(sp => {
+            const name = isAr ? (sp.name_ar || sp.name) : (sp.name || sp.name_ar);
+            const role = isAr ? (sp.role_ar || sp.role) : (sp.role || sp.role_ar);
+            const avatar = sp.image || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop';
+            
+            const speakerHtml = `
+                <div style="display: inline-flex; align-items: center; gap: 8px; background: rgba(196,164,119,0.1); border: 1px solid rgba(196,164,119,0.35); border-radius: 30px; padding: 4px 12px; margin: 2px; min-width: 120px;">
+                    <img src="${avatar}" style="width: 26px; height: 26px; border-radius: 50%; object-fit: cover; border: 1.5px solid #c4a477; flex-shrink: 0;">
+                    <div style="text-align: ${isAr?'right':'left'};">
+                        <div style="font-size: 9px; font-weight: 700; color: #fff; line-height: 1.1; font-family:'Cairo','Inter';">${name}</div>
+                        <div style="font-size: 8px; color: #c4a477; line-height: 1.1; font-family:'Cairo','Inter';">${role}</div>
+                    </div>
+                </div>
+            `;
+            speakersList.insertAdjacentHTML('beforeend', speakerHtml);
+        });
+    } else if (eventObj.speaker_name) {
+        // Fallback for single speaker name
+        const avatar = eventObj.speaker_profile ? ('/storage/' + eventObj.speaker_profile) : 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop';
+        const speakerHtml = `
+            <div style="display: inline-flex; align-items: center; gap: 8px; background: rgba(196,164,119,0.1); border: 1px solid rgba(196,164,119,0.35); border-radius: 30px; padding: 4px 12px; margin: 2px; min-width: 120px;">
+                <img src="${avatar}" style="width: 26px; height: 26px; border-radius: 50%; object-fit: cover; border: 1.5px solid #c4a477; flex-shrink: 0;">
+                <div style="text-align: ${isAr?'right':'left'};">
+                    <div style="font-size: 9px; font-weight: 700; color: #fff; line-height: 1.1; font-family:'Cairo','Inter';">${eventObj.speaker_name}</div>
+                    <div style="font-size: 8px; color: #c4a477; line-height: 1.1; font-family:'Cairo','Inter';">${isAr ? 'متحدث' : 'Speaker'}</div>
+                </div>
+            </div>
+        `;
+        speakersList.insertAdjacentHTML('beforeend', speakerHtml);
     } else {
-        document.getElementById('cardSpeakerSection').style.display = 'none';
+        speakersList.innerHTML = `<span style="font-size: 11px; color:#666;">--</span>`;
     }
     
     const eventDate = eventObj.event_date ? eventObj.event_date.split(' ')[0] : '';
@@ -482,13 +588,8 @@ function previewInvitationCard(eventObj) {
     
     document.getElementById('cardQrImage').src = qrUrl;
     
-    if (eventObj.invitation_card) {
-        document.getElementById('previewCard').style.backgroundImage = `url('/storage/${eventObj.invitation_card}')`;
-        document.getElementById('previewCard').style.backgroundSize = 'cover';
-        document.getElementById('previewCard').style.backgroundPosition = 'center';
-    } else {
-        document.getElementById('previewCard').style.backgroundImage = 'linear-gradient(135deg, #161616 0%, #0c0c0c 100%)';
-    }
+    // Default background style
+    document.getElementById('previewCard').style.backgroundImage = 'linear-gradient(135deg, #0d0b07 0%, #1c1710 50%, #0d0b07 100%)';
     
     openModal('invitationCardModal');
 }
@@ -546,7 +647,6 @@ function filterEvents() {
 function showEditEventModal(eventObj) {
     document.getElementById('editEventForm').action = '/admin/events/' + eventObj.id;
     document.getElementById('editTitle').value = eventObj.title;
-    document.getElementById('editSpeakerName').value = eventObj.speaker_name;
     document.getElementById('editDate').value = eventObj.event_date ? eventObj.event_date.split(' ')[0] : '';
     document.getElementById('editTime').value = eventObj.time;
     document.getElementById('editDuration').value = eventObj.duration;
@@ -554,6 +654,26 @@ function showEditEventModal(eventObj) {
     document.getElementById('editAttendees').value = eventObj.attendees_count;
     document.getElementById('editStatus').value = eventObj.status;
     document.getElementById('editAccess').value = eventObj.access_type;
+    
+    // Clear and fill dynamic speakers
+    const speakersContainer = document.getElementById('editEventModal_speakersContainer');
+    if (speakersContainer) {
+        speakersContainer.innerHTML = '';
+        speakerIndexCount.editEventModal = 0;
+    }
+    
+    if (eventObj.speakers) {
+        try {
+            const speakers = typeof eventObj.speakers === 'string' ? JSON.parse(eventObj.speakers) : eventObj.speakers;
+            if (Array.isArray(speakers)) {
+                speakers.forEach(sp => {
+                    addSpeakerInput('editEventModal', sp);
+                });
+            }
+        } catch (e) {
+            console.error('Error parsing event speakers:', e);
+        }
+    }
     
     openModal('editEventModal');
 }
