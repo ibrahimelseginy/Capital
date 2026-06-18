@@ -136,72 +136,41 @@
         </div>
 
         <div class="glass-card mb-6" style="background: rgba(196,164,119,0.05); border: 1px solid rgba(196,164,119,0.2);">
-            <h3 class="text-h4 mb-4">{{ app()->getLocale() == 'ar' ? 'فريق إدارة المشروع' : 'Project Management Team' }}</h3>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem;">
-                <div class="d-flex items-center gap-3">
-                    <div style="width: 48px; height: 48px; border-radius: 50%; background: var(--action-primary); color: white; display: flex; align-items: center; justify-content: center; overflow: hidden; font-weight: bold; font-size: 1.2rem; flex-shrink: 0;">
-                        @if($project->projectManager && $project->projectManager->avatar)
-                            <img src="{{ Storage::url($project->projectManager->avatar) }}" style="width: 100%; height: 100%; object-fit: cover;">
-                        @elseif($project->projectManager)
-                            {{ mb_strtoupper(mb_substr($project->projectManager->name, 0, 2)) }}
-                        @else
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                        @endif
-                    </div>
-                    <div>
-                        <strong class="text-secondary d-block mb-1" style="font-size: 0.85rem;">{{ app()->getLocale() == 'ar' ? 'مدير المشروع' : 'Project Manager' }}</strong>
-                        <div class="text-h6" style="font-weight: 600; margin: 0;">{{ $project->projectManager->name ?? '--' }}</div>
-                    </div>
-                </div>
-
-                <div class="d-flex items-center gap-3">
-                    <div style="width: 48px; height: 48px; border-radius: 50%; background: var(--action-primary); color: white; display: flex; align-items: center; justify-content: center; overflow: hidden; font-weight: bold; font-size: 1.2rem; flex-shrink: 0;">
-                        @if($project->accountManager && $project->accountManager->avatar)
-                            <img src="{{ Storage::url($project->accountManager->avatar) }}" style="width: 100%; height: 100%; object-fit: cover;">
-                        @elseif($project->accountManager)
-                            {{ mb_strtoupper(mb_substr($project->accountManager->name, 0, 2)) }}
-                        @else
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                        @endif
-                    </div>
-                    <div>
-                        <strong class="text-secondary d-block mb-1" style="font-size: 0.85rem;">{{ app()->getLocale() == 'ar' ? 'مدير الحسابات' : 'Account Manager' }}</strong>
-                        <div class="text-h6" style="font-weight: 600; margin: 0;">{{ $project->accountManager->name ?? '--' }}</div>
-                    </div>
-                </div>
-
-                <div class="d-flex items-center gap-3">
-                    <div style="width: 48px; height: 48px; border-radius: 50%; background: var(--action-primary); color: white; display: flex; align-items: center; justify-content: center; overflow: hidden; font-weight: bold; font-size: 1.2rem; flex-shrink: 0;">
-                        @if($project->financialManager && $project->financialManager->avatar)
-                            <img src="{{ Storage::url($project->financialManager->avatar) }}" style="width: 100%; height: 100%; object-fit: cover;">
-                        @elseif($project->financialManager)
-                            {{ mb_strtoupper(mb_substr($project->financialManager->name, 0, 2)) }}
-                        @else
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                        @endif
-                    </div>
-                    <div>
-                        <strong class="text-secondary d-block mb-1" style="font-size: 0.85rem;">{{ app()->getLocale() == 'ar' ? 'مدير مالي (استشاري)' : 'Financial Manager' }}</strong>
-                        <div class="text-h6" style="font-weight: 600; margin: 0;">{{ $project->financialManager->name ?? '--' }}</div>
-                    </div>
-                </div>
-
-                <div class="d-flex items-center gap-3">
-                    <div style="width: 48px; height: 48px; border-radius: 50%; background: var(--action-primary); color: white; display: flex; align-items: center; justify-content: center; overflow: hidden; font-weight: bold; font-size: 1.2rem; flex-shrink: 0;">
-                        @if($project->executiveManager && $project->executiveManager->avatar)
-                            <img src="{{ Storage::url($project->executiveManager->avatar) }}" style="width: 100%; height: 100%; object-fit: cover;">
-                        @elseif($project->executiveManager)
-                            {{ mb_strtoupper(mb_substr($project->executiveManager->name, 0, 2)) }}
-                        @else
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                        @endif
-                    </div>
-                    <div>
-                        <strong class="text-secondary d-block mb-1" style="font-size: 0.85rem;">{{ app()->getLocale() == 'ar' ? 'مدير تنفيذي (استشاري)' : 'Executive Manager' }}</strong>
-                        <div class="text-h6" style="font-weight: 600; margin: 0;">{{ $project->executiveManager->name ?? '--' }}</div>
-                    </div>
-                </div>
+            <div class="d-flex justify-between items-center mb-4">
+                <h3 class="text-h4 m-0">{{ app()->getLocale() == 'ar' ? 'فريق إدارة المشروع' : 'Project Management Team' }}</h3>
+                <button class="btn btn-primary" onclick="openModal('addTeamMemberModal')">{{ app()->getLocale() == 'ar' ? 'إضافة عضو للفريق' : 'Add Team Member' }}</button>
             </div>
+            
+            @if($project->teamMembers->count() > 0)
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
+                @foreach($project->teamMembers as $member)
+                <div class="glass-card" style="position:relative; padding: 1.5rem;">
+                    <div class="d-flex items-center gap-3">
+                        <div style="width: 48px; height: 48px; border-radius: 50%; background: var(--action-primary); color: white; display: flex; align-items: center; justify-content: center; overflow: hidden; font-weight: bold; font-size: 1.2rem; flex-shrink: 0;">
+                            @if($member->avatar)
+                                <img src="{{ Storage::url($member->avatar) }}" style="width: 100%; height: 100%; object-fit: cover;">
+                            @else
+                                {{ mb_strtoupper(mb_substr($member->name, 0, 2)) }}
+                            @endif
+                        </div>
+                        <div style="flex:1">
+                            <strong class="text-secondary d-block mb-1" style="font-size: 0.85rem;">{{ $member->pivot->role }}</strong>
+                            <div class="text-h6" style="font-weight: 600; margin: 0;">{{ $member->name }}</div>
+                        </div>
+                        <form action="{{ route('admin.projects.team.destroy', ['id' => $project->id, 'user_id' => $member->id]) }}" method="POST" onsubmit="return confirm('{{ app()->getLocale() == 'ar' ? 'هل أنت متأكد من حذف العضو من هذا المشروع؟' : 'Are you sure you want to remove this member from the project?' }}');" style="margin:0;">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-secondary" style="padding: 0.2rem 0.5rem; font-size: 0.8rem; color: var(--color-error); border-color: rgba(239, 68, 68, 0.3);">{{ app()->getLocale() == 'ar' ? 'حذف' : 'Remove' }}</button>
+                        </form>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+            @else
+            <div class="text-center text-secondary py-6">
+                {{ app()->getLocale() == 'ar' ? 'لم يتم إضافة أي أعضاء لفريق إدارة المشروع بعد.' : 'No team members added yet.' }}
+            </div>
+            @endif
         </div>
     </div>
 
@@ -419,6 +388,38 @@
         </form>
     </div>
 </div>
+
+    <!-- Add Team Member Modal -->
+    <div id="addTeamMemberModal" class="modal">
+        <div class="modal-content" style="max-width: 500px;">
+            <div class="d-flex justify-between items-center mb-6">
+                <h3 class="text-h4 m-0">{{ app()->getLocale() == 'ar' ? 'إضافة عضو لفريق الإدارة' : 'Add Team Member' }}</h3>
+                <button class="btn btn-secondary" style="padding: 0.5rem;" onclick="closeModal('addTeamMemberModal')">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
+            </div>
+            <form action="{{ route('admin.projects.team.store', $project->id) }}" method="POST">
+                @csrf
+                <div class="mb-4">
+                    <label class="text-caption" style="font-weight: 600; margin-bottom: 0.5rem; display: block;">{{ app()->getLocale() == 'ar' ? 'اختيار المستخدم' : 'Select User' }}</label>
+                    <select name="user_id" class="form-input" style="width: 100%;" required>
+                        <option value="">{{ app()->getLocale() == 'ar' ? 'اختر...' : 'Select...' }}</option>
+                        @foreach($users as $user)
+                            <option value="{{ $user->id }}">{{ $user->name }} ({{ $user->email }})</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="mb-6">
+                    <label class="text-caption" style="font-weight: 600; margin-bottom: 0.5rem; display: block;">{{ app()->getLocale() == 'ar' ? 'المسمى الوظيفي (الدور)' : 'Role' }}</label>
+                    <input type="text" name="role" class="form-input" style="width: 100%;" placeholder="{{ app()->getLocale() == 'ar' ? 'مثال: مدير مشروع، محاسب، استشاري' : 'e.g. Project Manager, Accountant, Consultant' }}" required>
+                </div>
+                <div class="d-flex justify-end gap-3">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('addTeamMemberModal')">{{ app()->getLocale() == 'ar' ? 'إلغاء' : 'Cancel' }}</button>
+                    <button type="submit" class="btn btn-primary">{{ app()->getLocale() == 'ar' ? 'إضافة' : 'Add' }}</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
 <!-- Add Consultant Modal -->
 <div id="addConsultantModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.4); backdrop-filter: blur(8px); z-index:999; align-items:center; justify-content:center; padding:1rem; opacity: 0; transition: opacity 0.3s ease;">

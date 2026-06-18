@@ -72,6 +72,10 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
 
     Route::post('/projects/{id}/reports', [AdminController::class, 'storeProjectReport'])->name('admin.projects.reports.store');
     Route::delete('/projects/reports/{id}', [AdminController::class, 'destroyProjectReport'])->name('admin.projects.reports.destroy');
+
+    Route::post('/projects/{id}/team', [AdminController::class, 'storeProjectTeamMember'])->name('admin.projects.team.store');
+    Route::delete('/projects/{id}/team/{user_id}', [AdminController::class, 'destroyProjectTeamMember'])->name('admin.projects.team.destroy');
+    
     
     Route::get('/users', [AdminController::class, 'users'])->name('admin.users');
     Route::post('/users/{id}', [AdminController::class, 'updateUser'])->name('admin.users.update');

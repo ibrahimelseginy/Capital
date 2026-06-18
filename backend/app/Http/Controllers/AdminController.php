@@ -55,7 +55,7 @@ class AdminController extends Controller
 
     public function projects()
     {
-        $projects = Project::with(['projectManager', 'accountManager', 'financialManager', 'executiveManager'])->get();
+        $projects = Project::with(['teamMembers'])->get();
         $users = User::all();
         return view('admin.projects', compact('projects', 'users'));
     }
@@ -184,10 +184,6 @@ class AdminController extends Controller
             'shareholders_count' => 'nullable|integer',
             'total_shares' => 'nullable|integer',
             'status' => 'required|in:Active,Rejected,Pending',
-            'project_manager_id' => 'nullable|exists:users,id',
-            'account_manager_id' => 'nullable|exists:users,id',
-            'financial_manager_id' => 'nullable|exists:users,id',
-            'executive_manager_id' => 'nullable|exists:users,id',
             'image' => 'nullable|image|max:5120',
         ]);
 
@@ -199,6 +195,34 @@ class AdminController extends Controller
         Project::create($data);
 
         return back()->with('success', app()->getLocale() == 'ar' ? 'تم إضافة المشروع بنجاح.' : 'Project added successfully.');
+    }
+
+    public function storeProjectTeamMember(Request $request, $id)
+    {
+        $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'role' => 'required|string|max:255',
+        ]);
+
+        $project = Project::findOrFail($id);
+        
+        // Check if user is already in the team to avoid duplicates if needed, 
+        // but here we just attach.
+        $project->teamMembers()->attach($request->user_id, ['role' => $request->role]);
+
+        return back()->with('success', app()->getLocale() == 'ar' ? 'تم إضافة عضو الفريق بنجاح.' : 'Team member added successfully.');
+    }
+
+    public function destroyProjectTeamMember($id, $user_id)
+    {
+        $project = Project::findOrFail($id);
+        
+        // This removes all roles for this user in this project.
+        // If a user can have multiple roles in the same project, we'd need to identify by pivot ID.
+        // For simplicity, detach removes the user completely from the project.
+        $project->teamMembers()->detach($user_id);
+
+        return back()->with('success', app()->getLocale() == 'ar' ? 'تم حذف عضو الفريق بنجاح.' : 'Team member removed successfully.');
     }
 
     public function updateProjectDetails(Request $request, $id)
@@ -214,10 +238,6 @@ class AdminController extends Controller
             'shareholders_count' => 'nullable|integer',
             'total_shares' => 'nullable|integer',
             'status' => 'required|in:Active,Rejected,Pending',
-            'project_manager_id' => 'nullable|exists:users,id',
-            'account_manager_id' => 'nullable|exists:users,id',
-            'financial_manager_id' => 'nullable|exists:users,id',
-            'executive_manager_id' => 'nullable|exists:users,id',
             'image' => 'nullable|image|max:5120',
         ]);
         
@@ -238,8 +258,8 @@ class AdminController extends Controller
 
     public function showProject($id)
     {
-        $project = Project::with(['documents.user', 'reports.user', 'exitRequests.user', 'metrics', 'consultants'])->findOrFail($id);
-        $users = \App\Models\User::all();
+        $project = Project::with(['documents.user', 'reports.user', 'exitRequests.user', 'metrics', 'consultants', 'teamMembers'])->findOrFail($id);
+        $users = User::all();
         return view('admin.projects.show', compact('project', 'users'));
     }
 
