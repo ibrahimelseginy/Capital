@@ -20,4 +20,24 @@ class Project extends Model
     {
         return $this->hasMany(Nda::class);
     }
+
+    public function documents()
+    {
+        return $this->hasMany(Document::class);
+    }
+
+    public function exitRequests()
+    {
+        return $this->hasMany(ExitRequest::class);
+    }
+
+    public function metrics()
+    {
+        return $this->hasMany(ProjectMetric::class);
+    }
+
+    public function consultants()
+    {
+        return $this->hasMany(ProjectConsultant::class);
+    }
 }

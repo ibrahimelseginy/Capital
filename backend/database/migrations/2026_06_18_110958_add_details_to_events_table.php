@@ -12,7 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('events', function (Blueprint $table) {
-            //
+            $table->string('speaker_name')->nullable();
+            $table->string('duration')->nullable();
+            $table->string('speaker_profile')->nullable();
+            $table->string('invitation_card')->nullable();
+            $table->string('qr_code')->nullable();
         });
     }
 
@@ -22,7 +26,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('events', function (Blueprint $table) {
-            //
+            $table->dropColumn(['speaker_name', 'duration', 'speaker_profile', 'invitation_card', 'qr_code']);
         });
     }
 };

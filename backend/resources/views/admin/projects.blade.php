@@ -15,6 +15,16 @@
         transition: all 0.3s ease;
     }
     
+    /* Hide number input spinners */
+    input[type=number]::-webkit-inner-spin-button, 
+    input[type=number]::-webkit-outer-spin-button { 
+        -webkit-appearance: none; 
+        margin: 0; 
+    }
+    input[type=number] {
+        -moz-appearance: textfield; /* Firefox */
+    }
+    
     .badge { 
         display: inline-flex; align-items: center; padding: 0.35rem 0.85rem; 
         border-radius: 9999px; font-size: 0.75rem; font-weight: 700; 

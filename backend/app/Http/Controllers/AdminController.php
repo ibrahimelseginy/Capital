@@ -211,6 +211,37 @@ class AdminController extends Controller
         return back()->with('success', app()->getLocale() == 'ar' ? 'تم تحديث بيانات المشروع بنجاح.' : 'Project details updated successfully.');
     }
 
+    public function showProject($id)
+    {
+        $project = Project::with(['documents.user', 'reports.user', 'exitRequests.user', 'metrics', 'consultants'])->findOrFail($id);
+        return view('admin.projects.show', compact('project'));
+    }
+
+    public function storeProjectMetric(Request $request, $id)
+    {
+        $request->validate([
+            'label' => 'required|string|max:255',
+            'value' => 'required|string|max:255',
+            'prefix' => 'nullable|string|max:50',
+            'suffix' => 'nullable|string|max:50',
+        ]);
+        $project = Project::findOrFail($id);
+        $project->metrics()->create($request->all());
+        return back()->with('success', app()->getLocale() == 'ar' ? 'تم إضافة معدل النمو بنجاح.' : 'Metric added successfully.');
+    }
+
+    public function storeProjectConsultant(Request $request, $id)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'role' => 'nullable|string|max:255',
+            'description' => 'nullable|string',
+        ]);
+        $project = Project::findOrFail($id);
+        $project->consultants()->create($request->all());
+        return back()->with('success', app()->getLocale() == 'ar' ? 'تم إضافة الاستشاري بنجاح.' : 'Consultant added successfully.');
+    }
+
     public function destroyProject($id)
     {
         $project = Project::findOrFail($id);
