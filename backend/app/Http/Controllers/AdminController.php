@@ -222,7 +222,8 @@ class AdminController extends Controller
     public function showProject($id)
     {
         $project = Project::with(['documents.user', 'reports.user', 'exitRequests.user', 'metrics', 'consultants'])->findOrFail($id);
-        return view('admin.projects.show', compact('project'));
+        $users = \App\Models\User::all();
+        return view('admin.projects.show', compact('project', 'users'));
     }
 
     public function storeProjectMetric(Request $request, $id)
@@ -238,16 +239,98 @@ class AdminController extends Controller
         return back()->with('success', app()->getLocale() == 'ar' ? 'تم إضافة معدل النمو بنجاح.' : 'Metric added successfully.');
     }
 
+    public function updateProjectMetric(Request $request, $id)
+    {
+        $request->validate(['label' => 'required|string', 'value' => 'required|string', 'prefix' => 'nullable|string', 'suffix' => 'nullable|string']);
+        $metric = \App\Models\ProjectMetric::findOrFail($id);
+        $metric->update($request->all());
+        return back()->with('success', app()->getLocale() == 'ar' ? 'تم تحديث المؤشر بنجاح.' : 'Metric updated successfully.');
+    }
+
+    public function destroyProjectMetric($id)
+    {
+        \App\Models\ProjectMetric::findOrFail($id)->delete();
+        return back()->with('success', app()->getLocale() == 'ar' ? 'تم حذف المؤشر بنجاح.' : 'Metric deleted successfully.');
+    }
+
     public function storeProjectConsultant(Request $request, $id)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'role' => 'nullable|string|max:255',
-            'description' => 'nullable|string',
-        ]);
+        $request->validate(['name' => 'required|string|max:255', 'role' => 'nullable|string|max:255', 'description' => 'nullable|string']);
         $project = Project::findOrFail($id);
         $project->consultants()->create($request->all());
         return back()->with('success', app()->getLocale() == 'ar' ? 'تم إضافة الاستشاري بنجاح.' : 'Consultant added successfully.');
+    }
+
+    public function updateProjectConsultant(Request $request, $id)
+    {
+        $request->validate(['name' => 'required|string|max:255', 'role' => 'nullable|string|max:255', 'description' => 'nullable|string']);
+        $consultant = \App\Models\ProjectConsultant::findOrFail($id);
+        $consultant->update($request->all());
+        return back()->with('success', app()->getLocale() == 'ar' ? 'تم تحديث بيانات الاستشاري بنجاح.' : 'Consultant updated successfully.');
+    }
+
+    public function destroyProjectConsultant($id)
+    {
+        \App\Models\ProjectConsultant::findOrFail($id)->delete();
+        return back()->with('success', app()->getLocale() == 'ar' ? 'تم حذف الاستشاري بنجاح.' : 'Consultant deleted successfully.');
+    }
+
+    public function storeProjectExitRequest(Request $request, $id)
+    {
+        $request->validate(['user_id' => 'required|exists:users,id', 'request_date' => 'required|date', 'type' => 'required|string', 'amount' => 'nullable|numeric', 'status' => 'required|string']);
+        $project = Project::findOrFail($id);
+        $project->exitRequests()->create($request->all());
+        return back()->with('success', app()->getLocale() == 'ar' ? 'تم إضافة طلب التخارج بنجاح.' : 'Exit request added successfully.');
+    }
+
+    public function updateProjectExitRequest(Request $request, $id)
+    {
+        $request->validate(['user_id' => 'required|exists:users,id', 'request_date' => 'required|date', 'type' => 'required|string', 'amount' => 'nullable|numeric', 'status' => 'required|string']);
+        $exit = \App\Models\ExitRequest::findOrFail($id);
+        $exit->update($request->all());
+        return back()->with('success', app()->getLocale() == 'ar' ? 'تم تحديث طلب التخارج بنجاح.' : 'Exit request updated successfully.');
+    }
+
+    public function destroyProjectExitRequest($id)
+    {
+        \App\Models\ExitRequest::findOrFail($id)->delete();
+        return back()->with('success', app()->getLocale() == 'ar' ? 'تم حذف طلب التخارج بنجاح.' : 'Exit request deleted successfully.');
+    }
+
+    public function storeProjectDocument(Request $request, $id)
+    {
+        $request->validate(['title' => 'required|string|max:255', 'type' => 'required|string|max:255', 'file' => 'required|file|max:10240', 'user_id' => 'nullable|exists:users,id']);
+        $path = $request->file('file')->store('documents', 'public');
+        \App\Models\Document::create(['project_id' => $id, 'user_id' => $request->user_id, 'title' => $request->title, 'type' => $request->type, 'file_path' => $path]);
+        return back()->with('success', app()->getLocale() == 'ar' ? 'تم رفع المستند بنجاح.' : 'Document uploaded successfully.');
+    }
+
+    public function destroyProjectDocument($id)
+    {
+        $doc = \App\Models\Document::findOrFail($id);
+        if (\Illuminate\Support\Facades\Storage::disk('public')->exists($doc->file_path)) {
+            \Illuminate\Support\Facades\Storage::disk('public')->delete($doc->file_path);
+        }
+        $doc->delete();
+        return back()->with('success', app()->getLocale() == 'ar' ? 'تم حذف المستند بنجاح.' : 'Document deleted successfully.');
+    }
+
+    public function storeProjectReport(Request $request, $id)
+    {
+        $request->validate(['title' => 'required|string|max:255', 'period' => 'required|string|max:255', 'file' => 'required|file|max:10240', 'user_id' => 'nullable|exists:users,id']);
+        $path = $request->file('file')->store('reports', 'public');
+        \App\Models\Report::create(['project_id' => $id, 'user_id' => $request->user_id, 'title' => $request->title, 'period' => $request->period, 'file_path' => $path]);
+        return back()->with('success', app()->getLocale() == 'ar' ? 'تم رفع التقرير بنجاح.' : 'Report uploaded successfully.');
+    }
+
+    public function destroyProjectReport($id)
+    {
+        $rep = \App\Models\Report::findOrFail($id);
+        if (\Illuminate\Support\Facades\Storage::disk('public')->exists($rep->file_path)) {
+            \Illuminate\Support\Facades\Storage::disk('public')->delete($rep->file_path);
+        }
+        $rep->delete();
+        return back()->with('success', app()->getLocale() == 'ar' ? 'تم حذف التقرير بنجاح.' : 'Report deleted successfully.');
     }
 
     public function events()

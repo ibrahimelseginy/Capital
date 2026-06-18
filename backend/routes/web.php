@@ -56,7 +56,22 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
     Route::post('/projects', [AdminController::class, 'storeProject'])->name('admin.projects.store');
     Route::get('/projects/{id}', [AdminController::class, 'showProject'])->name('admin.projects.show');
     Route::post('/projects/{id}/metrics', [AdminController::class, 'storeProjectMetric'])->name('admin.projects.metrics.store');
+    Route::put('/projects/metrics/{id}', [AdminController::class, 'updateProjectMetric'])->name('admin.projects.metrics.update');
+    Route::delete('/projects/metrics/{id}', [AdminController::class, 'destroyProjectMetric'])->name('admin.projects.metrics.destroy');
+
     Route::post('/projects/{id}/consultants', [AdminController::class, 'storeProjectConsultant'])->name('admin.projects.consultants.store');
+    Route::put('/projects/consultants/{id}', [AdminController::class, 'updateProjectConsultant'])->name('admin.projects.consultants.update');
+    Route::delete('/projects/consultants/{id}', [AdminController::class, 'destroyProjectConsultant'])->name('admin.projects.consultants.destroy');
+
+    Route::post('/projects/{id}/exits', [AdminController::class, 'storeProjectExitRequest'])->name('admin.projects.exits.store');
+    Route::put('/projects/exits/{id}', [AdminController::class, 'updateProjectExitRequest'])->name('admin.projects.exits.update');
+    Route::delete('/projects/exits/{id}', [AdminController::class, 'destroyProjectExitRequest'])->name('admin.projects.exits.destroy');
+
+    Route::post('/projects/{id}/documents', [AdminController::class, 'storeProjectDocument'])->name('admin.projects.documents.store');
+    Route::delete('/projects/documents/{id}', [AdminController::class, 'destroyProjectDocument'])->name('admin.projects.documents.destroy');
+
+    Route::post('/projects/{id}/reports', [AdminController::class, 'storeProjectReport'])->name('admin.projects.reports.store');
+    Route::delete('/projects/reports/{id}', [AdminController::class, 'destroyProjectReport'])->name('admin.projects.reports.destroy');
     
     Route::get('/users', [AdminController::class, 'users'])->name('admin.users');
     Route::post('/users/{id}', [AdminController::class, 'updateUser'])->name('admin.users.update');

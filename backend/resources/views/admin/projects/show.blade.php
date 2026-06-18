@@ -101,7 +101,7 @@
             <p style="line-height: 1.8; color: var(--text-secondary);">{{ $project->description }}</p>
         </div>
 
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
             <div class="stat-box">
                 <div class="stat-value">${{ number_format($project->budget ?? 0) }}</div>
                 <div class="text-secondary font-medium">{{ app()->getLocale() == 'ar' ? 'الميزانية المستهدفة' : 'Target Budget' }}</div>
@@ -127,6 +127,28 @@
                 <div class="text-secondary font-medium">{{ app()->getLocale() == 'ar' ? 'عدد الأسهم' : 'Total Shares' }}</div>
             </div>
         </div>
+
+        <div class="glass-card mb-6" style="background: rgba(196,164,119,0.05); border: 1px solid rgba(196,164,119,0.2);">
+            <h3 class="text-h4 mb-4">{{ app()->getLocale() == 'ar' ? 'فريق إدارة المشروع' : 'Project Management Team' }}</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem;">
+                <div>
+                    <strong class="text-secondary d-block mb-1">{{ app()->getLocale() == 'ar' ? 'مدير المشروع' : 'Project Manager' }}</strong>
+                    <div class="text-h5" style="font-weight: 600;">{{ $project->project_manager ?? '--' }}</div>
+                </div>
+                <div>
+                    <strong class="text-secondary d-block mb-1">{{ app()->getLocale() == 'ar' ? 'مدير الحسابات' : 'Account Manager' }}</strong>
+                    <div class="text-h5" style="font-weight: 600;">{{ $project->account_manager ?? '--' }}</div>
+                </div>
+                <div>
+                    <strong class="text-secondary d-block mb-1">{{ app()->getLocale() == 'ar' ? 'مدير مالي (استشاري)' : 'Financial Manager' }}</strong>
+                    <div class="text-h5" style="font-weight: 600;">{{ $project->financial_manager ?? '--' }}</div>
+                </div>
+                <div>
+                    <strong class="text-secondary d-block mb-1">{{ app()->getLocale() == 'ar' ? 'مدير تنفيذي (استشاري)' : 'Executive Manager' }}</strong>
+                    <div class="text-h5" style="font-weight: 600;">{{ $project->executive_manager ?? '--' }}</div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Metrics Tab -->
@@ -139,11 +161,19 @@
         @if($project->metrics->count() > 0)
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
             @foreach($project->metrics as $metric)
-            <div class="glass-card text-center" style="position:relative;">
+            <div class="glass-card text-center" style="position:relative; padding-bottom: 3rem;">
                 <div class="text-h1" style="color:var(--action-primary); font-weight:800; margin-bottom:0.5rem;">
                     {{ $metric->prefix }}{{ $metric->value }}{{ $metric->suffix }}
                 </div>
                 <div class="text-secondary font-medium">{{ $metric->label }}</div>
+                <div style="position:absolute; bottom: 1rem; left:0; right:0; display:flex; justify-content:center; gap:0.5rem;">
+                    <button class="btn btn-secondary" style="padding: 0.2rem 0.5rem; font-size: 0.8rem;" onclick="showEditMetricModal({{ $metric->id }}, `{{ addslashes($metric->label) }}`, `{{ addslashes($metric->value) }}`, `{{ addslashes($metric->prefix) }}`, `{{ addslashes($metric->suffix) }}`)">{{ app()->getLocale() == 'ar' ? 'تعديل' : 'Edit' }}</button>
+                    <form action="{{ route('admin.projects.metrics.destroy', $metric->id) }}" method="POST" onsubmit="return confirm('{{ app()->getLocale() == 'ar' ? 'هل أنت متأكد من الحذف؟' : 'Are you sure?' }}');" style="margin:0;">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-secondary" style="padding: 0.2rem 0.5rem; font-size: 0.8rem; color: var(--color-error); border-color: rgba(239, 68, 68, 0.3);">{{ app()->getLocale() == 'ar' ? 'حذف' : 'Delete' }}</button>
+                    </form>
+                </div>
             </div>
             @endforeach
         </div>
@@ -168,12 +198,24 @@
                 <div style="width:50px; height:50px; border-radius:50%; background:var(--action-primary); color:white; display:flex; align-items:center; justify-content:center; font-size:1.2rem; font-weight:700;">
                     {{ strtoupper(substr($consultant->name, 0, 2)) }}
                 </div>
-                <div>
+                <div style="flex:1">
                     <h4 class="m-0" style="font-weight:600;">{{ $consultant->name }}</h4>
                     <div class="text-caption text-secondary">{{ $consultant->role }}</div>
                     @if($consultant->description)
                     <p class="text-caption mt-1" style="color:var(--text-tertiary);">{{ $consultant->description }}</p>
                     @endif
+                </div>
+                <div class="d-flex gap-2">
+                    <button class="btn btn-secondary" style="padding: 0.3rem; border-radius: 50%;" onclick="showEditConsultantModal({{ $consultant->id }}, `{{ addslashes($consultant->name) }}`, `{{ addslashes($consultant->role) }}`, `{{ addslashes($consultant->description) }}`)" title="{{ app()->getLocale() == 'ar' ? 'تعديل' : 'Edit' }}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                    </button>
+                    <form action="{{ route('admin.projects.consultants.destroy', $consultant->id) }}" method="POST" style="margin:0;" onsubmit="return confirm('{{ app()->getLocale() == 'ar' ? 'هل أنت متأكد من الحذف؟' : 'Are you sure?' }}');">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-secondary" style="padding: 0.3rem; border-radius: 50%; color: var(--color-error); border-color: rgba(239, 68, 68, 0.3);" title="{{ app()->getLocale() == 'ar' ? 'حذف' : 'Delete' }}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                        </button>
+                    </form>
                 </div>
             </div>
             @endforeach
@@ -187,7 +229,10 @@
 
     <!-- Files Tab -->
     <div id="files" class="tab-content">
-        <h3 class="text-h4 mb-4">{{ app()->getLocale() == 'ar' ? 'التقارير الخاصة بالمشروع' : 'Project Reports' }}</h3>
+        <div class="d-flex justify-between items-center mb-6">
+            <h3 class="text-h4 m-0">{{ app()->getLocale() == 'ar' ? 'التقارير الخاصة بالمشروع' : 'Project Reports' }}</h3>
+            <button class="btn btn-primary" onclick="openModal('addReportModal')">{{ app()->getLocale() == 'ar' ? 'إضافة تقرير' : 'Add Report' }}</button>
+        </div>
         @if($project->reports->count() > 0)
         <div style="display:grid; gap:1rem; margin-bottom: 3rem;">
             @foreach($project->reports as $report)
@@ -199,7 +244,14 @@
                         <div class="text-caption text-secondary">{{ $report->created_at->format('M d, Y') }} - {{ $report->period }}</div>
                     </div>
                 </div>
-                <a href="{{ Storage::url($report->file_path) }}" target="_blank" class="btn btn-secondary" style="padding: 0.4rem 1rem;">{{ app()->getLocale() == 'ar' ? 'تحميل' : 'Download' }}</a>
+                <div class="d-flex gap-2">
+                    <a href="{{ Storage::url($report->file_path) }}" target="_blank" class="btn btn-secondary" style="padding: 0.4rem 1rem;">{{ app()->getLocale() == 'ar' ? 'تحميل' : 'Download' }}</a>
+                    <form action="{{ route('admin.projects.reports.destroy', $report->id) }}" method="POST" style="margin:0;" onsubmit="return confirm('{{ app()->getLocale() == 'ar' ? 'هل أنت متأكد من الحذف؟' : 'Are you sure?' }}');">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-secondary" style="padding: 0.4rem 1rem; color: var(--color-error); border-color: rgba(239, 68, 68, 0.3);">{{ app()->getLocale() == 'ar' ? 'حذف' : 'Delete' }}</button>
+                    </form>
+                </div>
             </div>
             @endforeach
         </div>
@@ -207,7 +259,10 @@
         <div class="glass-card text-center text-secondary py-8 mb-8">{{ app()->getLocale() == 'ar' ? 'لا توجد تقارير.' : 'No reports.' }}</div>
         @endif
 
-        <h3 class="text-h4 mb-4">{{ app()->getLocale() == 'ar' ? 'المستندات والملفات' : 'Documents & Files' }}</h3>
+        <div class="d-flex justify-between items-center mb-6">
+            <h3 class="text-h4 m-0">{{ app()->getLocale() == 'ar' ? 'المستندات والملفات' : 'Documents & Files' }}</h3>
+            <button class="btn btn-primary" onclick="openModal('addDocumentModal')">{{ app()->getLocale() == 'ar' ? 'رفع مستند' : 'Add Document' }}</button>
+        </div>
         @if($project->documents->count() > 0)
         <div style="display:grid; gap:1rem;">
             @foreach($project->documents as $doc)
@@ -219,7 +274,14 @@
                         <div class="text-caption text-secondary">{{ $doc->created_at->format('M d, Y') }} - {{ $doc->type }}</div>
                     </div>
                 </div>
-                <a href="{{ Storage::url($doc->file_path) }}" target="_blank" class="btn btn-secondary" style="padding: 0.4rem 1rem;">{{ app()->getLocale() == 'ar' ? 'تحميل' : 'Download' }}</a>
+                <div class="d-flex gap-2">
+                    <a href="{{ Storage::url($doc->file_path) }}" target="_blank" class="btn btn-secondary" style="padding: 0.4rem 1rem;">{{ app()->getLocale() == 'ar' ? 'تحميل' : 'Download' }}</a>
+                    <form action="{{ route('admin.projects.documents.destroy', $doc->id) }}" method="POST" style="margin:0;" onsubmit="return confirm('{{ app()->getLocale() == 'ar' ? 'هل أنت متأكد من الحذف؟' : 'Are you sure?' }}');">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-secondary" style="padding: 0.4rem 1rem; color: var(--color-error); border-color: rgba(239, 68, 68, 0.3);">{{ app()->getLocale() == 'ar' ? 'حذف' : 'Delete' }}</button>
+                    </form>
+                </div>
             </div>
             @endforeach
         </div>
@@ -230,17 +292,34 @@
 
     <!-- Exits Tab -->
     <div id="exits" class="tab-content">
-        <h3 class="text-h4 mb-4">{{ app()->getLocale() == 'ar' ? 'طلبات التخارج' : 'Exit Requests' }}</h3>
+        <div class="d-flex justify-between items-center mb-6">
+            <h3 class="text-h4 m-0">{{ app()->getLocale() == 'ar' ? 'طلبات التخارج' : 'Exit Requests' }}</h3>
+            <button class="btn btn-primary" onclick="openModal('addExitModal')">{{ app()->getLocale() == 'ar' ? 'إضافة طلب تخارج' : 'Add Exit Request' }}</button>
+        </div>
         @if($project->exitRequests->count() > 0)
         <div style="display:grid; gap:1rem;">
             @foreach($project->exitRequests as $exit)
             <div class="glass-card d-flex justify-between items-center">
-                <div>
+                <div style="flex:1">
                     <h4 class="m-0" style="font-weight:600;">{{ $exit->user->name ?? 'User' }}</h4>
-                    <p class="text-secondary mt-1 m-0">{{ $exit->reason }}</p>
+                    <p class="text-secondary mt-1 m-0">{{ $exit->type }} - ${{ number_format($exit->amount ?? 0) }}</p>
                     <div class="text-caption text-tertiary mt-2">{{ $exit->created_at->format('M d, Y') }}</div>
                 </div>
-                <span class="badge badge-{{ strtolower($exit->status) == 'approved' ? 'active' : (strtolower($exit->status) == 'rejected' ? 'rejected' : 'pending') }}">{{ $exit->status }}</span>
+                <div class="d-flex gap-3 items-center">
+                    <span class="badge badge-{{ strtolower($exit->status) == 'approved' || strtolower($exit->status) == 'completed' ? 'active' : (strtolower($exit->status) == 'rejected' ? 'rejected' : 'pending') }}">{{ $exit->status }}</span>
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-secondary" style="padding: 0.3rem; border-radius: 50%;" onclick="showEditExitModal({{ $exit->id }}, `{{ $exit->user_id }}`, `{{ $exit->request_date }}`, `{{ $exit->type }}`, `{{ $exit->amount }}`, `{{ $exit->status }}`)" title="{{ app()->getLocale() == 'ar' ? 'تعديل' : 'Edit' }}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                        </button>
+                        <form action="{{ route('admin.projects.exits.destroy', $exit->id) }}" method="POST" style="margin:0;" onsubmit="return confirm('{{ app()->getLocale() == 'ar' ? 'هل أنت متأكد من الحذف؟' : 'Are you sure?' }}');">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-secondary" style="padding: 0.3rem; border-radius: 50%; color: var(--color-error); border-color: rgba(239, 68, 68, 0.3);" title="{{ app()->getLocale() == 'ar' ? 'حذف' : 'Delete' }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                            </button>
+                        </form>
+                    </div>
+                </div>
             </div>
             @endforeach
         </div>
@@ -315,6 +394,242 @@
     </div>
 </div>
 
+<!-- Add Exit Request Modal -->
+<div id="addExitModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.4); backdrop-filter: blur(8px); z-index:999; align-items:center; justify-content:center; padding:1rem; opacity: 0; transition: opacity 0.3s ease;">
+    <div class="glass-card" style="width:100%; max-width:450px; background:var(--bg-primary); transform: translateY(20px); transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); max-height: 90vh; overflow-y: auto;">
+        <h3 class="text-h3 mb-6" style="font-weight: 700;">{{ app()->getLocale() == 'ar' ? 'إضافة طلب تخارج جديد' : 'Add Exit Request' }}</h3>
+        <form action="{{ route('admin.projects.exits.store', $project->id) }}" method="POST">
+            @csrf
+            <div class="d-flex flex-col gap-4">
+                <div>
+                    <label class="text-caption font-semibold">{{ app()->getLocale() == 'ar' ? 'المستخدم' : 'User' }}</label>
+                    <select name="user_id" class="form-input w-full" required style="padding: 0.8rem 1rem;">
+                        <option value="">{{ app()->getLocale() == 'ar' ? 'اختر مستخدم' : 'Select User' }}</option>
+                        @foreach($users as $u)
+                            <option value="{{ $u->id }}">{{ $u->name }} ({{ $u->email }})</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div>
+                    <label class="text-caption font-semibold">{{ app()->getLocale() == 'ar' ? 'تاريخ الطلب' : 'Request Date' }}</label>
+                    <input type="date" name="request_date" class="form-input w-full" required style="padding: 0.8rem 1rem;">
+                </div>
+                <div>
+                    <label class="text-caption font-semibold">{{ app()->getLocale() == 'ar' ? 'نوع التخارج' : 'Exit Type' }}</label>
+                    <select name="type" class="form-input w-full" required style="padding: 0.8rem 1rem;">
+                        <option value="Partial Exit">{{ app()->getLocale() == 'ar' ? 'تخارج جزئي' : 'Partial Exit' }}</option>
+                        <option value="Full Exit">{{ app()->getLocale() == 'ar' ? 'تخارج كلي' : 'Full Exit' }}</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="text-caption font-semibold">{{ app()->getLocale() == 'ar' ? 'المبلغ' : 'Amount' }} ($)</label>
+                    <input type="number" step="0.01" name="amount" class="form-input w-full" style="padding: 0.8rem 1rem;">
+                </div>
+                <div>
+                    <label class="text-caption font-semibold">{{ app()->getLocale() == 'ar' ? 'الحالة' : 'Status' }}</label>
+                    <select name="status" class="form-input w-full" required style="padding: 0.8rem 1rem;">
+                        <option value="Under Review">{{ app()->getLocale() == 'ar' ? 'قيد المراجعة' : 'Under Review' }}</option>
+                        <option value="Approved">{{ app()->getLocale() == 'ar' ? 'مقبول' : 'Approved' }}</option>
+                        <option value="Rejected">{{ app()->getLocale() == 'ar' ? 'مرفوض' : 'Rejected' }}</option>
+                        <option value="Completed">{{ app()->getLocale() == 'ar' ? 'مكتمل' : 'Completed' }}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="mt-8 d-flex justify-end gap-3">
+                <button type="button" class="btn btn-secondary" onclick="closeModal('addExitModal')">{{ app()->getLocale() == 'ar' ? 'إلغاء' : 'Cancel' }}</button>
+                <button type="submit" class="btn btn-primary">{{ app()->getLocale() == 'ar' ? 'إضافة' : 'Add' }}</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- Edit Metric Modal -->
+<div id="editMetricModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.4); backdrop-filter: blur(8px); z-index:999; align-items:center; justify-content:center; padding:1rem; opacity: 0; transition: opacity 0.3s ease;">
+    <div class="glass-card" style="width:100%; max-width:450px; background:var(--bg-primary); transform: translateY(20px); transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);">
+        <h3 class="text-h3 mb-6" style="font-weight: 700;">{{ app()->getLocale() == 'ar' ? 'تعديل مؤشر النمو' : 'Edit Metric' }}</h3>
+        <form id="editMetricForm" method="POST">
+            @csrf
+            @method('PUT')
+            <div class="d-flex flex-col gap-4">
+                <div>
+                    <label class="text-caption font-semibold">{{ app()->getLocale() == 'ar' ? 'اسم المؤشر' : 'Label' }}</label>
+                    <input type="text" name="label" id="editMetricLabel" class="form-input w-full" required>
+                </div>
+                <div>
+                    <label class="text-caption font-semibold">{{ app()->getLocale() == 'ar' ? 'القيمة' : 'Value' }}</label>
+                    <input type="text" name="value" id="editMetricValue" class="form-input w-full" required>
+                </div>
+                <div class="d-flex gap-4">
+                    <div style="flex:1">
+                        <label class="text-caption font-semibold">{{ app()->getLocale() == 'ar' ? 'بادئة' : 'Prefix' }}</label>
+                        <input type="text" name="prefix" id="editMetricPrefix" class="form-input w-full">
+                    </div>
+                    <div style="flex:1">
+                        <label class="text-caption font-semibold">{{ app()->getLocale() == 'ar' ? 'لاحقة' : 'Suffix' }}</label>
+                        <input type="text" name="suffix" id="editMetricSuffix" class="form-input w-full">
+                    </div>
+                </div>
+            </div>
+            <div class="mt-8 d-flex justify-end gap-3">
+                <button type="button" class="btn btn-secondary" onclick="closeModal('editMetricModal')">{{ app()->getLocale() == 'ar' ? 'إلغاء' : 'Cancel' }}</button>
+                <button type="submit" class="btn btn-primary">{{ app()->getLocale() == 'ar' ? 'حفظ التعديلات' : 'Save Changes' }}</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Edit Consultant Modal -->
+<div id="editConsultantModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.4); backdrop-filter: blur(8px); z-index:999; align-items:center; justify-content:center; padding:1rem; opacity: 0; transition: opacity 0.3s ease;">
+    <div class="glass-card" style="width:100%; max-width:450px; background:var(--bg-primary); transform: translateY(20px); transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);">
+        <h3 class="text-h3 mb-6" style="font-weight: 700;">{{ app()->getLocale() == 'ar' ? 'تعديل بيانات الاستشاري' : 'Edit Consultant' }}</h3>
+        <form id="editConsultantForm" method="POST">
+            @csrf
+            @method('PUT')
+            <div class="d-flex flex-col gap-4">
+                <div>
+                    <label class="text-caption font-semibold">{{ app()->getLocale() == 'ar' ? 'اسم الاستشاري' : 'Name' }}</label>
+                    <input type="text" name="name" id="editConsultantName" class="form-input w-full" required>
+                </div>
+                <div>
+                    <label class="text-caption font-semibold">{{ app()->getLocale() == 'ar' ? 'الدور / المسمى' : 'Role' }}</label>
+                    <input type="text" name="role" id="editConsultantRole" class="form-input w-full">
+                </div>
+                <div>
+                    <label class="text-caption font-semibold">{{ app()->getLocale() == 'ar' ? 'وصف أو ملاحظات' : 'Description' }}</label>
+                    <textarea name="description" id="editConsultantDesc" class="form-input w-full" rows="3"></textarea>
+                </div>
+            </div>
+            <div class="mt-8 d-flex justify-end gap-3">
+                <button type="button" class="btn btn-secondary" onclick="closeModal('editConsultantModal')">{{ app()->getLocale() == 'ar' ? 'إلغاء' : 'Cancel' }}</button>
+                <button type="submit" class="btn btn-primary">{{ app()->getLocale() == 'ar' ? 'حفظ التعديلات' : 'Save Changes' }}</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Edit Exit Request Modal -->
+<div id="editExitModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.4); backdrop-filter: blur(8px); z-index:999; align-items:center; justify-content:center; padding:1rem; opacity: 0; transition: opacity 0.3s ease;">
+    <div class="glass-card" style="width:100%; max-width:450px; background:var(--bg-primary); transform: translateY(20px); transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); max-height: 90vh; overflow-y: auto;">
+        <h3 class="text-h3 mb-6" style="font-weight: 700;">{{ app()->getLocale() == 'ar' ? 'تعديل طلب التخارج' : 'Edit Exit Request' }}</h3>
+        <form id="editExitForm" method="POST">
+            @csrf
+            @method('PUT')
+            <div class="d-flex flex-col gap-4">
+                <div>
+                    <label class="text-caption font-semibold">{{ app()->getLocale() == 'ar' ? 'المستخدم' : 'User' }}</label>
+                    <select name="user_id" id="editExitUserId" class="form-input w-full" required style="padding: 0.8rem 1rem;">
+                        <option value="">{{ app()->getLocale() == 'ar' ? 'اختر مستخدم' : 'Select User' }}</option>
+                        @foreach($users as $u)
+                            <option value="{{ $u->id }}">{{ $u->name }} ({{ $u->email }})</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div>
+                    <label class="text-caption font-semibold">{{ app()->getLocale() == 'ar' ? 'تاريخ الطلب' : 'Request Date' }}</label>
+                    <input type="date" name="request_date" id="editExitDate" class="form-input w-full" required style="padding: 0.8rem 1rem;">
+                </div>
+                <div>
+                    <label class="text-caption font-semibold">{{ app()->getLocale() == 'ar' ? 'نوع التخارج' : 'Exit Type' }}</label>
+                    <select name="type" id="editExitType" class="form-input w-full" required style="padding: 0.8rem 1rem;">
+                        <option value="Partial Exit">{{ app()->getLocale() == 'ar' ? 'تخارج جزئي' : 'Partial Exit' }}</option>
+                        <option value="Full Exit">{{ app()->getLocale() == 'ar' ? 'تخارج كلي' : 'Full Exit' }}</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="text-caption font-semibold">{{ app()->getLocale() == 'ar' ? 'المبلغ' : 'Amount' }} ($)</label>
+                    <input type="number" step="0.01" name="amount" id="editExitAmount" class="form-input w-full" style="padding: 0.8rem 1rem;">
+                </div>
+                <div>
+                    <label class="text-caption font-semibold">{{ app()->getLocale() == 'ar' ? 'الحالة' : 'Status' }}</label>
+                    <select name="status" id="editExitStatus" class="form-input w-full" required style="padding: 0.8rem 1rem;">
+                        <option value="Under Review">{{ app()->getLocale() == 'ar' ? 'قيد المراجعة' : 'Under Review' }}</option>
+                        <option value="Approved">{{ app()->getLocale() == 'ar' ? 'مقبول' : 'Approved' }}</option>
+                        <option value="Rejected">{{ app()->getLocale() == 'ar' ? 'مرفوض' : 'Rejected' }}</option>
+                        <option value="Completed">{{ app()->getLocale() == 'ar' ? 'مكتمل' : 'Completed' }}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="mt-8 d-flex justify-end gap-3">
+                <button type="button" class="btn btn-secondary" onclick="closeModal('editExitModal')">{{ app()->getLocale() == 'ar' ? 'إلغاء' : 'Cancel' }}</button>
+                <button type="submit" class="btn btn-primary">{{ app()->getLocale() == 'ar' ? 'حفظ التعديلات' : 'Save Changes' }}</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Add Report Modal -->
+<div id="addReportModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.4); backdrop-filter: blur(8px); z-index:999; align-items:center; justify-content:center; padding:1rem; opacity: 0; transition: opacity 0.3s ease;">
+    <div class="glass-card" style="width:100%; max-width:450px; background:var(--bg-primary); transform: translateY(20px); transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);">
+        <h3 class="text-h3 mb-6" style="font-weight: 700;">{{ app()->getLocale() == 'ar' ? 'إضافة تقرير للمشروع' : 'Add Report' }}</h3>
+        <form action="{{ route('admin.projects.reports.store', $project->id) }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            <div class="d-flex flex-col gap-4">
+                <div>
+                    <label class="text-caption font-semibold">{{ app()->getLocale() == 'ar' ? 'عنوان التقرير' : 'Title' }}</label>
+                    <input type="text" name="title" class="form-input w-full" required>
+                </div>
+                <div>
+                    <label class="text-caption font-semibold">{{ app()->getLocale() == 'ar' ? 'الفترة (مثال: الربع الأول 2026)' : 'Period' }}</label>
+                    <input type="text" name="period" class="form-input w-full" required>
+                </div>
+                <div>
+                    <label class="text-caption font-semibold">{{ app()->getLocale() == 'ar' ? 'الملف' : 'File' }} (PDF/DOCX/JPG/PNG)</label>
+                    <input type="file" name="file" class="form-input w-full" required style="padding: 0.8rem 1rem;">
+                </div>
+                <div>
+                    <label class="text-caption font-semibold">{{ app()->getLocale() == 'ar' ? 'تخصيص للمستخدم (اختياري)' : 'Assign to User (Optional)' }}</label>
+                    <select name="user_id" class="form-input w-full" style="padding: 0.8rem 1rem;">
+                        <option value="">{{ app()->getLocale() == 'ar' ? 'متاح للجميع' : 'Available to all' }}</option>
+                        @foreach($users as $u)
+                            <option value="{{ $u->id }}">{{ $u->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+            <div class="mt-8 d-flex justify-end gap-3">
+                <button type="button" class="btn btn-secondary" onclick="closeModal('addReportModal')">{{ app()->getLocale() == 'ar' ? 'إلغاء' : 'Cancel' }}</button>
+                <button type="submit" class="btn btn-primary">{{ app()->getLocale() == 'ar' ? 'رفع التقرير' : 'Upload' }}</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Add Document Modal -->
+<div id="addDocumentModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.4); backdrop-filter: blur(8px); z-index:999; align-items:center; justify-content:center; padding:1rem; opacity: 0; transition: opacity 0.3s ease;">
+    <div class="glass-card" style="width:100%; max-width:450px; background:var(--bg-primary); transform: translateY(20px); transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);">
+        <h3 class="text-h3 mb-6" style="font-weight: 700;">{{ app()->getLocale() == 'ar' ? 'رفع مستند' : 'Upload Document' }}</h3>
+        <form action="{{ route('admin.projects.documents.store', $project->id) }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            <div class="d-flex flex-col gap-4">
+                <div>
+                    <label class="text-caption font-semibold">{{ app()->getLocale() == 'ar' ? 'عنوان المستند' : 'Title' }}</label>
+                    <input type="text" name="title" class="form-input w-full" required>
+                </div>
+                <div>
+                    <label class="text-caption font-semibold">{{ app()->getLocale() == 'ar' ? 'النوع (عقد، دراسة جدوى، إلخ)' : 'Type' }}</label>
+                    <input type="text" name="type" class="form-input w-full" required>
+                </div>
+                <div>
+                    <label class="text-caption font-semibold">{{ app()->getLocale() == 'ar' ? 'الملف' : 'File' }} (PDF/DOCX/JPG/PNG)</label>
+                    <input type="file" name="file" class="form-input w-full" required style="padding: 0.8rem 1rem;">
+                </div>
+                <div>
+                    <label class="text-caption font-semibold">{{ app()->getLocale() == 'ar' ? 'تخصيص للمستخدم (اختياري)' : 'Assign to User (Optional)' }}</label>
+                    <select name="user_id" class="form-input w-full" style="padding: 0.8rem 1rem;">
+                        <option value="">{{ app()->getLocale() == 'ar' ? 'متاح للجميع' : 'Available to all' }}</option>
+                        @foreach($users as $u)
+                            <option value="{{ $u->id }}">{{ $u->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+            <div class="mt-8 d-flex justify-end gap-3">
+                <button type="button" class="btn btn-secondary" onclick="closeModal('addDocumentModal')">{{ app()->getLocale() == 'ar' ? 'إلغاء' : 'Cancel' }}</button>
+                <button type="submit" class="btn btn-primary">{{ app()->getLocale() == 'ar' ? 'رفع المستند' : 'Upload' }}</button>
+            </div>
+        </form>
+    </div>
+</div>
+
 <script>
 function switchTab(tabId) {
     document.querySelectorAll('.nav-tab').forEach(el => el.classList.remove('active'));
@@ -340,6 +655,33 @@ function closeModal(id) {
     setTimeout(() => {
         modal.style.display = 'none';
     }, 300);
+}
+
+function showEditMetricModal(id, label, value, prefix, suffix) {
+    document.getElementById('editMetricForm').action = '/admin/projects/metrics/' + id;
+    document.getElementById('editMetricLabel').value = label;
+    document.getElementById('editMetricValue').value = value;
+    document.getElementById('editMetricPrefix').value = prefix;
+    document.getElementById('editMetricSuffix').value = suffix;
+    openModal('editMetricModal');
+}
+
+function showEditConsultantModal(id, name, role, desc) {
+    document.getElementById('editConsultantForm').action = '/admin/projects/consultants/' + id;
+    document.getElementById('editConsultantName').value = name;
+    document.getElementById('editConsultantRole').value = role;
+    document.getElementById('editConsultantDesc').value = desc;
+    openModal('editConsultantModal');
+}
+
+function showEditExitModal(id, userId, date, type, amount, status) {
+    document.getElementById('editExitForm').action = '/admin/projects/exits/' + id;
+    document.getElementById('editExitUserId').value = userId;
+    document.getElementById('editExitDate').value = date;
+    document.getElementById('editExitType').value = type;
+    document.getElementById('editExitAmount').value = amount;
+    document.getElementById('editExitStatus').value = status;
+    openModal('editExitModal');
 }
 </script>
 @endsection

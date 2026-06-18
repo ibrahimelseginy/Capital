@@ -367,7 +367,7 @@
     
     <!-- Edit Project Modal (Modernized) -->
     <div id="editProjectModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.4); backdrop-filter: blur(8px); z-index:999; align-items:center; justify-content:center; padding:1rem; opacity: 0; transition: opacity 0.3s ease;">
-        <div class="glass-card" style="width:100%; max-width:550px; background:var(--bg-primary); transform: translateY(20px); transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);">
+        <div class="glass-card" style="width:100%; max-width:550px; background:var(--bg-primary); transform: translateY(20px); transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); max-height: 90vh; overflow-y: auto;">
             <div class="d-flex justify-between items-center mb-6">
                 <h3 class="text-h3 m-0" style="font-weight: 700;">{{ app()->getLocale() == 'ar' ? 'تعديل المشروع' : 'Edit Project' }}</h3>
                 <button onclick="closeModal('editProjectModal')" style="background:var(--bg-secondary); border:none; width:36px; height:36px; border-radius:50%; cursor:pointer; color:var(--text-primary); display:flex; align-items:center; justify-content:center;">
@@ -462,7 +462,7 @@
     </div>
     <!-- Add Project Modal -->
     <div id="addProjectModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.4); backdrop-filter: blur(8px); z-index:999; align-items:center; justify-content:center; padding:1rem; opacity: 0; transition: opacity 0.3s ease;">
-        <div class="glass-card" style="width:100%; max-width:550px; background:var(--bg-primary); transform: translateY(20px); transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);">
+        <div class="glass-card" style="width:100%; max-width:550px; background:var(--bg-primary); transform: translateY(20px); transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); max-height: 90vh; overflow-y: auto;">
             <div class="d-flex justify-between items-center mb-6">
                 <h3 class="text-h3 m-0" style="font-weight: 700;">{{ app()->getLocale() == 'ar' ? 'إضافة مشروع جديد' : 'Add New Project' }}</h3>
                 <button onclick="closeModal('addProjectModal')" style="background:var(--bg-secondary); border:none; width:36px; height:36px; border-radius:50%; cursor:pointer; color:var(--text-primary); display:flex; align-items:center; justify-content:center;">
@@ -609,10 +609,15 @@ function showEditProjectModal(id, title, description, budget, sub_category, capi
     document.getElementById('editProjectBudget').value = budget;
     document.getElementById('editProjectSubCategory').value = sub_category;
     document.getElementById('editProjectCapital').value = capital;
-    document.getElementById('editProjectShareholders').value = shareholders;
-    document.getElementById('editProjectFundingAsk').value = fundingAsk;
-    document.getElementById('editProjectTotalShares').value = totalShares;
+    document.getElementById('editProjectInvestors').value = investors_count;
+    document.getElementById('editProjectShareholders').value = shareholders_count;
+    document.getElementById('editProjectFundingAsk').value = funding_ask;
+    document.getElementById('editProjectTotalShares').value = total_shares;
     document.getElementById('editProjectStatus').value = status;
+    document.getElementById('editProjectManager').value = pm;
+    document.getElementById('editAccountManager').value = am;
+    document.getElementById('editFinancialManager').value = fm;
+    document.getElementById('editExecutiveManager').value = em;
     
     openModal('editProjectModal');
 }
