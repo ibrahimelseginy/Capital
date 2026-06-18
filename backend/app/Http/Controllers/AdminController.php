@@ -170,18 +170,44 @@ class AdminController extends Controller
         return back()->with('success', app()->getLocale() == 'ar' ? 'تم تحديث حالة المشروع بنجاح.' : 'Project status updated successfully.');
     }
 
+    public function storeProject(Request $request)
+    {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'sub_category' => 'nullable|string|max:255',
+            'description' => 'nullable|string',
+            'budget' => 'nullable|numeric',
+            'capital' => 'nullable|numeric',
+            'funding_ask' => 'nullable|numeric',
+            'investors_count' => 'nullable|integer',
+            'shareholders_count' => 'nullable|integer',
+            'total_shares' => 'nullable|integer',
+            'status' => 'required|in:Active,Rejected,Pending'
+        ]);
+
+        Project::create($request->all());
+
+        return back()->with('success', app()->getLocale() == 'ar' ? 'تم إضافة المشروع بنجاح.' : 'Project added successfully.');
+    }
+
     public function updateProjectDetails(Request $request, $id)
     {
         $request->validate([
             'title' => 'required|string|max:255',
-            'description' => 'required|string',
-            'budget' => 'required|numeric'
+            'sub_category' => 'nullable|string|max:255',
+            'description' => 'nullable|string',
+            'budget' => 'nullable|numeric',
+            'capital' => 'nullable|numeric',
+            'funding_ask' => 'nullable|numeric',
+            'investors_count' => 'nullable|integer',
+            'shareholders_count' => 'nullable|integer',
+            'total_shares' => 'nullable|integer',
+            'status' => 'required|in:Active,Rejected,Pending'
         ]);
+        
         $project = Project::findOrFail($id);
-        $project->title = $request->title;
-        $project->description = $request->description;
-        $project->budget = $request->budget;
-        $project->save();
+        $project->update($request->all());
+        
         return back()->with('success', app()->getLocale() == 'ar' ? 'تم تحديث بيانات المشروع بنجاح.' : 'Project details updated successfully.');
     }
 

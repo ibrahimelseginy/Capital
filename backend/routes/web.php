@@ -53,6 +53,7 @@ Route::middleware(['auth'])->group(function() {
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('admin.dashboard');
     Route::get('/projects', [AdminController::class, 'projects'])->name('admin.projects');
+    Route::post('/projects', [AdminController::class, 'storeProject'])->name('admin.projects.store');
     Route::get('/users', [AdminController::class, 'users'])->name('admin.users');
     Route::post('/users/{id}', [AdminController::class, 'updateUser'])->name('admin.users.update');
     Route::post('/projects/{id}/status', [AdminController::class, 'updateProjectStatus'])->name('admin.projects.status');

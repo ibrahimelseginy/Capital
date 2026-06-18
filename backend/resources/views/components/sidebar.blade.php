@@ -5,7 +5,9 @@
   
   @if(auth()->check())
   <div class="sidebar-user" onclick="window.location.href='{{ auth()->user()->role === 'investor' ? url('/dashboard/profile') : '#' }}'">
-    <div class="sidebar-avatar">{{ strtoupper(substr(auth()->user()->name, 0, 2)) }}</div>
+    <div class="sidebar-avatar" style="{{ auth()->user()->profile_image ? 'background-image: url('.Storage::url(auth()->user()->profile_image).'); background-size: cover; background-position: center; color: transparent;' : '' }}">
+        {{ strtoupper(substr(auth()->user()->name, 0, 2)) }}
+    </div>
     <div class="sidebar-user-info">
       <div class="text-label">{{ auth()->user()->name }}</div>
       <div class="text-caption text-secondary" style="text-transform:capitalize">{{ auth()->user()->role }}</div>

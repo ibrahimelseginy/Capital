@@ -129,9 +129,15 @@
             <h1 class="text-h2" style="font-weight: 700; letter-spacing: -0.5px;">{{ app()->getLocale() == 'ar' ? 'إدارة المشاريع' : 'Manage Projects' }}</h1>
             <p class="text-secondary mt-1">{{ app()->getLocale() == 'ar' ? 'اكتشف، راجع، واعتمد المشاريع المبتكرة في منصتك.' : 'Discover, review, and approve innovative projects on your platform.' }}</p>
         </div>
-        <div class="search-container">
-            <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-            <input type="text" id="projectSearch" placeholder="{{ app()->getLocale() == 'ar' ? 'ابحث عن مشروع...' : 'Search projects...' }}" onkeyup="filterProjects()">
+        <div class="d-flex gap-4 items-center">
+            <div class="search-container">
+                <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                <input type="text" id="projectSearch" placeholder="{{ app()->getLocale() == 'ar' ? 'ابحث عن مشروع...' : 'Search projects...' }}" onkeyup="filterProjects()">
+            </div>
+            <button class="btn btn-primary" style="padding: 0.8rem 1.5rem; border-radius: var(--radius-full); white-space: nowrap;" onclick="openModal('addProjectModal')">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                {{ app()->getLocale() == 'ar' ? 'إضافة مشروع' : 'Add Project' }}
+            </button>
         </div>
     </div>
 
@@ -173,6 +179,20 @@
     </div>
     @endif
 
+    @if($errors->any())
+    <div style="background: var(--color-error-bg); color: var(--color-error); padding: 1rem 1.5rem; border-radius: var(--radius-lg); margin-bottom: 2rem; border: 1px solid rgba(239, 68, 68, 0.2);">
+        <div style="display:flex; align-items:center; gap: 1rem; margin-bottom: 0.5rem;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+            <span style="font-weight: 600;">{{ app()->getLocale() == 'ar' ? 'يوجد أخطاء في الإدخال:' : 'There are input errors:' }}</span>
+        </div>
+        <ul style="margin: 0; padding-inline-start: 2rem; font-size: 0.9rem;">
+            @foreach($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
+
     <!-- Modern Projects Grid -->
     <div class="projects-grid" id="projectsContainer">
         @forelse($projects as $index => $project)
@@ -206,10 +226,10 @@
 
             <div class="project-card-footer">
                 <div class="d-flex gap-2">
-                    <button type="button" class="action-icon-btn" title="{{ app()->getLocale() == 'ar' ? 'عرض التفاصيل' : 'View Details' }}" onclick="showProjectDetails(`{{ addslashes($project->title) }}`, `{{ addslashes($project->description) }}`, `{{ number_format($project->budget) }}`, `{{ ucfirst($project->status) }}`, `{{ $project->created_at->format('M d, Y') }}`)">
+                    <button type="button" class="action-icon-btn" title="{{ app()->getLocale() == 'ar' ? 'عرض التفاصيل' : 'View Details' }}" onclick="showProjectDetails(`{{ addslashes($project->title) }}`, `{{ addslashes($project->description) }}`, `{{ number_format($project->budget) }}`, `{{ ucfirst($project->status) }}`, `{{ $project->created_at->format('M d, Y') }}`, `{{ addslashes($project->sub_category) }}`, `{{ number_format($project->capital) }}`, `{{ $project->investors_count }}`, `{{ $project->shareholders_count }}`, `{{ number_format($project->funding_ask) }}`, `{{ $project->total_shares }}`)">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
                     </button>
-                    <button type="button" class="action-icon-btn edit" title="{{ app()->getLocale() == 'ar' ? 'تعديل' : 'Edit' }}" onclick="showEditProjectModal({{ $project->id }}, `{{ addslashes($project->title) }}`, `{{ addslashes($project->description) }}`, {{ $project->budget ?? 0 }})">
+                    <button type="button" class="action-icon-btn edit" title="{{ app()->getLocale() == 'ar' ? 'تعديل' : 'Edit' }}" onclick="showEditProjectModal({{ $project->id }}, `{{ addslashes($project->title) }}`, `{{ addslashes($project->description) }}`, {{ $project->budget ?? 0 }}, `{{ addslashes($project->sub_category) }}`, {{ $project->capital ?? 0 }}, {{ $project->investors_count ?? 0 }}, {{ $project->shareholders_count ?? 0 }}, {{ $project->funding_ask ?? 0 }}, {{ $project->total_shares ?? 0 }}, `{{ $project->status }}`)">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
                     </button>
                     <form action="{{ route('admin.projects.destroy', $project->id) }}" method="POST" style="margin:0;" onsubmit="return confirm('{{ app()->getLocale() == 'ar' ? 'هل أنت متأكد من حذف هذا المشروع؟' : 'Are you sure you want to delete this project?' }}');">
@@ -282,7 +302,7 @@
             </div>
             <div class="d-flex flex-col gap-6">
                 <div style="background: var(--bg-surface); border: 1px solid var(--border-default); border-radius: var(--radius-lg); padding: 1.5rem;">
-                    <label class="text-caption text-secondary" style="font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">{{ app()->getLocale() == 'ar' ? 'الوصف' : 'Description' }}</label>
+                    <label class="text-caption text-secondary" style="font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">{{ app()->getLocale() == 'ar' ? 'الوصف (Profile)' : 'Description (Profile)' }}</label>
                     <p id="modalProjectDesc" class="mt-2" style="font-size:1.05rem; line-height:1.7; color:var(--text-primary);"></p>
                 </div>
                 <div class="d-flex gap-4 flex-wrap">
@@ -290,6 +310,36 @@
                         <label class="text-caption text-secondary" style="font-weight: 600; text-transform: uppercase;">{{ app()->getLocale() == 'ar' ? 'الميزانية المستهدفة' : 'Target Budget' }}</label>
                         <div id="modalProjectBudget" class="mt-2 text-h3" style="font-weight:700; color:var(--action-primary);"></div>
                     </div>
+                    <div style="flex:1; min-width: 150px; background: var(--bg-surface); border: 1px solid var(--border-default); border-radius: var(--radius-lg); padding: 1.5rem;">
+                        <label class="text-caption text-secondary" style="font-weight: 600; text-transform: uppercase;">{{ app()->getLocale() == 'ar' ? 'رأس المال' : 'Capital' }}</label>
+                        <div id="modalProjectCapital" class="mt-2 text-h3" style="font-weight:700; color:var(--action-primary);"></div>
+                    </div>
+                    <div style="flex:1; min-width: 150px; background: var(--bg-surface); border: 1px solid var(--border-default); border-radius: var(--radius-lg); padding: 1.5rem;">
+                        <label class="text-caption text-secondary" style="font-weight: 600; text-transform: uppercase;">{{ app()->getLocale() == 'ar' ? 'مبلغ التمويل المطلوب' : 'Funding Ask' }}</label>
+                        <div id="modalProjectFunding" class="mt-2 text-h3" style="font-weight:700; color:var(--action-primary);"></div>
+                    </div>
+                </div>
+                
+                <div class="d-flex gap-4 flex-wrap">
+                    <div style="flex:1; min-width: 120px; background: var(--bg-surface); border: 1px solid var(--border-default); border-radius: var(--radius-lg); padding: 1.5rem;">
+                        <label class="text-caption text-secondary" style="font-weight: 600; text-transform: uppercase;">{{ app()->getLocale() == 'ar' ? 'تصنيف فرعي' : 'Sub Project' }}</label>
+                        <div id="modalProjectSubCategory" class="mt-2 text-h4" style="font-weight:600; color:var(--text-primary);"></div>
+                    </div>
+                    <div style="flex:1; min-width: 120px; background: var(--bg-surface); border: 1px solid var(--border-default); border-radius: var(--radius-lg); padding: 1.5rem;">
+                        <label class="text-caption text-secondary" style="font-weight: 600; text-transform: uppercase;">{{ app()->getLocale() == 'ar' ? 'المساهمين' : 'Shareholders' }}</label>
+                        <div id="modalProjectShareholders" class="mt-2 text-h4" style="font-weight:600; color:var(--text-primary);"></div>
+                    </div>
+                    <div style="flex:1; min-width: 120px; background: var(--bg-surface); border: 1px solid var(--border-default); border-radius: var(--radius-lg); padding: 1.5rem;">
+                        <label class="text-caption text-secondary" style="font-weight: 600; text-transform: uppercase;">{{ app()->getLocale() == 'ar' ? 'المستثمرين' : 'Investors' }}</label>
+                        <div id="modalProjectInvestors" class="mt-2 text-h4" style="font-weight:600; color:var(--text-primary);"></div>
+                    </div>
+                    <div style="flex:1; min-width: 120px; background: var(--bg-surface); border: 1px solid var(--border-default); border-radius: var(--radius-lg); padding: 1.5rem;">
+                        <label class="text-caption text-secondary" style="font-weight: 600; text-transform: uppercase;">{{ app()->getLocale() == 'ar' ? 'عدد الأسهم' : 'Total Shares' }}</label>
+                        <div id="modalProjectShares" class="mt-2 text-h4" style="font-weight:600; color:var(--text-primary);"></div>
+                    </div>
+                </div>
+
+                <div class="d-flex gap-4 flex-wrap">
                     <div style="flex:1; min-width: 150px; background: var(--bg-surface); border: 1px solid var(--border-default); border-radius: var(--radius-lg); padding: 1.5rem;">
                         <label class="text-caption text-secondary" style="font-weight: 600; text-transform: uppercase;">{{ app()->getLocale() == 'ar' ? 'الحالة & التاريخ' : 'Status & Date' }}</label>
                         <div class="d-flex items-center gap-3 mt-2">
@@ -316,23 +366,131 @@
             </div>
             <form id="editProjectForm" method="POST">
                 @csrf
-                <div class="d-flex flex-col gap-5">
-                    <div>
-                        <label class="text-caption" style="font-weight: 600; margin-bottom: 0.5rem; display: block;">{{ app()->getLocale() == 'ar' ? 'العنوان' : 'Title' }}</label>
-                        <input type="text" name="title" id="editProjectTitle" class="form-input" required style="width:100%; padding:0.8rem 1rem;">
+                <div class="d-flex flex-col gap-4">
+                    <div class="d-flex gap-4">
+                        <div style="flex:1">
+                            <label class="text-caption" style="font-weight: 600; margin-bottom: 0.5rem; display: block;">{{ app()->getLocale() == 'ar' ? 'العنوان' : 'Title' }}</label>
+                            <input type="text" name="title" id="editProjectTitle" class="form-input" required style="width:100%; padding:0.8rem 1rem;">
+                        </div>
+                        <div style="flex:1">
+                            <label class="text-caption" style="font-weight: 600; margin-bottom: 0.5rem; display: block;">{{ app()->getLocale() == 'ar' ? 'Sub Project' : 'Sub Category' }}</label>
+                            <input type="text" name="sub_category" id="editProjectSubCategory" class="form-input" style="width:100%; padding:0.8rem 1rem;">
+                        </div>
                     </div>
                     <div>
-                        <label class="text-caption" style="font-weight: 600; margin-bottom: 0.5rem; display: block;">{{ app()->getLocale() == 'ar' ? 'الوصف' : 'Description' }}</label>
-                        <textarea name="description" id="editProjectDesc" class="form-input" required style="width:100%; padding:0.8rem 1rem;" rows="5"></textarea>
+                        <label class="text-caption" style="font-weight: 600; margin-bottom: 0.5rem; display: block;">{{ app()->getLocale() == 'ar' ? 'الوصف (Profile)' : 'Description (Profile)' }}</label>
+                        <textarea name="description" id="editProjectDesc" class="form-input" required style="width:100%; padding:0.8rem 1rem;" rows="4"></textarea>
+                    </div>
+                    <div class="d-flex gap-4">
+                        <div style="flex:1">
+                            <label class="text-caption" style="font-weight: 600; margin-bottom: 0.5rem; display: block;">{{ app()->getLocale() == 'ar' ? 'الميزانية المستهدفة' : 'Target Budget' }} ($)</label>
+                            <input type="number" name="budget" id="editProjectBudget" class="form-input" required style="width:100%; padding:0.8rem 1rem;">
+                        </div>
+                        <div style="flex:1">
+                            <label class="text-caption" style="font-weight: 600; margin-bottom: 0.5rem; display: block;">{{ app()->getLocale() == 'ar' ? 'رأس المال' : 'Capital' }} ($)</label>
+                            <input type="number" name="capital" id="editProjectCapital" class="form-input" style="width:100%; padding:0.8rem 1rem;">
+                        </div>
+                        <div style="flex:1">
+                            <label class="text-caption" style="font-weight: 600; margin-bottom: 0.5rem; display: block;">{{ app()->getLocale() == 'ar' ? 'مبلغ التمويل المطلوب' : 'Funding Ask' }} ($)</label>
+                            <input type="number" name="funding_ask" id="editProjectFundingAsk" class="form-input" style="width:100%; padding:0.8rem 1rem;">
+                        </div>
+                    </div>
+                    <div class="d-flex gap-4">
+                        <div style="flex:1">
+                            <label class="text-caption" style="font-weight: 600; margin-bottom: 0.5rem; display: block;">{{ app()->getLocale() == 'ar' ? 'عدد المستثمرين' : 'Investors Count' }}</label>
+                            <input type="number" name="investors_count" id="editProjectInvestors" class="form-input" style="width:100%; padding:0.8rem 1rem;">
+                        </div>
+                        <div style="flex:1">
+                            <label class="text-caption" style="font-weight: 600; margin-bottom: 0.5rem; display: block;">{{ app()->getLocale() == 'ar' ? 'عدد المساهمين' : 'Shareholders Count' }}</label>
+                            <input type="number" name="shareholders_count" id="editProjectShareholders" class="form-input" style="width:100%; padding:0.8rem 1rem;">
+                        </div>
+                        <div style="flex:1">
+                            <label class="text-caption" style="font-weight: 600; margin-bottom: 0.5rem; display: block;">{{ app()->getLocale() == 'ar' ? 'عدد الأسهم' : 'Total Shares' }}</label>
+                            <input type="number" name="total_shares" id="editProjectTotalShares" class="form-input" style="width:100%; padding:0.8rem 1rem;">
+                        </div>
                     </div>
                     <div>
-                        <label class="text-caption" style="font-weight: 600; margin-bottom: 0.5rem; display: block;">{{ app()->getLocale() == 'ar' ? 'الميزانية المستهدفة' : 'Target Budget' }} ($)</label>
-                        <input type="number" name="budget" id="editProjectBudget" class="form-input" required style="width:100%; padding:0.8rem 1rem;">
+                        <label class="text-caption" style="font-weight: 600; margin-bottom: 0.5rem; display: block;">{{ app()->getLocale() == 'ar' ? 'الحالة' : 'Status' }}</label>
+                        <select name="status" id="editProjectStatus" class="form-input" required style="width:100%; padding:0.8rem 1rem;">
+                            <option value="Active">{{ app()->getLocale() == 'ar' ? 'نشط (Active)' : 'Active' }}</option>
+                            <option value="Pending">{{ app()->getLocale() == 'ar' ? 'قيد المراجعة (Pending)' : 'Pending' }}</option>
+                            <option value="Rejected">{{ app()->getLocale() == 'ar' ? 'مرفوض (Rejected)' : 'Rejected' }}</option>
+                        </select>
                     </div>
                 </div>
                 <div class="mt-8 d-flex justify-end gap-3">
                     <button type="button" class="btn btn-secondary" onclick="closeModal('editProjectModal')" style="padding: 0.75rem 1.5rem; border-radius: var(--radius-full);">{{ app()->getLocale() == 'ar' ? 'إلغاء' : 'Cancel' }}</button>
                     <button type="submit" class="btn btn-primary" style="padding: 0.75rem 2rem; border-radius: var(--radius-full);">{{ app()->getLocale() == 'ar' ? 'حفظ التعديلات' : 'Save Changes' }}</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- Add Project Modal -->
+    <div id="addProjectModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.4); backdrop-filter: blur(8px); z-index:999; align-items:center; justify-content:center; padding:1rem; opacity: 0; transition: opacity 0.3s ease;">
+        <div class="glass-card" style="width:100%; max-width:550px; background:var(--bg-primary); transform: translateY(20px); transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);">
+            <div class="d-flex justify-between items-center mb-6">
+                <h3 class="text-h3 m-0" style="font-weight: 700;">{{ app()->getLocale() == 'ar' ? 'إضافة مشروع جديد' : 'Add New Project' }}</h3>
+                <button onclick="closeModal('addProjectModal')" style="background:var(--bg-secondary); border:none; width:36px; height:36px; border-radius:50%; cursor:pointer; color:var(--text-primary); display:flex; align-items:center; justify-content:center;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
+            </div>
+            <form action="{{ route('admin.projects.store') }}" method="POST">
+                @csrf
+                <div class="d-flex flex-col gap-4">
+                    <div class="d-flex gap-4">
+                        <div style="flex:1">
+                            <label class="text-caption" style="font-weight: 600; margin-bottom: 0.5rem; display: block;">{{ app()->getLocale() == 'ar' ? 'العنوان' : 'Title' }}</label>
+                            <input type="text" name="title" class="form-input" required style="width:100%; padding:0.8rem 1rem;">
+                        </div>
+                        <div style="flex:1">
+                            <label class="text-caption" style="font-weight: 600; margin-bottom: 0.5rem; display: block;">{{ app()->getLocale() == 'ar' ? 'Sub Project' : 'Sub Category' }}</label>
+                            <input type="text" name="sub_category" class="form-input" style="width:100%; padding:0.8rem 1rem;">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="text-caption" style="font-weight: 600; margin-bottom: 0.5rem; display: block;">{{ app()->getLocale() == 'ar' ? 'الوصف (Profile)' : 'Description (Profile)' }}</label>
+                        <textarea name="description" class="form-input" required style="width:100%; padding:0.8rem 1rem;" rows="4"></textarea>
+                    </div>
+                    <div class="d-flex gap-4">
+                        <div style="flex:1">
+                            <label class="text-caption" style="font-weight: 600; margin-bottom: 0.5rem; display: block;">{{ app()->getLocale() == 'ar' ? 'الميزانية المستهدفة' : 'Target Budget' }} ($)</label>
+                            <input type="number" name="budget" class="form-input" required style="width:100%; padding:0.8rem 1rem;">
+                        </div>
+                        <div style="flex:1">
+                            <label class="text-caption" style="font-weight: 600; margin-bottom: 0.5rem; display: block;">{{ app()->getLocale() == 'ar' ? 'رأس المال' : 'Capital' }} ($)</label>
+                            <input type="number" name="capital" class="form-input" style="width:100%; padding:0.8rem 1rem;">
+                        </div>
+                        <div style="flex:1">
+                            <label class="text-caption" style="font-weight: 600; margin-bottom: 0.5rem; display: block;">{{ app()->getLocale() == 'ar' ? 'مبلغ التمويل المطلوب' : 'Funding Ask' }} ($)</label>
+                            <input type="number" name="funding_ask" class="form-input" style="width:100%; padding:0.8rem 1rem;">
+                        </div>
+                    </div>
+                    <div class="d-flex gap-4">
+                        <div style="flex:1">
+                            <label class="text-caption" style="font-weight: 600; margin-bottom: 0.5rem; display: block;">{{ app()->getLocale() == 'ar' ? 'عدد المستثمرين' : 'Investors Count' }}</label>
+                            <input type="number" name="investors_count" class="form-input" style="width:100%; padding:0.8rem 1rem;">
+                        </div>
+                        <div style="flex:1">
+                            <label class="text-caption" style="font-weight: 600; margin-bottom: 0.5rem; display: block;">{{ app()->getLocale() == 'ar' ? 'عدد المساهمين' : 'Shareholders Count' }}</label>
+                            <input type="number" name="shareholders_count" class="form-input" style="width:100%; padding:0.8rem 1rem;">
+                        </div>
+                        <div style="flex:1">
+                            <label class="text-caption" style="font-weight: 600; margin-bottom: 0.5rem; display: block;">{{ app()->getLocale() == 'ar' ? 'عدد الأسهم' : 'Total Shares' }}</label>
+                            <input type="number" name="total_shares" class="form-input" style="width:100%; padding:0.8rem 1rem;">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="text-caption" style="font-weight: 600; margin-bottom: 0.5rem; display: block;">{{ app()->getLocale() == 'ar' ? 'الحالة' : 'Status' }}</label>
+                        <select name="status" class="form-input" required style="width:100%; padding:0.8rem 1rem;">
+                            <option value="Active">{{ app()->getLocale() == 'ar' ? 'نشط (Active)' : 'Active' }}</option>
+                            <option value="Pending" selected>{{ app()->getLocale() == 'ar' ? 'قيد المراجعة (Pending)' : 'Pending' }}</option>
+                            <option value="Rejected">{{ app()->getLocale() == 'ar' ? 'مرفوض (Rejected)' : 'Rejected' }}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="mt-8 d-flex justify-end gap-3">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('addProjectModal')" style="padding: 0.75rem 1.5rem; border-radius: var(--radius-full);">{{ app()->getLocale() == 'ar' ? 'إلغاء' : 'Cancel' }}</button>
+                    <button type="submit" class="btn btn-primary" style="padding: 0.75rem 2rem; border-radius: var(--radius-full);">{{ app()->getLocale() == 'ar' ? 'إضافة المشروع' : 'Add Project' }}</button>
                 </div>
             </form>
         </div>
@@ -367,21 +525,36 @@ function filterProjects() {
     }
 }
 
-function showProjectDetails(title, desc, budget, status, date) {
+function showProjectDetails(title, desc, budget, status, date, subCategory, capital, investors, shareholders, fundingAsk, totalShares) {
     document.getElementById('modalProjectTitle').innerText = title;
     document.getElementById('modalProjectDesc').innerText = desc;
     document.getElementById('modalProjectBudget').innerText = '$' + budget;
     document.getElementById('modalProjectStatus').innerHTML = `<span class="badge badge-${status.toLowerCase()}">${status}</span>`;
     document.getElementById('modalProjectDate').innerText = date;
+
+    document.getElementById('modalProjectSubCategory').innerText = subCategory || '--';
+    document.getElementById('modalProjectCapital').innerText = capital ? '$' + capital : '--';
+    document.getElementById('modalProjectFunding').innerText = fundingAsk ? '$' + fundingAsk : '--';
+    document.getElementById('modalProjectInvestors').innerText = investors || '--';
+    document.getElementById('modalProjectShareholders').innerText = shareholders || '--';
+    document.getElementById('modalProjectShares').innerText = totalShares || '--';
     
     openModal('projectDetailsModal');
 }
 
-function showEditProjectModal(id, title, desc, budget) {
+function showEditProjectModal(id, title, desc, budget, subCategory, capital, investors, shareholders, fundingAsk, totalShares, status) {
     document.getElementById('editProjectForm').action = '/admin/projects/' + id + '/update';
     document.getElementById('editProjectTitle').value = title;
     document.getElementById('editProjectDesc').value = desc;
     document.getElementById('editProjectBudget').value = budget;
+    
+    document.getElementById('editProjectSubCategory').value = subCategory;
+    document.getElementById('editProjectCapital').value = capital;
+    document.getElementById('editProjectInvestors').value = investors;
+    document.getElementById('editProjectShareholders').value = shareholders;
+    document.getElementById('editProjectFundingAsk').value = fundingAsk;
+    document.getElementById('editProjectTotalShares').value = totalShares;
+    document.getElementById('editProjectStatus').value = status;
     
     openModal('editProjectModal');
 }
