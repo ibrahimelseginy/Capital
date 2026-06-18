@@ -236,10 +236,10 @@
 
             <div class="project-card-footer">
                 <div class="d-flex gap-2">
-                    <button type="button" class="action-icon-btn" title="{{ app()->getLocale() == 'ar' ? 'عرض التفاصيل' : 'View Details' }}" onclick="showProjectDetails(`{{ addslashes($project->title) }}`, `{{ addslashes($project->description) }}`, `{{ number_format($project->budget) }}`, `{{ ucfirst($project->status) }}`, `{{ $project->created_at->format('M d, Y') }}`, `{{ addslashes($project->sub_category) }}`, `{{ number_format($project->capital) }}`, `{{ $project->investors_count }}`, `{{ $project->shareholders_count }}`, `{{ number_format($project->funding_ask) }}`, `{{ $project->total_shares }}`)">
+                    <a href="{{ route('admin.projects.show', $project->id) }}" class="action-icon-btn" title="{{ app()->getLocale() == 'ar' ? 'عرض التفاصيل' : 'View Details' }}" style="text-decoration:none;">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
-                    </button>
-                    <button type="button" class="action-icon-btn edit" title="{{ app()->getLocale() == 'ar' ? 'تعديل' : 'Edit' }}" onclick="showEditProjectModal({{ $project->id }}, `{{ addslashes($project->title) }}`, `{{ addslashes($project->description) }}`, {{ $project->budget ?? 0 }}, `{{ addslashes($project->sub_category) }}`, {{ $project->capital ?? 0 }}, {{ $project->investors_count ?? 0 }}, {{ $project->shareholders_count ?? 0 }}, {{ $project->funding_ask ?? 0 }}, {{ $project->total_shares ?? 0 }}, `{{ $project->status }}`)">
+                    </a>
+                    <button type="button" class="action-icon-btn edit" title="{{ app()->getLocale() == 'ar' ? 'تعديل' : 'Edit' }}" onclick="showEditProjectModal({{ $project->id }}, `{{ addslashes($project->title) }}`, `{{ addslashes($project->description) }}`, {{ $project->budget ?? 0 }}, `{{ addslashes($project->sub_category) }}`, {{ $project->capital ?? 0 }}, {{ $project->investors_count ?? 0 }}, {{ $project->shareholders_count ?? 0 }}, {{ $project->funding_ask ?? 0 }}, {{ $project->total_shares ?? 0 }}, `{{ $project->status }}`, `{{ addslashes($project->project_manager) }}`, `{{ addslashes($project->account_manager) }}`, `{{ addslashes($project->financial_manager) }}`, `{{ addslashes($project->executive_manager) }}`)">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
                     </button>
                     <form action="{{ route('admin.projects.destroy', $project->id) }}" method="POST" style="margin:0;" onsubmit="return confirm('{{ app()->getLocale() == 'ar' ? 'هل أنت متأكد من حذف هذا المشروع؟' : 'Are you sure you want to delete this project?' }}');">
@@ -400,16 +400,41 @@
                             <label class="text-caption" style="font-weight: 600; margin-bottom: 0.5rem; display: block;">{{ app()->getLocale() == 'ar' ? 'رأس المال' : 'Capital' }} ($)</label>
                             <input type="number" name="capital" id="editProjectCapital" class="form-input" style="width:100%; padding:0.8rem 1rem;">
                         </div>
-                        <div style="flex:1">
-                            <label class="text-caption" style="font-weight: 600; margin-bottom: 0.5rem; display: block;">{{ app()->getLocale() == 'ar' ? 'مبلغ التمويل المطلوب' : 'Funding Ask' }} ($)</label>
-                            <input type="number" name="funding_ask" id="editProjectFundingAsk" class="form-input" style="width:100%; padding:0.8rem 1rem;">
+                    </div>
+                    <div style="background: rgba(196,164,119,0.1); border: 1px solid rgba(196,164,119,0.3); border-radius: var(--radius-lg); padding: 1.5rem; margin-top: 0.5rem;">
+                        <h4 class="text-h5" style="margin-bottom: 1rem;">{{ app()->getLocale() == 'ar' ? 'فريق إدارة المشروع' : 'Project Management Team' }}</h4>
+                        <div class="d-flex gap-4 mb-4">
+                            <div style="flex:1">
+                                <label class="text-caption" style="font-weight: 600; margin-bottom: 0.5rem; display: block;">{{ app()->getLocale() == 'ar' ? 'مدير المشروع' : 'Project Manager' }}</label>
+                                <input type="text" name="project_manager" id="editProjectManager" class="form-input" style="width:100%; padding:0.8rem 1rem;">
+                            </div>
+                            <div style="flex:1">
+                                <label class="text-caption" style="font-weight: 600; margin-bottom: 0.5rem; display: block;">{{ app()->getLocale() == 'ar' ? 'مدير الحسابات' : 'Account Manager' }}</label>
+                                <input type="text" name="account_manager" id="editAccountManager" class="form-input" style="width:100%; padding:0.8rem 1rem;">
+                            </div>
+                        </div>
+                        <div class="d-flex gap-4">
+                            <div style="flex:1">
+                                <label class="text-caption" style="font-weight: 600; margin-bottom: 0.5rem; display: block;">{{ app()->getLocale() == 'ar' ? 'مدير مالي (استشاري)' : 'Financial Manager' }}</label>
+                                <input type="text" name="financial_manager" id="editFinancialManager" class="form-input" style="width:100%; padding:0.8rem 1rem;">
+                            </div>
+                            <div style="flex:1">
+                                <label class="text-caption" style="font-weight: 600; margin-bottom: 0.5rem; display: block;">{{ app()->getLocale() == 'ar' ? 'مدير تنفيذي (استشاري)' : 'Executive Manager' }}</label>
+                                <input type="text" name="executive_manager" id="editExecutiveManager" class="form-input" style="width:100%; padding:0.8rem 1rem;">
+                            </div>
                         </div>
                     </div>
                     <div class="d-flex gap-4">
                         <div style="flex:1">
+                            <label class="text-caption" style="font-weight: 600; margin-bottom: 0.5rem; display: block;">{{ app()->getLocale() == 'ar' ? 'مبلغ التمويل المطلوب' : 'Funding Ask' }} ($)</label>
+                            <input type="number" name="funding_ask" id="editProjectFundingAsk" class="form-input" style="width:100%; padding:0.8rem 1rem;">
+                        </div>
+                        <div style="flex:1">
                             <label class="text-caption" style="font-weight: 600; margin-bottom: 0.5rem; display: block;">{{ app()->getLocale() == 'ar' ? 'عدد المستثمرين' : 'Investors Count' }}</label>
                             <input type="number" name="investors_count" id="editProjectInvestors" class="form-input" style="width:100%; padding:0.8rem 1rem;">
                         </div>
+                    </div>
+                    <div class="d-flex gap-4">
                         <div style="flex:1">
                             <label class="text-caption" style="font-weight: 600; margin-bottom: 0.5rem; display: block;">{{ app()->getLocale() == 'ar' ? 'عدد المساهمين' : 'Shareholders Count' }}</label>
                             <input type="number" name="shareholders_count" id="editProjectShareholders" class="form-input" style="width:100%; padding:0.8rem 1rem;">
@@ -470,16 +495,41 @@
                             <label class="text-caption" style="font-weight: 600; margin-bottom: 0.5rem; display: block;">{{ app()->getLocale() == 'ar' ? 'رأس المال' : 'Capital' }} ($)</label>
                             <input type="number" name="capital" class="form-input" style="width:100%; padding:0.8rem 1rem;">
                         </div>
-                        <div style="flex:1">
-                            <label class="text-caption" style="font-weight: 600; margin-bottom: 0.5rem; display: block;">{{ app()->getLocale() == 'ar' ? 'مبلغ التمويل المطلوب' : 'Funding Ask' }} ($)</label>
-                            <input type="number" name="funding_ask" class="form-input" style="width:100%; padding:0.8rem 1rem;">
+                    </div>
+                    <div style="background: rgba(196,164,119,0.1); border: 1px solid rgba(196,164,119,0.3); border-radius: var(--radius-lg); padding: 1.5rem; margin-top: 0.5rem;">
+                        <h4 class="text-h5" style="margin-bottom: 1rem;">{{ app()->getLocale() == 'ar' ? 'فريق إدارة المشروع' : 'Project Management Team' }}</h4>
+                        <div class="d-flex gap-4 mb-4">
+                            <div style="flex:1">
+                                <label class="text-caption" style="font-weight: 600; margin-bottom: 0.5rem; display: block;">{{ app()->getLocale() == 'ar' ? 'مدير المشروع' : 'Project Manager' }}</label>
+                                <input type="text" name="project_manager" class="form-input" style="width:100%; padding:0.8rem 1rem;">
+                            </div>
+                            <div style="flex:1">
+                                <label class="text-caption" style="font-weight: 600; margin-bottom: 0.5rem; display: block;">{{ app()->getLocale() == 'ar' ? 'مدير الحسابات' : 'Account Manager' }}</label>
+                                <input type="text" name="account_manager" class="form-input" style="width:100%; padding:0.8rem 1rem;">
+                            </div>
+                        </div>
+                        <div class="d-flex gap-4">
+                            <div style="flex:1">
+                                <label class="text-caption" style="font-weight: 600; margin-bottom: 0.5rem; display: block;">{{ app()->getLocale() == 'ar' ? 'مدير مالي (استشاري)' : 'Financial Manager' }}</label>
+                                <input type="text" name="financial_manager" class="form-input" style="width:100%; padding:0.8rem 1rem;">
+                            </div>
+                            <div style="flex:1">
+                                <label class="text-caption" style="font-weight: 600; margin-bottom: 0.5rem; display: block;">{{ app()->getLocale() == 'ar' ? 'مدير تنفيذي (استشاري)' : 'Executive Manager' }}</label>
+                                <input type="text" name="executive_manager" class="form-input" style="width:100%; padding:0.8rem 1rem;">
+                            </div>
                         </div>
                     </div>
                     <div class="d-flex gap-4">
                         <div style="flex:1">
+                            <label class="text-caption" style="font-weight: 600; margin-bottom: 0.5rem; display: block;">{{ app()->getLocale() == 'ar' ? 'مبلغ التمويل المطلوب' : 'Funding Ask' }} ($)</label>
+                            <input type="number" name="funding_ask" class="form-input" style="width:100%; padding:0.8rem 1rem;">
+                        </div>
+                        <div style="flex:1">
                             <label class="text-caption" style="font-weight: 600; margin-bottom: 0.5rem; display: block;">{{ app()->getLocale() == 'ar' ? 'عدد المستثمرين' : 'Investors Count' }}</label>
                             <input type="number" name="investors_count" class="form-input" style="width:100%; padding:0.8rem 1rem;">
                         </div>
+                    </div>
+                    <div class="d-flex gap-4">
                         <div style="flex:1">
                             <label class="text-caption" style="font-weight: 600; margin-bottom: 0.5rem; display: block;">{{ app()->getLocale() == 'ar' ? 'عدد المساهمين' : 'Shareholders Count' }}</label>
                             <input type="number" name="shareholders_count" class="form-input" style="width:100%; padding:0.8rem 1rem;">
@@ -552,15 +602,13 @@ function showProjectDetails(title, desc, budget, status, date, subCategory, capi
     openModal('projectDetailsModal');
 }
 
-function showEditProjectModal(id, title, desc, budget, subCategory, capital, investors, shareholders, fundingAsk, totalShares, status) {
+function showEditProjectModal(id, title, description, budget, sub_category, capital, investors_count, shareholders_count, funding_ask, total_shares, status, pm, am, fm, em) {
     document.getElementById('editProjectForm').action = '/admin/projects/' + id + '/update';
     document.getElementById('editProjectTitle').value = title;
-    document.getElementById('editProjectDesc').value = desc;
+    document.getElementById('editProjectDesc').value = description;
     document.getElementById('editProjectBudget').value = budget;
-    
-    document.getElementById('editProjectSubCategory').value = subCategory;
+    document.getElementById('editProjectSubCategory').value = sub_category;
     document.getElementById('editProjectCapital').value = capital;
-    document.getElementById('editProjectInvestors').value = investors;
     document.getElementById('editProjectShareholders').value = shareholders;
     document.getElementById('editProjectFundingAsk').value = fundingAsk;
     document.getElementById('editProjectTotalShares').value = totalShares;

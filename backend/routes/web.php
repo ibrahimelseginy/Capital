@@ -60,6 +60,11 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
     
     Route::get('/users', [AdminController::class, 'users'])->name('admin.users');
     Route::post('/users/{id}', [AdminController::class, 'updateUser'])->name('admin.users.update');
+
+    Route::get('/events', [AdminController::class, 'events'])->name('admin.events');
+    Route::post('/events', [AdminController::class, 'storeEvent'])->name('admin.events.store');
+    Route::post('/events/{id}', [AdminController::class, 'updateEvent'])->name('admin.events.update');
+    Route::delete('/events/{id}', [AdminController::class, 'destroyEvent'])->name('admin.events.destroy');
     Route::post('/projects/{id}/status', [AdminController::class, 'updateProjectStatus'])->name('admin.projects.status');
     Route::post('/projects/{id}/update', [AdminController::class, 'updateProjectDetails'])->name('admin.projects.update');
     Route::delete('/projects/{id}', [AdminController::class, 'destroyProject'])->name('admin.projects.destroy');

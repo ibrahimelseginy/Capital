@@ -182,7 +182,11 @@ class AdminController extends Controller
             'investors_count' => 'nullable|integer',
             'shareholders_count' => 'nullable|integer',
             'total_shares' => 'nullable|integer',
-            'status' => 'required|in:Active,Rejected,Pending'
+            'status' => 'required|in:Active,Rejected,Pending',
+            'project_manager' => 'nullable|string|max:255',
+            'account_manager' => 'nullable|string|max:255',
+            'financial_manager' => 'nullable|string|max:255',
+            'executive_manager' => 'nullable|string|max:255'
         ]);
 
         Project::create($request->all());
@@ -202,7 +206,11 @@ class AdminController extends Controller
             'investors_count' => 'nullable|integer',
             'shareholders_count' => 'nullable|integer',
             'total_shares' => 'nullable|integer',
-            'status' => 'required|in:Active,Rejected,Pending'
+            'status' => 'required|in:Active,Rejected,Pending',
+            'project_manager' => 'nullable|string|max:255',
+            'account_manager' => 'nullable|string|max:255',
+            'financial_manager' => 'nullable|string|max:255',
+            'executive_manager' => 'nullable|string|max:255'
         ]);
         
         $project = Project::findOrFail($id);
@@ -240,6 +248,94 @@ class AdminController extends Controller
         $project = Project::findOrFail($id);
         $project->consultants()->create($request->all());
         return back()->with('success', app()->getLocale() == 'ar' ? 'تم إضافة الاستشاري بنجاح.' : 'Consultant added successfully.');
+    }
+
+    public function events()
+    {
+        $events = \App\Models\Event::latest()->get();
+        return view('admin.events', compact('events'));
+    }
+
+    public function storeEvent(Request $request)
+    {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'event_date' => 'required|date',
+            'time' => 'nullable|string',
+            'location' => 'required|string',
+            'status' => 'required|string',
+            'access_type' => 'required|string',
+            'attendees_count' => 'nullable|integer',
+            'speaker_name' => 'nullable|string',
+            'duration' => 'nullable|string',
+            'speaker_profile' => 'nullable|image|max:5120',
+            'invitation_card' => 'nullable|file|max:5120',
+            'qr_code' => 'nullable|image|max:5120',
+        ]);
+
+        $data = $request->except(['speaker_profile', 'invitation_card', 'qr_code']);
+
+        if ($request->hasFile('speaker_profile')) {
+            $data['speaker_profile'] = $request->file('speaker_profile')->store('events/speakers', 'public');
+        }
+        if ($request->hasFile('invitation_card')) {
+            $data['invitation_card'] = $request->file('invitation_card')->store('events/invitations', 'public');
+        }
+        if ($request->hasFile('qr_code')) {
+            $data['qr_code'] = $request->file('qr_code')->store('events/qr', 'public');
+        }
+
+        \App\Models\Event::create($data);
+
+        return back()->with('success', app()->getLocale() == 'ar' ? 'تم إضافة الفعالية بنجاح.' : 'Event added successfully.');
+    }
+
+    public function updateEvent(Request $request, $id)
+    {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'event_date' => 'required|date',
+            'time' => 'nullable|string',
+            'location' => 'required|string',
+            'status' => 'required|string',
+            'access_type' => 'required|string',
+            'attendees_count' => 'nullable|integer',
+            'speaker_name' => 'nullable|string',
+            'duration' => 'nullable|string',
+            'speaker_profile' => 'nullable|image|max:5120',
+            'invitation_card' => 'nullable|file|max:5120',
+            'qr_code' => 'nullable|image|max:5120',
+        ]);
+
+        $event = \App\Models\Event::findOrFail($id);
+        $data = $request->except(['speaker_profile', 'invitation_card', 'qr_code']);
+
+        if ($request->hasFile('speaker_profile')) {
+            if ($event->speaker_profile) \Illuminate\Support\Facades\Storage::disk('public')->delete($event->speaker_profile);
+            $data['speaker_profile'] = $request->file('speaker_profile')->store('events/speakers', 'public');
+        }
+        if ($request->hasFile('invitation_card')) {
+            if ($event->invitation_card) \Illuminate\Support\Facades\Storage::disk('public')->delete($event->invitation_card);
+            $data['invitation_card'] = $request->file('invitation_card')->store('events/invitations', 'public');
+        }
+        if ($request->hasFile('qr_code')) {
+            if ($event->qr_code) \Illuminate\Support\Facades\Storage::disk('public')->delete($event->qr_code);
+            $data['qr_code'] = $request->file('qr_code')->store('events/qr', 'public');
+        }
+
+        $event->update($data);
+
+        return back()->with('success', app()->getLocale() == 'ar' ? 'تم تحديث الفعالية بنجاح.' : 'Event updated successfully.');
+    }
+
+    public function destroyEvent($id)
+    {
+        $event = \App\Models\Event::findOrFail($id);
+        if ($event->speaker_profile) \Illuminate\Support\Facades\Storage::disk('public')->delete($event->speaker_profile);
+        if ($event->invitation_card) \Illuminate\Support\Facades\Storage::disk('public')->delete($event->invitation_card);
+        if ($event->qr_code) \Illuminate\Support\Facades\Storage::disk('public')->delete($event->qr_code);
+        $event->delete();
+        return back()->with('success', app()->getLocale() == 'ar' ? 'تم حذف الفعالية بنجاح.' : 'Event deleted successfully.');
     }
 
     public function destroyProject($id)
