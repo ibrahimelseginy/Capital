@@ -135,8 +135,8 @@ dialog {
 
 /* Selection */
 ::selection {
-  background-color: var(--color-primary-light);
-  color: var(--text-primary);
+  background-color: var(--action-primary);
+  color: var(--text-on-primary);
 }
 
 /* Scrollbar */
