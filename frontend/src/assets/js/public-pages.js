@@ -395,7 +395,6 @@ function investorsPublicPage() {
     </div>
   </section>`;
 }
-}
 
 // ════════════════════════════════════════
 // BLOGS DATA & HELPERS
