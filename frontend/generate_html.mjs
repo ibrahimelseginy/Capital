@@ -1,12 +1,8 @@
+import './setup-mocks.js';
 import fs from 'fs';
 import { homePage } from './src/assets/js/pages/home.js';
 import { loginPage, registerPage } from './src/assets/js/pages/auth.js';
 import { investorDashboardPage } from './src/assets/js/pages/dashboard-investor.js';
-
-// Setup basic mocking for LangManager if needed by the scripts
-global.window = {
-  location: { hash: '' }
-};
 
 try {
   // Generate Home HTML

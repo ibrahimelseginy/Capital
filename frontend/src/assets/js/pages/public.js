@@ -101,41 +101,43 @@ export function partnersPage() {
   const searchScript = `const q=this.value.toLowerCase(); document.querySelectorAll('.partner-item').forEach(i => i.style.display = i.dataset.name.toLowerCase().includes(q) ? 'block' : 'none');`;
 
   return `
-  <section class="section" style="padding-top:calc(var(--header-height) + var(--space-8))">
-    <div class="container-content">
+  <section class="section partners-section" style="padding-top:calc(var(--header-height) + var(--space-8)); position: relative; overflow: hidden;">
+    <div class="page-header-glow"></div>
+    <div class="container-content" style="position: relative; z-index: 1;">
       <div class="section-header reveal">
         <div class="gold-line"></div>
         <h1 class="text-h1">${t('nav_partners')}</h1>
         <p class="text-body-lg text-secondary">${t('partners_subtitle')}</p>
       </div>
 
-      <!-- Filters -->
-      <div class="d-flex gap-3 flex-wrap mb-8 reveal" id="partners-filters">
-        ${filters.map((f, i) => `<button class="chip ${i === 0 ? 'active' : ''}" onclick="${filterScript}">${f}</button>`).join('')}
-      </div>
-
-      <!-- Search -->
-      <div class="mb-8 reveal" style="max-width:400px;">
-        <input type="text" class="form-input" placeholder="${searchPlaceholder}" onkeyup="${searchScript}">
+      <!-- Control Bar -->
+      <div class="partners-control-bar reveal">
+        <div class="partners-search-wrapper">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="partners-search-icon"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          <input type="text" class="form-input search-input" placeholder="${searchPlaceholder}" onkeyup="${searchScript}">
+        </div>
+        <div class="partners-filters-wrapper" id="partners-filters">
+          ${filters.map((f, i) => `<button class="chip ${i === 0 ? 'active' : ''}" onclick="${filterScript}">${f}</button>`).join('')}
+        </div>
       </div>
 
       <!-- Featured Partners -->
-      <div class="mb-12 reveal">
-        <h2 class="text-h3 mb-6">${featuredTitle}</h2>
+      <div class="mb-16 reveal">
+        <h2 class="text-h3 mb-8 featured-section-title">${featuredTitle}</h2>
         <div class="grid-3">
           ${featured.map(p => `
-          <a href="#/partner/${p.enName}" class="card card-hover partner-item" data-category="${p.cat}" data-name="${p.name}">
-            <div style="height:120px;background:var(--bg-secondary);display:flex;align-items:center;justify-content:center;padding:var(--space-4)">
-              <img src="images/${p.img}.png" class="partner-logo-img" alt="${p.name}" style="max-height:60px">
+          <a href="#/partner/${p.enName}" class="card card-hover partner-item partner-featured-card" data-category="${p.cat}" data-name="${p.name}">
+            <div class="partner-logo-container">
+              <img src="images/${p.img}.png" class="partner-logo-img" alt="${p.name}">
             </div>
             <div class="card-body">
-              <div class="d-flex gap-2 mb-3">
+              <div class="d-flex gap-2 mb-3 items-center">
                 <span class="badge badge-primary">${p.cat}</span>
                 <span class="badge badge-success badge-dot">${activeText}</span>
               </div>
               <h3 class="text-h5 mb-2">${p.name}</h3>
               <p class="text-body-sm text-secondary">${p.desc}</p>
-              <div class="d-flex items-center gap-2 mt-3 text-caption text-tertiary">
+              <div class="d-flex items-center gap-2 mt-4 text-caption text-tertiary">
                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
                 ${p.loc}
               </div>
@@ -145,14 +147,14 @@ export function partnersPage() {
       </div>
 
       <!-- All Partners Grid -->
-      <h2 class="text-h3 mb-6 reveal">${allTitle}</h2>
+      <h2 class="text-h3 mb-8 all-section-title reveal">${allTitle}</h2>
       <div class="grid-4 reveal">
         ${allPartners.map(p => `
-        <a href="#/partner/${p.enName}" class="card card-hover partner-item" data-category="${p.cat}" data-name="${p.name}">
-          <div style="height:100px;background:var(--bg-secondary);display:flex;align-items:center;justify-content:center;padding:var(--space-4)">
-            <img src="images/${p.img}.png" class="partner-logo-img" alt="${p.name}" style="max-height:40px">
+        <a href="#/partner/${p.enName}" class="card card-hover partner-item partner-general-card" data-category="${p.cat}" data-name="${p.name}">
+          <div class="partner-general-logo-container">
+            <img src="images/${p.img}.png" class="partner-logo-img" alt="${p.name}">
           </div>
-          <div class="card-body" style="padding:var(--space-4)">
+          <div class="card-body" style="padding:var(--space-5)">
             <span class="badge badge-neutral" style="font-size:10px;">${p.cat}</span>
             <h4 class="text-label mt-2">${p.name}</h4>
           </div>
@@ -298,40 +300,41 @@ export function investorsPublicPage() {
   const finalBtn = isAr ? "بدء طلب المستثمر" : "Begin Investor Application";
 
   return `
-  <section class="section" style="padding-top:calc(var(--header-height) + var(--space-8))">
-    <div class="container-content">
+  <section class="section investors-section" style="padding-top:calc(var(--header-height) + var(--space-8)); position: relative; overflow: hidden;">
+    <div class="page-header-glow"></div>
+    <div class="container-content" style="position: relative; z-index: 1;">
       <!-- Hero -->
-      <div class="text-center mb-16 reveal" style="max-width:700px;margin-inline:auto">
+      <div class="text-center mb-20 reveal" style="max-width:800px;margin-inline:auto">
         <div class="gold-line mx-auto mb-4"></div>
-        <h1 class="text-display-xl mb-4">${heroTitle}</h1>
+        <h1 class="text-display-xl mb-4 investors-hero-title">${heroTitle}</h1>
         <p class="text-body-lg text-secondary">${heroDesc}</p>
-        <div class="d-flex gap-4 justify-center mt-8">
+        <div class="d-flex gap-4 justify-center mt-10 flex-wrap">
           <a href="#/onboarding/investor" class="btn btn-primary btn-lg">${btnInvest}</a>
           <a href="#/login" class="btn btn-secondary btn-lg">${btnLogin}</a>
         </div>
       </div>
 
       <!-- Investment Model -->
-      <div class="grid-2 mb-16" style="gap:var(--space-10)">
+      <div class="grid-2 mb-20" style="gap:var(--space-12)">
         <div class="reveal">
           <h2 class="text-h2 mb-4">${modelTitle}</h2>
-          <p class="text-body text-secondary mb-6" style="line-height:1.8">${modelDesc}</p>
-          <div class="d-flex flex-col gap-4">
+          <p class="text-body text-secondary mb-8" style="line-height:1.8">${modelDesc}</p>
+          <div class="d-flex flex-col gap-6">
             ${modelFeatures.map(([title, desc]) => `
-            <div class="d-flex gap-3">
-              <div style="width:8px;height:8px;border-radius:50%;background:var(--action-primary);margin-top:8px;flex-shrink:0"></div>
-              <div><div class="text-label mb-1">${title}</div><div class="text-body-sm text-secondary">${desc}</div></div>
+            <div class="d-flex gap-4 items-start">
+              <div class="model-bullet"></div>
+              <div><div class="text-label mb-1" style="font-weight:var(--weight-bold);">${title}</div><div class="text-body-sm text-secondary" style="line-height:1.6;">${desc}</div></div>
             </div>`).join('')}
           </div>
         </div>
         <div class="reveal">
-          <div class="card" style="padding:var(--space-8);background:var(--bg-secondary)">
-            <h3 class="text-h4 mb-6">${whyTitle}</h3>
-            <div class="d-flex flex-col gap-5">
+          <div class="card investors-stats-card" style="padding:var(--space-8);">
+            <h3 class="text-h4 mb-8" style="font-weight:var(--weight-bold);">${whyTitle}</h3>
+            <div class="d-flex flex-col gap-6">
               ${whyStats.map(([val, label]) => `
-              <div class="d-flex items-center gap-4">
-                <div class="text-h3 text-accent" style="min-width:80px;font-variant-numeric:tabular-nums">${val}</div>
-                <div class="text-body-sm text-secondary">${label}</div>
+              <div class="d-flex items-center gap-6 stat-row">
+                <div class="text-h2 stat-value" style="min-width:100px;font-variant-numeric:tabular-nums">${val}</div>
+                <div class="text-body-sm text-secondary" style="font-weight:var(--weight-medium);">${label}</div>
               </div>`).join('')}
             </div>
           </div>
@@ -339,48 +342,48 @@ export function investorsPublicPage() {
       </div>
 
       <!-- Project Categories -->
-      <div class="mb-16 reveal">
+      <div class="mb-20 reveal">
         <div class="section-header center"><div class="gold-line"></div><h2>${sectorsTitle}</h2><p class="text-body-lg text-secondary">${sectorsDesc}</p></div>
-        <div class="grid-4 mt-8">
+        <div class="grid-4 mt-10">
           ${sectorsList.map(s => `
-          <div class="card card-hover text-center" style="padding:var(--space-6)">
-            <div style="width:48px;height:48px;border-radius:var(--radius-lg);background:var(--color-primary-lighter);display:flex;align-items:center;justify-content:center;margin:0 auto var(--space-3);color:var(--action-primary)">
+          <div class="card card-hover text-center sector-card" style="padding:var(--space-8)">
+            <div class="sector-icon-container">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="14" rx="2"/><path d="M12 6V2"/></svg>
             </div>
-            <div class="text-label">${s}</div>
+            <div class="text-label" style="font-weight:var(--weight-bold);">${s}</div>
           </div>`).join('')}
         </div>
       </div>
 
       <!-- NDA Requirement -->
-      <div class="card reveal" style="padding:var(--space-8);border-color:var(--accent-gold);background:var(--color-gold-light)">
-        <div class="d-flex gap-4 items-start">
-          <div style="width:48px;height:48px;border-radius:50%;background:var(--accent-gold);display:flex;align-items:center;justify-content:center;color:white;flex-shrink:0">
+      <div class="card reveal investors-nda-card" style="padding:var(--space-8);">
+        <div class="d-flex gap-5 items-start flex-wrap">
+          <div class="nda-icon-container">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
           </div>
-          <div>
-            <h3 class="text-h5 mb-2">${ndaTitle}</h3>
-            <p class="text-body-sm text-secondary">${ndaDesc}</p>
+          <div style="flex:1; min-width:280px;">
+            <h3 class="text-h4 mb-2" style="font-weight:var(--weight-bold);">${ndaTitle}</h3>
+            <p class="text-body-sm text-secondary" style="line-height:1.6;">${ndaDesc}</p>
           </div>
         </div>
       </div>
 
       <!-- FAQ -->
-      <div class="mt-16 reveal">
+      <div class="mt-20 reveal">
         <div class="section-header center"><div class="gold-line"></div><h2>${faqTitle}</h2></div>
-        <div class="container-narrow mt-8">
+        <div class="container-narrow mt-10">
           ${faqList.map(([q, a]) => `
-          <div class="accordion-item">
-            <button class="accordion-trigger">${q}<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></button>
-            <div class="accordion-content"><div class="accordion-body">${a}</div></div>
+          <div class="accordion-item investors-faq-item">
+            <button class="accordion-trigger" style="font-weight:var(--weight-bold);">${q}<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></button>
+            <div class="accordion-content"><div class="accordion-body" style="line-height:1.7;">${a}</div></div>
           </div>`).join('')}
         </div>
       </div>
 
       <!-- Final CTA -->
-      <div class="text-center mt-16 py-12 reveal">
-        <h2 class="text-h2 mb-4">${finalTitle}</h2>
-        <p class="text-body-lg text-secondary mb-8 mx-auto" style="max-width:480px">${finalDesc}</p>
+      <div class="text-center mt-20 py-16 reveal">
+        <h2 class="text-h2 mb-4" style="font-weight:var(--weight-bold);">${finalTitle}</h2>
+        <p class="text-body-lg text-secondary mb-10 mx-auto" style="max-width:540px">${finalDesc}</p>
         <a href="#/onboarding/investor" class="btn btn-primary btn-lg">${finalBtn}</a>
       </div>
     </div>
@@ -463,8 +466,9 @@ export function blogsPage() {
   const allTags = [...new Set(articles.flatMap(a => a.tags || []))];
 
   return `
-  <section class="section" style="padding-top:calc(var(--header-height) + var(--space-8))">
-    <div class="container-content">
+  <section class="section events-section" style="padding-top:calc(var(--header-height) + var(--space-8)); position: relative; overflow: hidden;">
+    <div class="page-header-glow"></div>
+    <div class="container-content" style="position: relative; z-index: 1;">
       <div class="section-header reveal">
         <div class="gold-line"></div>
         <h1 class="text-h1">${t('nav_blogs')}</h1>
@@ -472,7 +476,7 @@ export function blogsPage() {
       </div>
 
       <!-- Search & Categories & HashTags -->
-      <div class="d-flex justify-between items-center flex-wrap gap-4 mb-4 reveal">
+      <div class="d-flex justify-between items-center flex-wrap gap-4 mb-6 reveal">
         <div class="d-flex gap-3 flex-wrap" style="overflow-x:auto">
           ${categories.map((c, i) => `<button class="chip blog-cat-filter ${i === 0 ? 'active' : ''}" onclick="window.filterBlogsByCat(this, '${c}')">${c}</button>`).join('')}
         </div>
@@ -500,7 +504,7 @@ export function blogsPage() {
               <div class="blog-card-author pt-3" style="border-top:1px solid var(--border-subtle)">
                 <div class="blog-card-author-avatar" style="background-color:var(--action-primary);width:28px;height:28px;color:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:bold">${a.author[0]}</div>
                 <div>
-                  <div class="text-caption">${a.author}</div>
+                  <div class="text-caption" style="font-weight:var(--weight-bold);">${a.author}</div>
                   <div class="text-caption text-tertiary">${a.date} · ${a.time} ${isAr ? 'دقائق' : 'min'}</div>
                 </div>
               </div>
@@ -512,9 +516,6 @@ export function blogsPage() {
   </section>`;
 }
 
-// ════════════════════════════════════════
-// BLOG DETAIL (WITH MULTIMEDIA & HASHTAG PARSING)
-// ════════════════════════════════════════
 export function blogDetailPage(params) {
   const isAr = LangManager.currentLang === 'ar';
   const articles = getArticles(isAr);
@@ -527,17 +528,17 @@ export function blogDetailPage(params) {
   const mediaHtml = (article.media || []).map(m => {
     switch (m.type) {
       case 'image':
-        return `<img src="${m.url}" alt="Media" style="width:100%;border-radius:var(--radius-xl);margin-bottom:var(--space-6)">`;
+        return `<img src="${m.url}" alt="Media" style="width:100%;border-radius:var(--radius-xl);margin-bottom:var(--space-6);box-shadow:var(--shadow-md)">`;
       case 'gallery':
-        return `<div class="grid-2 mb-6" style="gap:var(--space-4)">${m.urls.map(u => `<div style="height:200px;background:url('${u}') center/cover;border-radius:var(--radius-lg)"></div>`).join('')}</div>`;
+        return `<div class="grid-2 mb-6" style="gap:var(--space-4)">${m.urls.map(u => `<div style="height:200px;background:url('${u}') center/cover;border-radius:var(--radius-lg);box-shadow:var(--shadow-sm)"></div>`).join('')}</div>`;
       case 'video':
-        return `<video controls style="width:100%;border-radius:var(--radius-xl);margin-bottom:var(--space-6);background:#000"><source src="${m.url}" type="video/mp4"></video>`;
+        return `<video controls style="width:100%;border-radius:var(--radius-xl);margin-bottom:var(--space-6);background:#000;box-shadow:var(--shadow-md)"><source src="${m.url}" type="video/mp4"></video>`;
       case 'youtube':
-        return `<div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:var(--radius-xl);margin-bottom:var(--space-6)"><iframe src="${m.url}" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allowfullscreen></iframe></div>`;
+        return `<div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:var(--radius-xl);margin-bottom:var(--space-6);box-shadow:var(--shadow-md)"><iframe src="${m.url}" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allowfullscreen></iframe></div>`;
       case 'file':
         return `<a href="${m.url}" download class="card card-hover mb-6" style="padding:var(--space-4);display:flex;align-items:center;gap:var(--space-4);border-radius:var(--radius-lg);text-decoration:none">
           <div style="width:48px;height:48px;border-radius:var(--radius-md);background:var(--color-primary-lighter);color:var(--action-primary);display:flex;align-items:center;justify-content:center"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><polyline points="9 15 12 18 15 15"/></svg></div>
-          <div><div class="text-label">${isAr?'تحميل الملف المرفق':'Download Attached File'}</div><div class="text-caption text-secondary">${m.name}</div></div>
+          <div><div class="text-label" style="font-weight:var(--weight-bold);">${isAr?'تحميل الملف المرفق':'Download Attached File'}</div><div class="text-caption text-secondary">${m.name}</div></div>
         </a>`;
       default: return '';
     }
@@ -553,7 +554,7 @@ export function blogDetailPage(params) {
         ${(article.tags||[]).map(t => `<a href="#/blogs" onclick="setTimeout(()=>window.filterBlogsByTag('${t}'),100)" class="badge badge-neutral" style="text-decoration:none">${t}</a>`).join('')}
       </div>
       
-      <h1 class="text-display-lg mt-2 mb-6">${article.title}</h1>
+      <h1 class="text-display-sm mt-2 mb-6" style="font-weight:var(--weight-bold);line-height:1.3">${article.title}</h1>
       
       <div class="blog-card-author mb-8 pb-8" style="border-bottom:1px solid var(--border-subtle)">
         <div class="blog-card-author-avatar" style="background:var(--action-primary);width:48px;height:48px;color:white;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:bold">${article.author[0]}</div>
@@ -574,11 +575,11 @@ export function blogDetailPage(params) {
       
       <!-- Newsletter -->
       <div class="newsletter-section" style="padding:var(--space-8);background:var(--bg-secondary);border-radius:var(--radius-xl);text-align:center">
-        <h3 class="text-h4 mb-2">${isAr?'هل أعجبك المقال؟':'Enjoyed this article?'}</h3>
+        <h3 class="text-h4 mb-2" style="font-weight:var(--weight-bold);">${isAr?'هل أعجبك المقال؟':'Enjoyed this article?'}</h3>
         <p class="text-body-sm text-secondary mb-6">${isAr?'اشترك للحصول على المزيد من الرؤى.':'Subscribe for more insights.'}</p>
         <form class="newsletter-form mx-auto" style="max-width:400px;display:flex;gap:var(--space-2)" onsubmit="return false">
           <input type="email" class="form-input flex-1" placeholder="${isAr?'البريد الإلكتروني':'Email address'}" style="border-radius:var(--radius-lg)">
-          <button class="btn btn-primary" style="border-radius:var(--radius-lg)">${isAr?'اشتراك':'Subscribe'}</button>
+          <button class="btn btn-primary" style="border-radius:var(--radius-lg); font-weight:var(--weight-semibold);">${isAr?'اشتراك':'Subscribe'}</button>
         </form>
       </div>
     </div>
@@ -611,16 +612,25 @@ export function eventsPage() {
   const filtersCats = isAr ? ['يوم عروض', 'ندوة', 'ورشة عمل', 'مؤتمر', 'تعارف'] : ['Demo Day', 'Webinar', 'Workshop', 'Conference', 'Networking'];
 
   return `
-  <section class="section" style="padding-top:calc(var(--header-height) + var(--space-8))">
-    <div class="container-content">
-      <div class="section-header reveal"><div class="gold-line"></div><h1 class="text-h1">${t('nav_events')}</h1><p class="text-body-lg text-secondary">${titleText}</p></div>
-      <!-- Filters -->
-      <div class="d-flex gap-3 flex-wrap mb-4 reveal filters-time">
-        ${filtersAll.map((f, i) => `<button class="chip ${i===0?'active':''}" data-val="${f}" onclick="window.filterEvents(this, 'time', '${f}')">${f}</button>`).join('')}
+  <section class="section events-section" style="padding-top:calc(var(--header-height) + var(--space-8)); position: relative; overflow: hidden;">
+    <div class="page-header-glow"></div>
+    <div class="container-content" style="position: relative; z-index: 1;">
+      <div class="section-header reveal">
+        <div class="gold-line"></div>
+        <h1 class="text-h1">${t('nav_events')}</h1>
+        <p class="text-body-lg text-secondary">${titleText}</p>
       </div>
-      <div class="d-flex gap-3 flex-wrap mb-8 reveal filters-cat">
-        ${filtersCats.map(f => `<button class="chip" data-val="${f}" onclick="window.filterEvents(this, 'cat', '${f}')">${f}</button>`).join('')}
+
+      <!-- Events Control Bar -->
+      <div class="events-control-bar reveal">
+        <div class="filters-time-wrapper filters-time">
+          ${filtersAll.map((f, i) => `<button class="chip ${i===0?'active':''}" data-val="${f}" onclick="window.filterEvents(this, 'time', '${f}')">${f}</button>`).join('')}
+        </div>
+        <div class="filters-cats-wrapper filters-cat">
+          ${filtersCats.map(f => `<button class="chip" data-val="${f}" onclick="window.filterEvents(this, 'cat', '${f}')">${f}</button>`).join('')}
+        </div>
       </div>
+
       <!-- Events Grid -->
       <div class="grid-3 reveal">
         ${events.map((e, i) => `
@@ -630,20 +640,18 @@ export function eventsPage() {
           </div>
           <div class="event-card-body">
             <div class="event-card-meta">
-              <span><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>${e.loc}</span>
               <span class="badge ${e.status==='Invitation Only' || e.status==='دعوة فقط'?'badge-gold':'badge-primary'}">${e.cat}</span>
+              <span class="event-loc"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>${e.loc}</span>
             </div>
             <h3>${e.title}</h3>
-            <div class="d-flex gap-2 mt-3"><span class="badge badge-neutral">${e.type}</span><span class="badge ${e.status.includes('Open') || e.status.includes('مفتوح')?'badge-success':'badge-neutral'} badge-dot">${e.status}</span></div>
+            <div class="d-flex gap-2 mt-4"><span class="badge badge-neutral">${e.type}</span><span class="badge ${e.status.includes('Open') || e.status.includes('مفتوح')?'badge-success':'badge-neutral'} badge-dot">${e.status}</span></div>
           </div>
         </a>`).join('')}
       </div>
     </div>
   </section>`;
 }
-// ════════════════════════════════════════
-// EVENT DETAIL
-// ════════════════════════════════════════
+
 export function eventDetailPage(params) {
   const isAr = LangManager.currentLang === 'ar';
   
@@ -697,46 +705,67 @@ export function eventDetailPage(params) {
   const sep = isAr ? "، " : ", ";
 
   return `
-  <section class="section" style="padding-top:calc(var(--header-height) + var(--space-8))">
-    <div class="container-content">
+  <section class="section event-detail-hero" style="padding-top:calc(var(--header-height) + var(--space-8))">
+    <div class="event-detail-hero-glow"></div>
+    <div class="container-content" style="position:relative; z-index:1;">
       <div class="breadcrumbs mb-6"><a href="#/events">${navEvents}</a><span class="breadcrumb-separator">›</span><span class="current">${evTitle}</span></div>
-      <div class="grid-12" style="gap:var(--space-10)">
-        <div style="grid-column:span 8">
-          <div style="height:360px;background:linear-gradient(135deg, #111 0%, #333 100%);border-radius:var(--radius-xl);margin-bottom:var(--space-8)"></div>
-          <div class="d-flex gap-2 mb-4"><span class="badge badge-primary">${evCat}</span><span class="badge badge-success badge-dot">${evStatus}</span><span class="badge badge-neutral">${evType}</span></div>
-          <h1 class="text-h1 mb-4">${evTitle}</h1>
-          <p class="text-body-lg text-secondary mb-8">${evDesc}</p>
+      
+      <div class="event-detail-grid">
+        <div>
+          <div style="height:380px;background:url('assets/images/event-demo-day.png') center/cover;border-radius:var(--radius-2xl);margin-bottom:var(--space-8);box-shadow:var(--shadow-md)"></div>
+          <div class="d-flex gap-2 mb-4 flex-wrap"><span class="badge badge-primary">${evCat}</span><span class="badge badge-success badge-dot">${evStatus}</span><span class="badge badge-neutral">${evType}</span></div>
+          <h1 class="text-display-sm mb-4" style="font-weight:var(--weight-bold);">${evTitle}</h1>
+          <p class="text-body-lg text-secondary mb-10" style="line-height:1.8">${evDesc}</p>
           
           <!-- Agenda -->
-          <h2 class="text-h3 mb-6">${agendaTitle}</h2>
+          <h2 class="text-h3 mb-6" style="font-weight:var(--weight-bold);">${agendaTitle}</h2>
           <div class="tabs mb-6"><button class="tab active" data-tab="day1">${day1Tab}</button></div>
-          <div data-tab-content="day1">
+          <div data-tab-content="day1" class="timeline-container">
             ${agendaItems.map(([start, end, title, speaker]) => `
-            <div class="d-flex gap-4 py-4 border-b">
-              <div class="text-body-sm text-secondary" style="min-width:100px;font-variant-numeric:tabular-nums">${start} – ${end}</div>
-              <div class="flex-1"><div class="text-label">${title}</div>${speaker !== '—' ? `<div class="text-caption text-secondary mt-1">${speaker}</div>` : ''}</div>
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <div class="timeline-time">${start} – ${end}</div>
+              <div class="timeline-content-card">
+                <div class="text-label" style="font-weight:var(--weight-bold);">${title}</div>
+                ${speaker !== '—' ? `<div class="text-caption text-secondary mt-1">${speaker}</div>` : ''}
+              </div>
             </div>`).join('')}
           </div>
 
           <!-- Speakers -->
-          <h2 class="text-h3 mt-10 mb-6">${speakersTitle}</h2>
-          <div class="grid-3">
+          <h2 class="text-h3 mt-12 mb-8" style="font-weight:var(--weight-bold);">${speakersTitle}</h2>
+          <div class="grid-3 gap-6">
             ${speakers.map(s => {
               const [name, role, org] = s.split('|');
-              return `<div class="card text-center" style="padding:var(--space-6)"><div style="width:64px;height:64px;border-radius:50%;background:var(--action-primary);margin:0 auto var(--space-3)"></div><div class="text-label">${name}</div><div class="text-caption text-secondary">${role}${sep}${org}</div></div>`;
+              return `
+              <div class="card text-center speaker-card" style="padding:var(--space-6); border-radius:var(--radius-xl)">
+                <div class="speaker-avatar-circle mx-auto">${name[0]}</div>
+                <div class="text-label" style="font-weight:var(--weight-bold);">${name}</div>
+                <div class="text-caption text-secondary mt-1">${role}${sep}${org}</div>
+              </div>`;
             }).join('')}
           </div>
         </div>
-        <aside style="grid-column:span 4">
-          <div class="card" style="padding:var(--space-6);position:sticky;top:calc(var(--header-height) + var(--space-6))">
-            <h3 class="text-h5 mb-4">${detailsTitle}</h3>
-            <div class="d-flex flex-col gap-4 mb-6">
-              <div class="d-flex gap-3 items-center"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></svg><div><div class="text-body-sm">${dateStr}</div><div class="text-caption text-secondary">${timeStr}</div></div></div>
-              <div class="d-flex gap-3 items-center"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg><div><div class="text-body-sm">${locStr}</div><div class="text-caption text-secondary">${venueStr}</div></div></div>
-              <div class="d-flex gap-3 items-center"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><div><div class="text-body-sm">${seatsStr}</div><div class="text-caption text-secondary">${remStr}</div></div></div>
+
+        <aside>
+          <div class="event-meta-sidebar-card">
+            <h3 class="text-h4 mb-6" style="font-weight:var(--weight-bold);">${detailsTitle}</h3>
+            <div class="d-flex flex-col gap-6 mb-8">
+              <div class="d-flex gap-4 items-start">
+                <div style="color:var(--action-primary); padding-top:2px;"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/><path d="M8 2v4"/><path d="M16 2v4"/></svg></div>
+                <div><div class="text-body-sm" style="font-weight:var(--weight-semibold);">${dateStr}</div><div class="text-caption text-secondary mt-1">${timeStr}</div></div>
+              </div>
+              <div class="d-flex gap-4 items-start">
+                <div style="color:var(--action-primary); padding-top:2px;"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></div>
+                <div><div class="text-body-sm" style="font-weight:var(--weight-semibold);">${locStr}</div><div class="text-caption text-secondary mt-1">${venueStr}</div></div>
+              </div>
+              <div class="d-flex gap-4 items-start">
+                <div style="color:var(--action-primary); padding-top:2px;"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+                <div><div class="text-body-sm" style="font-weight:var(--weight-semibold);">${seatsStr}</div><div class="text-caption text-secondary mt-1">${remStr}</div></div>
+              </div>
             </div>
-            <a href="#/register-event" class="btn btn-primary w-full mb-3">${btnReg}</a>
-            <button class="btn btn-secondary w-full">${btnCal}</button>
+            <a href="#/register-event" class="btn btn-primary w-full mb-3" style="border-radius:var(--radius-lg); padding: 1rem; font-weight: var(--weight-bold); text-align:center; display:block;">${btnReg}</a>
+            <button class="btn btn-secondary w-full" style="border-radius:var(--radius-lg); padding: 1rem;">${btnCal}</button>
           </div>
         </aside>
       </div>
@@ -827,7 +856,7 @@ export function jobsPage() {
     ['📈','Grow Fast','Cross-functional experience across ventures']
   ];
 
-  const filterDepts = isAr ? ['جميع الأقسام','التصميم','الهندسة','التسويق','العمليات','البيانات'] : ['All Departments','Design','Engineering','Marketing','Operations','Data'];
+  const filterDepts = isAr ? ['جميع الأقسام','التصميم','الهندسة','التسرييق','العمليات','البيانات'] : ['All Departments','Design','Engineering','Marketing','Operations','Data'];
   const filterLocs = isAr ? ['جميع المواقع','الرياض','دبي','عن بُعد'] : ['All Locations','Riyadh','Dubai','Remote'];
   const filterTypes = isAr ? ['جميع الأنواع','دوام كامل','عقد'] : ['All Types','Full-time','Contract'];
   
@@ -854,23 +883,24 @@ export function jobsPage() {
   ];
 
   return `
-  <section class="section" style="padding-top:calc(var(--header-height) + var(--space-8))">
-    <div class="container-content">
+  <section class="section events-section" style="padding-top:calc(var(--header-height) + var(--space-8)); position: relative; overflow: hidden;">
+    <div class="page-header-glow"></div>
+    <div class="container-content" style="position: relative; z-index: 1;">
       <div class="section-header reveal"><div class="gold-line"></div><h1 class="text-h1">${t('nav_jobs')}</h1><p class="text-body-lg text-secondary">${subtitle}</p></div>
       
       <!-- Culture -->
-      <div class="card mb-12 reveal text-center" style="padding:var(--space-12) var(--space-8);background:linear-gradient(135deg, #161616 0%, #2a2a2a 100%);color:white;border:1px solid rgba(255,255,255,0.1);box-shadow:0 20px 40px rgba(0,0,0,0.2)">
+      <div class="culture-panel mb-12 reveal text-center" style="padding:var(--space-12) var(--space-8);color:white;">
         <div class="gold-line mx-auto mb-6"></div>
-        <h2 class="text-h2 mb-4" style="color:white">${whyTitle}</h2>
+        <h2 class="text-h2 mb-4" style="color:white; font-weight:var(--weight-bold);">${whyTitle}</h2>
         <p class="text-body-lg mx-auto" style="color:rgba(255,255,255,0.7);max-width:600px;line-height:1.8">${whyDesc}</p>
         
         <div class="grid-3 mt-12" style="gap:var(--space-8)">
           ${perks.map(([emoji,title,desc]) => `
-          <div class="d-flex flex-col items-center text-center p-6" style="background:rgba(255,255,255,0.03);border-radius:var(--radius-lg);border:1px solid rgba(255,255,255,0.05);transition:transform 0.3s ease;padding:var(--space-6)" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
+          <div class="perk-card d-flex flex-col items-center text-center">
             <div style="width:72px;height:72px;border-radius:50%;background:rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:center;font-size:2.5rem;margin-bottom:var(--space-4);box-shadow:inset 0 0 20px rgba(255,255,255,0.02)">
               ${emoji}
             </div>
-            <h3 class="text-h5 mb-2" style="color:white">${title}</h3>
+            <h3 class="text-h5 mb-2" style="color:white; font-weight:var(--weight-bold);">${title}</h3>
             <p class="text-body-sm" style="color:rgba(255,255,255,0.6);line-height:1.6">${desc}</p>
           </div>`).join('')}
         </div>
@@ -878,31 +908,32 @@ export function jobsPage() {
 
       <!-- Filters -->
       <div class="d-flex gap-3 flex-wrap mb-8 reveal">
-        <select id="filter-dept" class="form-input form-select" style="max-width:180px" onchange="window.filterJobs()">${filterDepts.map(f => `<option value="${f}">${f}</option>`).join('')}</select>
-        <select id="filter-loc" class="form-input form-select" style="max-width:180px" onchange="window.filterJobs()">${filterLocs.map(f => `<option value="${f}">${f}</option>`).join('')}</select>
-        <select id="filter-type" class="form-input form-select" style="max-width:180px" onchange="window.filterJobs()">${filterTypes.map(f => `<option value="${f}">${f}</option>`).join('')}</select>
+        <select id="filter-dept" class="form-input form-select" style="max-width:200px" onchange="window.filterJobs()">${filterDepts.map(f => `<option value="${f}">${f}</option>`).join('')}</select>
+        <select id="filter-loc" class="form-input form-select" style="max-width:200px" onchange="window.filterJobs()">${filterLocs.map(f => `<option value="${f}">${f}</option>`).join('')}</select>
+        <select id="filter-type" class="form-input form-select" style="max-width:200px" onchange="window.filterJobs()">${filterTypes.map(f => `<option value="${f}">${f}</option>`).join('')}</select>
       </div>
 
-      <div class="d-flex flex-col gap-3 reveal">
+      <div class="d-flex flex-col gap-4 reveal">
         ${jobs.map(j => `
         <a href="#/job/${j.title.toLowerCase().replace(/[^a-z0-9\u0600-\u06FF]+/g,'-')}" class="job-preview-item" data-dept="${j.dept}" data-loc="${j.loc}" data-type="${j.type}">
           <div class="job-preview-info">
             <h4>${j.title}</h4>
             <div class="job-preview-meta">
               <span><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>${j.loc}</span>
-              <span>${j.type}</span><span>${j.dept}</span><span class="badge badge-neutral">${j.exp}</span>
+              <span>•</span>
+              <span>${j.type}</span>
+              <span>•</span>
+              <span>${j.dept}</span>
+              <span class="badge badge-neutral">${j.exp}</span>
             </div>
           </div>
-          <span class="btn btn-secondary btn-sm">${btnView}</span>
+          <span class="btn btn-secondary btn-sm" style="border-radius: var(--radius-lg);">${btnView}</span>
         </a>`).join('')}
       </div>
     </div>
   </section>`;
 }
 
-// ════════════════════════════════════════
-// JOB DETAIL + APPLICATION
-// ════════════════════════════════════════
 export function jobDetailPage(params) {
   const isAr = LangManager.currentLang === 'ar';
 
@@ -975,60 +1006,84 @@ export function jobDetailPage(params) {
   const btnApplyNow = isAr ? "تقدم الآن" : "Apply Now";
 
   return `
-  <section class="section" style="padding-top:calc(var(--header-height) + var(--space-8))">
-    <div class="container-content">
+  <section class="section events-section" style="padding-top:calc(var(--header-height) + var(--space-8)); position: relative; overflow: hidden;">
+    <div class="page-header-glow"></div>
+    <div class="container-content" style="position: relative; z-index: 1;">
       <div class="breadcrumbs mb-6"><a href="#/jobs">${navJobs}</a><span class="breadcrumb-separator">›</span><span class="current">${jobTitle}</span></div>
-      <div class="grid-12" style="gap:var(--space-10)">
-        <div style="grid-column:span 8">
-          <h1 class="text-h1 mb-2">${jobTitle}</h1>
+      
+      <div class="job-detail-grid">
+        <div>
+          <h1 class="text-display-sm mb-3" style="font-weight:var(--weight-bold);">${jobTitle}</h1>
           <div class="d-flex gap-3 flex-wrap mb-6 text-body-sm text-secondary">
             <span>${jobMeta}</span>
           </div>
           <div class="gold-line mb-8"></div>
-          <h2 class="text-h4 mb-4">${aboutTitle}</h2>
+          
+          <h2 class="text-h4 mb-4" style="font-weight:var(--weight-bold);">${aboutTitle}</h2>
           <p class="text-body text-secondary mb-8" style="line-height:1.8">${aboutDesc}</p>
-          <h3 class="text-h5 mb-3">${respTitle}</h3>
+          
+          <h3 class="text-h5 mb-4" style="font-weight:var(--weight-bold);">${respTitle}</h3>
           <ul style="list-style:disc;padding-inline-start:var(--space-6);color:var(--text-secondary)" class="mb-8">
-            ${respList.map(item => `<li class="mb-2">${item}</li>`).join('')}
+            ${respList.map(item => `<li class="mb-2" style="line-height:1.6;">${item}</li>`).join('')}
           </ul>
-          <h3 class="text-h5 mb-3">${reqTitle}</h3>
+          
+          <h3 class="text-h5 mb-4" style="font-weight:var(--weight-bold);">${reqTitle}</h3>
           <ul style="list-style:disc;padding-inline-start:var(--space-6);color:var(--text-secondary)" class="mb-8">
-            ${reqList.map(item => `<li class="mb-2">${item}</li>`).join('')}
+            ${reqList.map(item => `<li class="mb-2" style="line-height:1.6;">${item}</li>`).join('')}
           </ul>
 
           <!-- Application Form -->
-          <div id="apply-section" class="card mt-10" style="padding:var(--space-8)">
-            <h2 class="text-h3 mb-6">${applyTitle}</h2>
-            <form class="d-flex flex-col gap-5" onsubmit="event.preventDefault();this.querySelector('.btn-primary').textContent='${msgSuccess}';this.querySelector('.btn-primary').style.background='var(--color-success)'">
-              <div class="grid-2" style="gap:var(--space-4)">
-                <div class="form-group"><label class="form-label">${lblName} <span class="required">*</span></label><input type="text" class="form-input" required></div>
-                <div class="form-group"><label class="form-label">${lblEmail} <span class="required">*</span></label><input type="email" class="form-input" required></div>
+          <div id="apply-section" class="card mt-12" style="padding:var(--space-8); border-radius: var(--radius-2xl);">
+            <h2 class="text-h3 mb-6" style="font-weight:var(--weight-bold);">${applyTitle}</h2>
+            <form class="d-flex flex-col gap-6" onsubmit="event.preventDefault();this.querySelector('.btn-primary').textContent='${msgSuccess}';this.querySelector('.btn-primary').style.background='var(--color-success)'">
+              <div class="grid-2 gap-4">
+                <div class="form-group"><label class="form-label">${lblName} <span class="required">*</span></label><input type="text" class="form-input" style="border-radius: var(--radius-lg);" required></div>
+                <div class="form-group"><label class="form-label">${lblEmail} <span class="required">*</span></label><input type="email" class="form-input" style="border-radius: var(--radius-lg);" required></div>
               </div>
-              <div class="grid-2" style="gap:var(--space-4)">
-                <div class="form-group"><label class="form-label">${lblPhone}</label><input type="tel" class="form-input"></div>
-                <div class="form-group"><label class="form-label">${lblCountry}</label><input type="text" class="form-input"></div>
+              <div class="grid-2 gap-4">
+                <div class="form-group"><label class="form-label">${lblPhone}</label><input type="tel" class="form-input" style="border-radius: var(--radius-lg);"></div>
+                <div class="form-group"><label class="form-label">${lblCountry}</label><input type="text" class="form-input" style="border-radius: var(--radius-lg);"></div>
               </div>
-              <div class="form-group"><label class="form-label">${lblLinkedIn}</label><input type="url" class="form-input" placeholder="https://linkedin.com/in/..."></div>
-              <div class="form-group"><label class="form-label">${lblPortfolio}</label><input type="url" class="form-input" placeholder="https://..."></div>
-              <div class="form-group"><label class="form-label">${lblCV} <span class="required">*</span></label><div class="file-upload"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg><span class="text-body-sm">${txtDrop}</span><span class="text-caption text-tertiary">${txtSize}</span></div></div>
-              <div class="form-group"><label class="form-label">${lblCover}</label><textarea class="form-input" rows="4" placeholder="${txtCoverPlaceholder}"></textarea></div>
+              <div class="form-group"><label class="form-label">${lblLinkedIn}</label><input type="url" class="form-input" style="border-radius: var(--radius-lg);" placeholder="https://linkedin.com/in/..."></div>
+              <div class="form-group"><label class="form-label">${lblPortfolio}</label><input type="url" class="form-input" style="border-radius: var(--radius-lg);" placeholder="https://..."></div>
+              <div class="form-group"><label class="form-label">${lblCV} <span class="required">*</span></label><div class="file-upload" style="border-radius: var(--radius-xl);"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg><span class="text-body-sm">${txtDrop}</span><span class="text-caption text-tertiary">${txtSize}</span></div></div>
+              <div class="form-group"><label class="form-label">${lblCover}</label><textarea class="form-input" style="border-radius: var(--radius-lg);" rows="4" placeholder="${txtCoverPlaceholder}"></textarea></div>
               <div class="form-check"><input type="checkbox" class="form-check-input" required><span class="text-body-sm text-secondary">${txtConsent}</span></div>
-              <button type="submit" class="btn btn-primary btn-lg" style="align-self:flex-start">${btnSubmit}</button>
+              <button type="submit" class="btn btn-primary btn-lg" style="align-self:flex-start; border-radius: var(--radius-lg); font-weight: var(--weight-bold);">${btnSubmit}</button>
             </form>
           </div>
         </div>
-        <aside style="grid-column:span 4">
-          <div class="card" style="padding:var(--space-6);position:sticky;top:calc(var(--header-height) + var(--space-6))">
-            <h4 class="text-label mb-4">${infoTitle}</h4>
-            <div class="d-flex flex-col gap-4 mb-6">
-              <div><div class="text-caption text-secondary">${lblDept}</div><div class="text-body-sm">${valDept}</div></div>
-              <div><div class="text-caption text-secondary">${lblLoc}</div><div class="text-body-sm">${valLoc}</div></div>
-              <div><div class="text-caption text-secondary">${lblType}</div><div class="text-body-sm">${valType}</div></div>
-              <div><div class="text-caption text-secondary">${lblEmp}</div><div class="text-body-sm">${valEmp}</div></div>
-              <div><div class="text-caption text-secondary">${lblExp}</div><div class="text-body-sm">${valExp}</div></div>
-              <div><div class="text-caption text-secondary">${lblDeadline}</div><div class="text-body-sm">${valDeadline}</div></div>
+        
+        <aside>
+          <div class="job-apply-card">
+            <h4 class="text-h4 mb-6" style="font-weight:var(--weight-bold);">${infoTitle}</h4>
+            <div class="d-flex flex-col gap-5 mb-8">
+              <div class="d-flex justify-between items-center py-2 border-b border-subtle">
+                <span class="text-caption text-secondary">${lblDept}</span>
+                <span class="text-body-sm" style="font-weight:var(--weight-semibold);">${valDept}</span>
+              </div>
+              <div class="d-flex justify-between items-center py-2 border-b border-subtle">
+                <span class="text-caption text-secondary">${lblLoc}</span>
+                <span class="text-body-sm" style="font-weight:var(--weight-semibold);">${valLoc}</span>
+              </div>
+              <div class="d-flex justify-between items-center py-2 border-b border-subtle">
+                <span class="text-caption text-secondary">${lblType}</span>
+                <span class="text-body-sm" style="font-weight:var(--weight-semibold);">${valType}</span>
+              </div>
+              <div class="d-flex justify-between items-center py-2 border-b border-subtle">
+                <span class="text-caption text-secondary">${lblEmp}</span>
+                <span class="text-body-sm" style="font-weight:var(--weight-semibold);">${valEmp}</span>
+              </div>
+              <div class="d-flex justify-between items-center py-2 border-b border-subtle">
+                <span class="text-caption text-secondary">${lblExp}</span>
+                <span class="text-body-sm" style="font-weight:var(--weight-semibold);">${valExp}</span>
+              </div>
+              <div class="d-flex justify-between items-center py-2 border-b border-subtle">
+                <span class="text-caption text-secondary">${lblDeadline}</span>
+                <span class="text-body-sm" style="font-weight:var(--weight-semibold);">${valDeadline}</span>
+              </div>
             </div>
-            <a href="#apply-section" class="btn btn-primary w-full">${btnApplyNow}</a>
+            <a href="#apply-section" class="btn btn-primary w-full" style="border-radius: var(--radius-lg); padding:1rem; font-weight:var(--weight-bold); text-align:center; display:block;">${btnApplyNow}</a>
           </div>
         </aside>
       </div>
@@ -1095,88 +1150,7 @@ export function branchesPage() {
   ];
 
   return `
-  <style>
-    @keyframes branchSlideUp {
-      0% { opacity: 0; transform: translateY(30px); }
-      100% { opacity: 1; transform: translateY(0); }
-    }
-    .branch-card-premium {
-      background: var(--bg-surface);
-      border: 1px solid var(--border-default);
-      border-radius: var(--radius-xl);
-      padding: var(--space-8);
-      position: relative;
-      overflow: hidden;
-      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      z-index: 1;
-    }
-    .branch-card-premium::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: linear-gradient(135deg, rgba(255,255,255,0.02) 0%, transparent 100%);
-      z-index: -1;
-    }
-    .branch-card-premium:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 24px 48px rgba(0,0,0,0.12);
-      border-color: var(--action-primary);
-    }
-    .branch-map-bg {
-      position: absolute;
-      top: -20%; right: -20%;
-      width: 250px; height: 250px;
-      opacity: 0.03;
-      background-image: radial-gradient(circle, currentColor 2px, transparent 2px);
-      background-size: 20px 20px;
-      z-index: -1;
-      border-radius: 50%;
-      transition: transform 0.6s ease, opacity 0.6s ease;
-    }
-    .branch-card-premium:hover .branch-map-bg {
-      transform: scale(1.3) rotate(15deg);
-      opacity: 0.08;
-      color: var(--action-primary);
-    }
-    .contact-glass {
-      background: rgba(255, 255, 255, 0.02);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
-      border: 1px solid rgba(255, 255, 255, 0.05);
-      border-radius: var(--radius-2xl);
-    }
-    [data-theme="light"] .contact-glass {
-      background: rgba(255, 255, 255, 0.85);
-      border-color: rgba(0, 0, 0, 0.06);
-      box-shadow: 0 30px 60px rgba(0,0,0,0.06);
-    }
-    .contact-input {
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      color: var(--text-primary);
-      transition: all 0.3s ease;
-    }
-    [data-theme="light"] .contact-input {
-      background: rgba(0, 0, 0, 0.02);
-      border: 1px solid rgba(0, 0, 0, 0.1);
-    }
-    .contact-input:focus {
-      background: var(--bg-primary);
-      border-color: var(--action-primary);
-      box-shadow: 0 0 0 4px rgba(196,164,119,0.1);
-    }
-    .branch-list-container {
-      grid-column: span 12;
-      display: flex;
-      flex-direction: column;
-      gap: var(--space-6);
-    }
-    @media (min-width: 1024px) {
-      .branch-list-container { grid-column: span 7; }
-    }
-  </style>
-
-  <section class="section" style="padding-top:calc(var(--header-height) + var(--space-8)); background: var(--bg-primary); position: relative; overflow: hidden;">
+  <section class="section events-section" style="padding-top:calc(var(--header-height) + var(--space-8)); position: relative; overflow: hidden;">
     <!-- Abstract Background glow -->
     <div style="position:absolute; top: -10%; left: 50%; transform: translateX(-50%); width: 100vw; height: 600px; background: radial-gradient(ellipse at top, var(--action-primary) 0%, transparent 60%); opacity: 0.06; filter: blur(80px); pointer-events: none;"></div>
     

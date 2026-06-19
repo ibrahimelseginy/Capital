@@ -7,7 +7,7 @@ export function homePage() {
   return `
     <!-- 1. HERO -->
     <section class="hero" id="hero">
-      <div class="hero-bg"><div class="hero-arc"></div><div class="hero-arc-2"></div><div class="hero-dot"></div></div>
+      <div class="hero-bg"><div class="hero-glow-1"></div><div class="hero-glow-2"></div><div class="hero-grid-pattern"></div><div class="hero-arc"></div><div class="hero-arc-2"></div><div class="hero-dot"></div></div>
       <div class="container">
         <div class="hero-content">
           <div class="hero-overline reveal"><span class="hero-overline-dot"></span><span data-i18n="hero_overline">A Venture Studio</span></div>

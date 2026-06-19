@@ -1,0 +1,106 @@
+/* ========================================================
+   SEVEN TECH CAPITAL — Page-Specific Styles: Branches Page
+   ======================================================== */
+
+@keyframes branchSlideUp {
+  0% { opacity: 0; transform: translateY(30px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+/* Premium Glassmorphic Branch Cards */
+.branch-card-premium {
+  background: rgba(255, 255, 255, 0.45);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-2xl);
+  padding: var(--space-8);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 1;
+}
+
+[data-theme="dark"] .branch-card-premium {
+  background: rgba(22, 22, 22, 0.65);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.branch-card-premium::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.02) 0%, transparent 100%);
+  z-index: -1;
+}
+
+.branch-card-premium:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-xl), 0 20px 48px var(--color-primary-lighter);
+  border-color: var(--action-primary);
+}
+
+.branch-map-bg {
+  position: absolute;
+  top: -20%; right: -20%;
+  width: 250px; height: 250px;
+  opacity: 0.04;
+  background-image: radial-gradient(circle, var(--action-primary) 2px, transparent 2px);
+  background-size: 20px 20px;
+  z-index: -1;
+  border-radius: 50%;
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s ease;
+}
+
+.branch-card-premium:hover .branch-map-bg {
+  transform: scale(1.3) rotate(15deg);
+  opacity: 0.12;
+}
+
+/* Glassmorphic Contact Section */
+.contact-glass {
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-lg);
+}
+
+[data-theme="dark"] .contact-glass {
+  background: rgba(22, 22, 22, 0.6);
+  border-color: rgba(255, 255, 255, 0.06);
+  box-shadow: 0 30px 60px rgba(0,0,0,0.3);
+}
+
+[data-theme="light"] .contact-glass {
+  background: rgba(255, 255, 255, 0.85);
+  border-color: rgba(16, 16, 16, 0.06);
+  box-shadow: 0 30px 60px rgba(16, 16, 16, 0.05);
+}
+
+/* Styled Inputs */
+.contact-input {
+  background: var(--bg-surface);
+  border: 1.5px solid var(--border-default);
+  color: var(--text-primary);
+  transition: all var(--duration-fast) var(--ease-default);
+  outline: none;
+}
+
+.contact-input:focus {
+  background: var(--bg-surface);
+  border-color: var(--action-primary);
+  box-shadow: var(--shadow-focus);
+}
+
+.branch-list-container {
+  grid-column: span 12;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+@media (min-width: 1024px) {
+  .branch-list-container { grid-column: span 7; }
+}

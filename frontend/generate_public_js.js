@@ -2,8 +2,8 @@ const fs = require('fs');
 const path = require('path');
 
 try {
-  const publicJsPath = path.join(__dirname, '../html-design/js/pages/public.js');
-  const homeJsPath = path.join(__dirname, '../html-design/js/pages/home.js');
+  const publicJsPath = path.join(__dirname, './src/assets/js/pages/public.js');
+  const homeJsPath = path.join(__dirname, './src/assets/js/pages/home.js');
 
   let publicContent = fs.readFileSync(publicJsPath, 'utf-8');
   let homeContent = fs.readFileSync(homeJsPath, 'utf-8');
