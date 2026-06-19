@@ -304,18 +304,18 @@ export function investorsPublicPage() {
     <div class="page-header-glow"></div>
     <div class="container-content" style="position: relative; z-index: 1;">
       <!-- Hero -->
-      <div class="text-center mb-20 reveal" style="max-width:800px;margin-inline:auto">
+      <div class="text-center mb-16 reveal" style="max-width:800px;margin-inline:auto">
         <div class="gold-line mx-auto mb-4"></div>
         <h1 class="text-display-xl mb-4 investors-hero-title">${heroTitle}</h1>
-        <p class="text-body-lg text-secondary">${heroDesc}</p>
-        <div class="d-flex gap-4 justify-center mt-10 flex-wrap">
+        <p class="text-body-lg text-secondary mb-6">${heroDesc}</p>
+        <div class="d-flex gap-4 justify-center mt-8 flex-wrap">
           <a href="#/onboarding/investor" class="btn btn-primary btn-lg">${btnInvest}</a>
           <a href="#/login" class="btn btn-secondary btn-lg">${btnLogin}</a>
         </div>
       </div>
 
       <!-- Investment Model -->
-      <div class="grid-2 mb-20" style="gap:var(--space-12)">
+      <div class="grid-2 mb-16" style="gap:var(--space-12)">
         <div class="reveal">
           <h2 class="text-h2 mb-4">${modelTitle}</h2>
           <p class="text-body text-secondary mb-8" style="line-height:1.8">${modelDesc}</p>
@@ -342,9 +342,9 @@ export function investorsPublicPage() {
       </div>
 
       <!-- Project Categories -->
-      <div class="mb-20 reveal">
+      <div class="mb-16 reveal">
         <div class="section-header center"><div class="gold-line"></div><h2>${sectorsTitle}</h2><p class="text-body-lg text-secondary">${sectorsDesc}</p></div>
-        <div class="grid-4 mt-10">
+        <div class="grid-4 mt-8">
           ${sectorsList.map(s => `
           <div class="card card-hover text-center sector-card" style="padding:var(--space-8)">
             <div class="sector-icon-container">
@@ -356,7 +356,7 @@ export function investorsPublicPage() {
       </div>
 
       <!-- NDA Requirement -->
-      <div class="card reveal investors-nda-card" style="padding:var(--space-8);">
+      <div class="card reveal investors-nda-card" style="padding:var(--space-8); mb-16">
         <div class="d-flex gap-5 items-start flex-wrap">
           <div class="nda-icon-container">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
@@ -369,9 +369,9 @@ export function investorsPublicPage() {
       </div>
 
       <!-- FAQ -->
-      <div class="mt-20 reveal">
+      <div class="mt-16 reveal">
         <div class="section-header center"><div class="gold-line"></div><h2>${faqTitle}</h2></div>
-        <div class="container-narrow mt-10">
+        <div class="container-narrow mt-8">
           ${faqList.map(([q, a]) => `
           <div class="accordion-item investors-faq-item">
             <button class="accordion-trigger" style="font-weight:var(--weight-bold);">${q}<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></button>
@@ -381,13 +381,14 @@ export function investorsPublicPage() {
       </div>
 
       <!-- Final CTA -->
-      <div class="text-center mt-20 py-16 reveal">
+      <div class="text-center mt-16 py-16 reveal">
         <h2 class="text-h2 mb-4" style="font-weight:var(--weight-bold);">${finalTitle}</h2>
-        <p class="text-body-lg text-secondary mb-10 mx-auto" style="max-width:540px">${finalDesc}</p>
+        <p class="text-body-lg text-secondary mb-8 mx-auto" style="max-width:540px">${finalDesc}</p>
         <a href="#/onboarding/investor" class="btn btn-primary btn-lg">${finalBtn}</a>
       </div>
     </div>
   </section>`;
+}
 }
 
 // ════════════════════════════════════════
@@ -1198,7 +1199,7 @@ export function branchesPage() {
                 <circle cx="0" cy="0" r="30" fill="var(--action-primary)" opacity="0.1"><animate attributeName="r" values="15;35;15" dur="4s" repeatCount="indefinite"/></circle>
                 <circle cx="0" cy="0" r="8" fill="var(--action-primary)"/>
                 <circle cx="0" cy="0" r="3" fill="#FFF"/>
-                <text x="18" y="6" font-size="18" fill="var(--text-secondary)" font-family="inherit">Dubai</text>
+                <text x="32" y="6" font-size="18" fill="var(--text-secondary)" font-family="inherit">Dubai</text>
               </g>
 
               <!-- Alexandria Pin -->
