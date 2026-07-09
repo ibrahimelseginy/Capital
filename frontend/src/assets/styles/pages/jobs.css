@@ -47,7 +47,7 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, rgba(255, 90, 0, 0.05), transparent);
+  background: linear-gradient(to top, rgba(194, 69, 45, 0.05), transparent);
   opacity: 0;
   transition: opacity var(--duration-normal);
   z-index: -1;
@@ -56,8 +56,8 @@
 .perk-card:hover {
   transform: translateY(-6px);
   background: rgba(255, 255, 255, 0.05);
-  border-color: rgba(255, 90, 0, 0.25);
-  box-shadow: 0 12px 30px rgba(255, 90, 0, 0.08);
+  border-color: rgba(194, 69, 45, 0.25);
+  box-shadow: 0 12px 30px rgba(194, 69, 45, 0.08);
 }
 
 .perk-card:hover::before {

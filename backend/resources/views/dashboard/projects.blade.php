@@ -368,7 +368,7 @@
   }
 
   /* Card gradient logos */
-  .logo-grad-1 { background: linear-gradient(135deg, #FF5A00 0%, #FF8F52 100%); }
+  .logo-grad-1 { background: linear-gradient(135deg, #C2452D 0%, #DE634B 100%); }
   .logo-grad-2 { background: linear-gradient(135deg, #9b51e0 0%, #bb6bd9 100%); }
   .logo-grad-3 { background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%); }
   .logo-grad-4 { background: linear-gradient(135deg, #2f80ed 0%, #56ccf2 100%); }

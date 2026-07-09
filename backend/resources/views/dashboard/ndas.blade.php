@@ -959,14 +959,14 @@
     <div style="flex:1; overflow-y:auto; padding:var(--space-6) var(--space-4); background:#1e1e1e; border-radius: var(--radius-lg); margin: var(--space-4) 0">
       <div class="report-paper" id="nda-paper-area">
         <!-- Watermark -->
-        <div style="position:absolute; top:50%; left:50%; transform:translate(-50%, -50%) rotate(-30deg); font-size:3.5rem; font-weight:800; color:rgba(255,90,0,0.03); text-transform:uppercase; letter-spacing:6px; pointer-events:none; white-space:nowrap; user-select:none">
+        <div style="position:absolute; top:50%; left:50%; transform:translate(-50%, -50%) rotate(-30deg); font-size:3.5rem; font-weight:800; color:rgba(194,69,45,0.03); text-transform:uppercase; letter-spacing:6px; pointer-events:none; white-space:nowrap; user-select:none">
           SEVEN TECH CAPITAL
         </div>
         
         <!-- Header -->
-        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid #FF5A00; padding-bottom:12px; margin-bottom:20px">
+        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid #C2452D; padding-bottom:12px; margin-bottom:20px">
           <div>
-            <div style="font-size:16px; font-weight:800; color:#FF5A00; letter-spacing:1px">SEVEN TECH</div>
+            <div style="font-size:16px; font-weight:800; color:#C2452D; letter-spacing:1px">SEVEN TECH</div>
             <div style="font-size:10px; font-weight:600; color:#666; letter-spacing:2px">C A P I T A L</div>
           </div>
           <div style="text-align:right">

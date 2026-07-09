@@ -811,15 +811,15 @@
       <div class="report-paper" id="printable-report-area" style="background:white; color:#1a1a1a; padding:var(--space-10) var(--space-8); border-radius:var(--radius-sm); box-shadow:0 4px 20px rgba(0,0,0,0.15); max-width:680px; margin:0 auto; font-family:sans-serif; position:relative; min-height:800px; display:flex; flex-direction:column; justify-content:space-between">
         
         <!-- Watermark -->
-        <div style="position:absolute; top:50%; left:50%; transform:translate(-50%, -50%) rotate(-30deg); font-size:4rem; font-weight:800; color:rgba(255,90,0,0.03); text-transform:uppercase; letter-spacing:8px; pointer-events:none; white-space:nowrap; user-select:none">
+        <div style="position:absolute; top:50%; left:50%; transform:translate(-50%, -50%) rotate(-30deg); font-size:4rem; font-weight:800; color:rgba(194,69,45,0.03); text-transform:uppercase; letter-spacing:8px; pointer-events:none; white-space:nowrap; user-select:none">
           SEVEN TECH CAPITAL
         </div>
 
         <div>
           <!-- Paper Header -->
-          <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid #FF5A00; padding-bottom:var(--space-4); margin-bottom:var(--space-6)">
+          <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid #C2452D; padding-bottom:var(--space-4); margin-bottom:var(--space-6)">
             <div>
-              <div style="font-size:16px; font-weight:800; color:#FF5A00; letter-spacing:1px">SEVEN TECH</div>
+              <div style="font-size:16px; font-weight:800; color:#C2452D; letter-spacing:1px">SEVEN TECH</div>
               <div style="font-size:10px; font-weight:600; color:#666; letter-spacing:2px">C A P I T A L</div>
             </div>
             <div style="text-align:right">
@@ -842,7 +842,7 @@
 
           <!-- Summary Section -->
           <div style="margin-bottom:var(--space-6)">
-            <h3 style="font-size:14px; font-weight:700; text-transform:uppercase; color:#FF5A00; border-bottom:1px solid #eee; padding-bottom:6px; margin:0 0 var(--space-3) 0">Executive Summary</h3>
+            <h3 style="font-size:14px; font-weight:700; text-transform:uppercase; color:#C2452D; border-bottom:1px solid #eee; padding-bottom:6px; margin:0 0 var(--space-3) 0">Executive Summary</h3>
             <p style="font-size:13px; color:#333; line-height:1.6; margin:0" id="report-paper-summary">
               This periodic report outlines the financial parameters, operational milestones, and investment yields for the project. Audits indicate significant user onboarding traction and sustainable revenue flows matching target estimations.
             </p>
@@ -850,7 +850,7 @@
 
           <!-- KPI Metrics Grid -->
           <div style="margin-bottom:var(--space-8)">
-            <h3 style="font-size:14px; font-weight:700; text-transform:uppercase; color:#FF5A00; border-bottom:1px solid #eee; padding-bottom:6px; margin:0 0 var(--space-3) 0">Financial Performance KPIs</h3>
+            <h3 style="font-size:14px; font-weight:700; text-transform:uppercase; color:#C2452D; border-bottom:1px solid #eee; padding-bottom:6px; margin:0 0 var(--space-3) 0">Financial Performance KPIs</h3>
             
             <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:16px; margin-top:12px" id="report-paper-kpi-grid">
               <div style="background:#f9f9f9; padding:12px; border-radius:6px; border:1px solid #eee">
@@ -873,7 +873,7 @@
 
           <!-- Dynamic SVG Chart -->
           <div style="margin-bottom:var(--space-8)">
-            <h3 style="font-size:14px; font-weight:700; text-transform:uppercase; color:#FF5A00; border-bottom:1px solid #eee; padding-bottom:6px; margin:0 0 16px 0">Performance Growth Trend</h3>
+            <h3 style="font-size:14px; font-weight:700; text-transform:uppercase; color:#C2452D; border-bottom:1px solid #eee; padding-bottom:6px; margin:0 0 16px 0">Performance Growth Trend</h3>
             <div style="text-align:center; background:#fafafa; border:1px solid #eee; border-radius:6px; padding:16px">
               <!-- Beautiful SVG Line Chart -->
               <svg width="100%" height="150" viewBox="0 0 500 150" style="overflow:visible">
@@ -892,14 +892,14 @@
                 <text x="400" y="142" font-family="sans-serif" font-size="10" fill="#888" text-anchor="middle" id="chart-lbl-3">Month 3</text>
                 
                 <!-- Smooth Curve Area -->
-                <path d="M 100 120 Q 250 80 400 30 L 400 120 Z" fill="rgba(255, 90, 0, 0.08)" stroke="none"/>
+                <path d="M 100 120 Q 250 80 400 30 L 400 120 Z" fill="rgba(194, 69, 45, 0.08)" stroke="none"/>
                 <!-- Smooth Line -->
-                <path d="M 100 120 Q 250 80 400 30" fill="none" stroke="#FF5A00" stroke-width="3" stroke-linecap="round"/>
+                <path d="M 100 120 Q 250 80 400 30" fill="none" stroke="#C2452D" stroke-width="3" stroke-linecap="round"/>
                 
                 <!-- Dot Markers -->
-                <circle cx="100" cy="120" r="5" fill="#FF5A00" stroke="white" stroke-width="2"/>
-                <circle cx="250" cy="80" r="5" fill="#FF5A00" stroke="white" stroke-width="2"/>
-                <circle cx="400" cy="30" r="5" fill="#FF5A00" stroke="white" stroke-width="2"/>
+                <circle cx="100" cy="120" r="5" fill="#C2452D" stroke="white" stroke-width="2"/>
+                <circle cx="250" cy="80" r="5" fill="#C2452D" stroke="white" stroke-width="2"/>
+                <circle cx="400" cy="30" r="5" fill="#C2452D" stroke="white" stroke-width="2"/>
               </svg>
             </div>
           </div>

@@ -5,10 +5,11 @@
 
 :root {
   /* ─── Brand Colors (from logo) ─── */
-  --color-primary: #FF5A00;
-  --color-primary-hover: #E65100;
-  --color-primary-light: rgba(255, 90, 0, 0.1);
-  --color-primary-lighter: rgba(255, 90, 0, 0.06);
+  --color-primary: #C2452D;
+  --color-primary-hover: #A33621;
+  --color-primary-light: rgba(194, 69, 45, 0.1);
+  --color-primary-lighter: rgba(194, 69, 45, 0.06);
+  --gradient-brand: linear-gradient(to bottom, #000000 0%, #1a0a00 15%, #2a0e02 30%, #3d1505 45%, #2a0e02 60%, #1a0a00 78%, #000000 100%);
 
   --color-black: #070707;
   --color-soft-black: #111111;
@@ -16,7 +17,7 @@
   --color-dark-elevated: #1C1C1C;
 
   --color-white: #FFFFFF;
-  --color-warm-offwhite: #F7F5F0;
+  --color-warm-offwhite: #F0EDE5;
   --color-light-surface: #F2F1EC;
   --color-light-elevated: #EDEAE4;
 
@@ -35,8 +36,8 @@
   --color-info-bg: rgba(26, 115, 232, 0.1);
 
   /* ─── Light Mode Semantic Tokens (default) ─── */
-  --bg-primary: #F8FAFC;         /* Crisp, cool off-white */
-  --bg-secondary: #F1F5F9;       /* Subtle contrast area */
+  --bg-primary: #F0EDE5;         /* Crisp, cool off-white */
+  --bg-secondary: #E5E2DA;       /* Subtle contrast area */
   --bg-surface: #FFFFFF;         /* Pure white cards */
   --bg-elevated: #FFFFFF;        /* Pure white modals/popovers */
   --bg-inverse: #0F172A;         /* Slate 900 */
@@ -54,21 +55,21 @@
   --border-default: #E2E8F0;     /* Crisp light border */
   --border-subtle: #F1F5F9;
   --border-strong: #CBD5E1;
-  --border-focus: #FF5A00;
+  --border-focus: #C2452D;
 
   /* Premium Crisp Shadows */
   --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
   --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
   --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
   --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
-  --shadow-focus: 0 0 0 3px rgba(255, 90, 0, 0.15);
+  --shadow-focus: 0 0 0 3px rgba(194, 69, 45, 0.15);
   --shadow-card-hover: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
 
-  --action-primary: #FF5A00;
-  --action-primary-hover: #E65100;
-  --action-primary-active: #CC4700;
+  --action-primary: #C2452D;
+  --action-primary-hover: #A33621;
+  --action-primary-active: #942F1B;
   --action-secondary: transparent;
-  --action-secondary-hover: rgba(255, 90, 0, 0.06);
+  --action-secondary-hover: rgba(194, 69, 45, 0.06);
   --action-ghost-hover: rgba(16, 16, 16, 0.04);
 
   --accent-gold: #C6A15B;
@@ -212,20 +213,20 @@
   --border-default: rgba(255, 255, 255, 0.14);
   --border-subtle: rgba(255, 255, 255, 0.07);
   --border-strong: rgba(255, 255, 255, 0.22);
-  --border-focus: #FF5A00;
+  --border-focus: #C2452D;
 
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
   --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
   --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.5);
   --shadow-xl: 0 24px 56px rgba(0, 0, 0, 0.6);
-  --shadow-focus: 0 0 0 3px rgba(255, 90, 0, 0.3);
+  --shadow-focus: 0 0 0 3px rgba(194, 69, 45, 0.3);
   --shadow-card-hover: 0 8px 24px rgba(0, 0, 0, 0.5);
 
-  --action-primary: #FF5A00;
-  --action-primary-hover: #FF7A33;
-  --action-primary-active: #FF8F52;
+  --action-primary: #C2452D;
+  --action-primary-hover: #D1533B;
+  --action-primary-active: #DE634B;
   --action-secondary: transparent;
-  --action-secondary-hover: rgba(255, 90, 0, 0.1);
+  --action-secondary-hover: rgba(194, 69, 45, 0.1);
   --action-ghost-hover: rgba(255, 255, 255, 0.06);
 
   --accent-gold: #D7BC7D;
@@ -240,7 +241,7 @@
   --color-info: #5DADE2;
   --color-info-bg: rgba(93, 173, 226, 0.12);
 
-  --color-primary-light: rgba(255, 90, 0, 0.15);
-  --color-primary-lighter: rgba(255, 90, 0, 0.08);
+  --color-primary-light: rgba(194, 69, 45, 0.15);
+  --color-primary-lighter: rgba(194, 69, 45, 0.08);
   --color-gold-light: rgba(215, 188, 125, 0.15);
 }
