@@ -1,6 +1,7 @@
 <?php
 $sectionKey = $sectionKey ?? 'users';
 $sections = [
+  'home' => ['file'=>'admin-home.php','title'=>'الصفحة الرئيسية','crumb'=>'إدارة محتوى الرئيسية','badge'=>'8 أقسام'],
   'users' => ['file'=>'admin-users.php','title'=>'المستخدمون','crumb'=>'إدارة المستخدمين','badge'=>'0 مستخدم'],
   'kyc' => ['file'=>'admin-kyc.php','title'=>'مراجعات KYC/AML','crumb'=>'قائمة المراجعات','badge'=>'0 معلّقة'],
   'opportunities' => ['file'=>'admin-opportunities.php','title'=>'الفرص الاستثمارية','crumb'=>'إدارة الفرص','badge'=>'0 فرصة'],
@@ -8,11 +9,15 @@ $sections = [
   'projects' => ['file'=>'admin-projects.php','title'=>'المشاريع','crumb'=>'المشاريع المسجلة','badge'=>'0 مشروع'],
   'meetings' => ['file'=>'admin-meetings.php','title'=>'الاجتماعات','crumb'=>'جدول المنصة','badge'=>'0 اجتماع'],
   'contracts' => ['file'=>'admin-contracts.php','title'=>'العقود والتوقيع','crumb'=>'المستندات القانونية','badge'=>'0 عقد'],
-  'content' => ['file'=>'admin-content.php','title'=>'الأخبار والمقالات','crumb'=>'إدارة مركز المعرفة','badge'=>'0 عنصر'],
-  'about' => ['file'=>'admin-about.php','title'=>'صفحة من نحن','crumb'=>'إدارة محتوى الشركة','badge'=>'0 عنصر'],
+  'content' => ['file'=>'admin-content.php','title'=>'صفحة الأخبار','crumb'=>'إدارة مركز المعرفة','badge'=>'3 أقسام'],
+  'seven-tech-page' => ['file'=>'admin-seven-tech.php','title'=>'صفحة Seven Tech','crumb'=>'إدارة محتوى الذراع التقني','badge'=>'3 أقسام'],
+  'contact-page' => ['file'=>'admin-contact.php','title'=>'صفحة تواصل معنا','crumb'=>'إدارة صفحة التواصل والرسائل','badge'=>'2 أقسام'],
+  'footer' => ['file'=>'admin-footer.php','title'=>'الفوتر','crumb'=>'إدارة الفوتر العام','badge'=>'محتوى موحّد'],
+  'about' => ['file'=>'admin-about.php','title'=>'صفحة من نحن','crumb'=>'إدارة محتوى الشركة','badge'=>'7 أقسام'],
   'investors-page' => ['file'=>'admin-investors-page.php','title'=>'صفحة المستثمرين','crumb'=>'إدارة محتوى المستثمرين','badge'=>'0 عنصر'],
   'entrepreneurs-page' => ['file'=>'admin-entrepreneurs-page.php','title'=>'صفحة رواد الأعمال','crumb'=>'إدارة محتوى رواد الأعمال','badge'=>'0 عنصر'],
-  'stories' => ['file'=>'admin-stories.php','title'=>'قصص النجاح','crumb'=>'إدارة دراسات الحالة','badge'=>'0 قصة'],
+  'sectors-page' => ['file'=>'admin-sectors-page.php','title'=>'صفحة القطاعات','crumb'=>'إدارة محتوى القطاعات','badge'=>'4 أقسام'],
+  'stories' => ['file'=>'admin-stories.php','title'=>'صفحة قصص النجاح','crumb'=>'إدارة دراسات الحالة','badge'=>'2 أقسام'],
   'events' => ['file'=>'admin-events.php','title'=>'الفعاليات','crumb'=>'إدارة الفعاليات','badge'=>'0 فعالية'],
   'roles' => ['file'=>'admin-roles.php','title'=>'الأدوار والصلاحيات','crumb'=>'صلاحيات النظام','badge'=>'3 أدوار'],
   'audit' => ['file'=>'admin-audit.php','title'=>'سجل التدقيق','crumb'=>'سجل الإجراءات','badge'=>'مباشر'],
@@ -83,11 +88,12 @@ $sections['opportunities']['badge'] = count($opportunities) . ' فرصة';
 $sections['projects']['badge'] = count($projects) . ' مشروع';
 $sections['meetings']['badge'] = count($meetings) . ' اجتماع';
 $sections['contracts']['badge'] = count($contracts) . ' عقد';
-$sections['content']['badge'] = count($contentItems) . ' عنصر';
-$sections['about']['badge'] = count($aboutItems) . ' عنصر';
-$sections['investors-page']['badge'] = count($investorPageItems) . ' عنصر';
-$sections['entrepreneurs-page']['badge'] = count($entrepreneurPageItems) . ' عنصر';
-$sections['stories']['badge'] = count($successStories) . ' قصة';
+$sections['content']['badge'] = '3 أقسام';
+$sections['about']['badge'] = '7 أقسام';
+$sections['investors-page']['badge'] = '6 أقسام';
+$sections['entrepreneurs-page']['badge'] = '4 أقسام';
+$sections['sectors-page']['badge'] = '4 أقسام';
+$sections['stories']['badge'] = '2 أقسام';
 $sections['events']['badge'] = count($events) . ' فعالية';
 $sections['roles']['badge'] = '3 أدوار';
 $sections['audit']['badge'] = count($auditRows) . ' إجراء';
@@ -105,7 +111,7 @@ function admin_side_link($key, $label, $icon, $count = null, $muted = false) {
     <a href="../index.php" class="brand" aria-label="Seven Tech Capital — الرئيسية"><?php include __DIR__ . '/../partials/logo.php'; ?></a>
     <div class="side-role">
       <div class="avatar" style="background:var(--charcoal);color:#fff"><?= $authInitials ?></div>
-      <div style="min-width:0"><b><?= $authName ?></b><span>مدير عام · كل الدول</span></div>
+      <div style="min-width:0"><b><?= $authName ?></b><span>لوحة الإدارة الموحدة</span></div>
     </div>
 
     <div class="side-label">الإشراف</div>
@@ -122,12 +128,16 @@ function admin_side_link($key, $label, $icon, $count = null, $muted = false) {
 
     <div class="side-label">المحتوى</div>
     <?php
-      admin_side_link('content','الأخبار والمقالات','<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>',count($contentItems) ?: null,true);
-      admin_side_link('about','صفحة من نحن','<circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/>',count($aboutItems) ?: null,true);
-      admin_side_link('investors-page','صفحة المستثمرين','<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/>',count($investorPageItems) ?: null,true);
-      admin_side_link('entrepreneurs-page','صفحة رواد الأعمال','<path d="M12 2l3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"/>',count($entrepreneurPageItems) ?: null,true);
-      admin_side_link('stories','قصص النجاح','<path d="M3 3v18h18"/><path d="m7 15 4-4 3 3 5-7"/>',count($successStories) ?: null,true);
-      admin_side_link('events','الفعاليات','<path d="M17 2.1l4 4-4 4M7 21.9l-4-4 4-4"/><path d="M21 6.1H8a5 5 0 0 0-5 5M3 17.9h13a5 5 0 0 0 5-5"/>',count($events) ?: null, true);
+      admin_side_link('home','الرئيسية','<rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/>',null,true);
+      admin_side_link('about','من نحن','<circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/>',null,true);
+      admin_side_link('investors-page','المستثمرون','<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/>',null,true);
+      admin_side_link('entrepreneurs-page','رواد الأعمال','<path d="M12 2l3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"/>',null,true);
+      admin_side_link('sectors-page','القطاعات','<rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/>',null,true);
+      admin_side_link('stories','قصص النجاح','<path d="M3 3v18h18"/><path d="m7 15 4-4 3 3 5-7"/>',null,true);
+      admin_side_link('content','الأخبار','<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>',null,true);
+      admin_side_link('seven-tech-page','seven tech','<rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/>',null,true);
+      admin_side_link('contact-page','تواصل معنا','<path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/><path d="M22 6l-10 7L2 6"/>',null,true);
+      admin_side_link('footer','الفوتر','<path d="M4 4h16v12H4z"/><path d="M4 12h16M8 20h8"/>',null,true);
     ?>
 
     <div class="side-label">النظام</div>
@@ -160,7 +170,9 @@ function admin_side_link($key, $label, $icon, $count = null, $muted = false) {
         </div>
       </section>
 
-      <?php if ($sectionKey === 'users'): ?>
+      <?php if ($sectionKey === 'home'): ?>
+        <?php include __DIR__.'/admin-home-view.php'; ?>
+      <?php elseif ($sectionKey === 'users'): ?>
         <div class="detail-stat-grid reveal">
           <div class="detail-stat"><span>إجمالي المستخدمين</span><b><?= count($users) ?></b><small>جميع الحسابات المسجلة</small></div>
           <div class="detail-stat"><span>المستثمرون</span><b><?= count($investors) ?></b><small><?= count($approvedInvestors) ?> معتمد</small></div>
@@ -303,126 +315,24 @@ function admin_side_link($key, $label, $icon, $count = null, $muted = false) {
         <div class="dashboard-main-grid"><div class="panel reveal"><div class="panel-head"><h3>الاجتماعات المسجلة</h3><span class="badge"><?= count($meetings) ?></span></div><div class="panel-body"><?php foreach($meetings as $m): ?><div class="support-ticket"><div><b><?= htmlspecialchars($m['subject']) ?></b><p class="text-2"><?= htmlspecialchars($m['user_name']) ?> · <?= htmlspecialchars($m['scheduled_at']) ?> · <?= htmlspecialchars($m['platform']) ?></p></div><form method="post" class="row gap-8"><input type="hidden" name="csrf" value="<?= htmlspecialchars(auth_csrf_token()) ?>"><input type="hidden" name="action" value="set_meeting_status"><input type="hidden" name="id" value="<?= htmlspecialchars($m['id']) ?>"><select class="select" name="status"><?php foreach(['pending'=>'معلق','confirmed'=>'مؤكد','completed'=>'مكتمل','cancelled'=>'ملغى'] as $value=>$label): ?><option value="<?= $value ?>" <?= $m['status']===$value?'selected':'' ?>><?= $label ?></option><?php endforeach; ?></select><button class="btn btn-soft btn-sm">حفظ</button></form></div><?php endforeach; ?><?php if(!$meetings): ?><div class="empty-state"><b>لا توجد بيانات فعلية في هذا القسم بعد</b><p>ستظهر الاجتماعات هنا بعد جدولتها.</p></div><?php endif; ?></div></div><div class="panel reveal"><div class="panel-head"><h3>جدولة اجتماع</h3></div><div class="panel-body"><form method="post"><input type="hidden" name="csrf" value="<?= htmlspecialchars(auth_csrf_token()) ?>"><input type="hidden" name="action" value="create_meeting"><select class="select" name="user_id" required><option value="">اختر المستخدم</option><?php foreach(array_filter($users,fn($u)=>$u['role']!=='admin') as $u): ?><option value="<?= htmlspecialchars($u['id']) ?>"><?= htmlspecialchars($u['name'].' — '.$u['email']) ?></option><?php endforeach; ?></select><input class="input mt-16" name="subject" placeholder="موضوع الاجتماع" required><input class="input mt-16" name="opportunity" placeholder="الفرصة/المشروع (اختياري)"><input class="input mt-16" name="scheduled_at" type="datetime-local" required><input class="input mt-16" name="platform" placeholder="المكان أو المنصة" required><button class="btn btn-primary btn-sm mt-16">حفظ الاجتماع</button></form></div></div></div>
       <?php elseif ($sectionKey === 'contracts'): ?>
         <div class="dashboard-main-grid"><div class="panel reveal"><div class="panel-head"><h3>العقود</h3><span class="badge"><?= count($contracts) ?></span></div><div class="panel-body"><?php foreach($contracts as $c): ?><div class="support-ticket"><div><b><?= htmlspecialchars($c['title']) ?></b><p class="text-2"><?= htmlspecialchars($c['user_name'] ?: 'غير مرتبط بمستخدم') ?> · <?= htmlspecialchars($c['created_at']) ?></p></div><form method="post" class="row gap-8"><input type="hidden" name="csrf" value="<?= htmlspecialchars(auth_csrf_token()) ?>"><input type="hidden" name="action" value="set_contract_status"><input type="hidden" name="id" value="<?= htmlspecialchars($c['id']) ?>"><select class="select" name="status"><?php foreach(['draft'=>'مسودة','review'=>'مراجعة','pending_signature'=>'بانتظار التوقيع','signed'=>'موقع','cancelled'=>'ملغى'] as $value=>$label): ?><option value="<?= $value ?>" <?= $c['status']===$value?'selected':'' ?>><?= $label ?></option><?php endforeach; ?></select><button class="btn btn-soft btn-sm">حفظ</button></form></div><?php endforeach; ?><?php if(!$contracts): ?><div class="empty-state"><b>لا توجد بيانات فعلية في هذا القسم بعد</b><p>ستظهر العقود هنا بعد إضافتها.</p></div><?php endif; ?></div></div><div class="panel reveal"><div class="panel-head"><h3>إضافة عقد</h3></div><div class="panel-body"><form method="post"><input type="hidden" name="csrf" value="<?= htmlspecialchars(auth_csrf_token()) ?>"><input type="hidden" name="action" value="create_contract"><input class="input" name="title" placeholder="اسم العقد" required><select class="select mt-16" name="user_id"><option value="">بدون مستخدم</option><?php foreach($users as $u): ?><option value="<?= htmlspecialchars($u['id']) ?>"><?= htmlspecialchars($u['name'].' — '.$u['email']) ?></option><?php endforeach; ?></select><button class="btn btn-primary btn-sm mt-16">إضافة</button></form></div></div></div>
+      <?php elseif ($sectionKey === 'sectors-page'): ?>
+        <?php include __DIR__ . '/admin-sectors-page-view.php'; ?>
       <?php elseif ($sectionKey === 'entrepreneurs-page'): ?>
         <?php include __DIR__ . '/admin-entrepreneurs-page-view.php'; ?>
       <?php elseif ($sectionKey === 'investors-page'): ?>
-        <?php
-          $investorPageSections=['hero'=>'مقدمة الصفحة','investor_type'=>'أنواع المستثمرين','benefits_header'=>'مقدمة المزايا','benefit'=>'بطاقات المزايا','journey_header'=>'مقدمة رحلة المستثمر','journey_step'=>'خطوات الرحلة','faq_header'=>'مقدمة الأسئلة','faq'=>'الأسئلة الشائعة','cta'=>'الدعوة الأخيرة'];
-          $investorPageIcons=['default'=>'بدون أيقونة','person'=>'فرد','company'=>'شركة','fund'=>'صندوق','angel'=>'مستثمر ملائكي','family'=>'مكتب عائلي','ready'=>'جاهزية','security'=>'حماية','flexible'=>'مرونة','transparency'=>'شفافية','speed'=>'سرعة','money'=>'استثمار'];
-          $investorPageStyles=['info'=>'عادي','orange'=>'بارز برتقالي','success'=>'أخضر','warning'=>'ذهبي'];
-        ?>
-        <div class="panel admin-knowledge-manager admin-investors-page-manager" data-admin-investors-page-manager>
-          <div class="panel-head"><div><h3>إدارة صفحة المستثمرين</h3><p class="hint">تحكم في كل قسم وبطاقة وخطوة وسؤال عبر API.</p></div><span class="badge"><?= count($investorPageItems) ?> عنصر</span></div>
-          <div class="panel-body">
-            <details class="admin-sector-create admin-knowledge-create"><summary><span>إضافة عنصر جديد</span><small>اختر القسم ثم أدخل البيانات المطلوبة</small></summary>
-              <form method="post" class="admin-sector-create-form admin-knowledge-form" data-admin-investors-page-form><input type="hidden" name="csrf" value="<?= htmlspecialchars(auth_csrf_token()) ?>"><input type="hidden" name="action" value="create_investor_page_item">
-                <div class="admin-knowledge-fields"><div class="field"><label class="label">القسم</label><select class="select" name="section_key"><?php foreach($investorPageSections as $value=>$label): ?><option value="<?= $value ?>"><?= $label ?></option><?php endforeach; ?></select></div><div class="field"><label class="label">العنوان</label><input class="input" name="title" required></div><div class="field"><label class="label">العنوان الفرعي</label><input class="input" name="subtitle"></div><div class="field"><label class="label">نص الزر الأول / الشارة</label><input class="input" name="badge_label"></div></div>
-                <div class="field"><label class="label">الوصف أو الإجابة</label><textarea class="textarea" name="body"></textarea></div>
-                <div class="admin-knowledge-fields"><div class="field"><label class="label">نص الزر الثاني</label><input class="input" name="value_text"></div><div class="field"><label class="label">شارات الثقة — افصل بفاصلة</label><input class="input ltr-input" name="value_suffix" placeholder="KYC/AML,NDA,Dashboard"></div><div class="field"><label class="label">الأيقونة</label><select class="select" name="icon_key"><?php foreach($investorPageIcons as $value=>$label): ?><option value="<?= $value ?>"><?= $label ?></option><?php endforeach; ?></select></div><div class="field"><label class="label">نمط العنصر</label><select class="select" name="badge_style"><?php foreach($investorPageStyles as $value=>$label): ?><option value="<?= $value ?>"><?= $label ?></option><?php endforeach; ?></select></div><div class="field"><label class="label">الرابط الأول</label><input class="input ltr-input" name="primary_url"></div><div class="field"><label class="label">الرابط الثاني</label><input class="input ltr-input" name="secondary_url"></div></div>
-                <div class="admin-knowledge-footer"><label class="auth-check"><input type="checkbox" name="is_active" value="1" checked><span>ظاهر في الموقع</span></label><div class="field"><label class="label">الترتيب</label><input class="input" type="number" min="0" name="sort_order" value="<?= count($investorPageItems)+1 ?>" required></div><button class="btn btn-primary btn-sm" type="submit">إضافة العنصر</button></div>
-              </form>
-            </details>
-            <div class="admin-knowledge-editor-grid mt-24">
-              <?php foreach($investorPageItems as $item): ?>
-                <form method="post" class="admin-knowledge-editor-card" data-admin-investors-page-form><input type="hidden" name="csrf" value="<?= htmlspecialchars(auth_csrf_token()) ?>"><input type="hidden" name="id" value="<?= htmlspecialchars($item['id']) ?>">
-                  <div class="admin-knowledge-card-head"><span class="badge"><?= htmlspecialchars($investorPageSections[$item['section_key']]??$item['section_key']) ?></span><label class="auth-check"><input type="checkbox" name="is_active" value="1" <?= !empty($item['is_active'])?'checked':'' ?>><span>ظاهر</span></label></div>
-                  <div class="admin-knowledge-fields"><div class="field"><label class="label">القسم</label><select class="select" name="section_key"><?php foreach($investorPageSections as $value=>$label): ?><option value="<?= $value ?>" <?= $item['section_key']===$value?'selected':'' ?>><?= $label ?></option><?php endforeach; ?></select></div><div class="field"><label class="label">العنوان</label><input class="input" name="title" value="<?= htmlspecialchars($item['title']) ?>" required></div><div class="field"><label class="label">العنوان الفرعي</label><input class="input" name="subtitle" value="<?= htmlspecialchars($item['subtitle']) ?>"></div><div class="field"><label class="label">نص الزر الأول / الشارة</label><input class="input" name="badge_label" value="<?= htmlspecialchars($item['badge_label']) ?>"></div></div>
-                  <div class="field"><label class="label">الوصف أو الإجابة</label><textarea class="textarea" name="body"><?= htmlspecialchars($item['body']) ?></textarea></div>
-                  <div class="admin-knowledge-fields"><div class="field"><label class="label">نص الزر الثاني</label><input class="input" name="value_text" value="<?= htmlspecialchars($item['value_text']) ?>"></div><div class="field"><label class="label">شارات الثقة</label><input class="input ltr-input" name="value_suffix" value="<?= htmlspecialchars($item['value_suffix']) ?>"></div><div class="field"><label class="label">الأيقونة</label><select class="select" name="icon_key"><?php foreach($investorPageIcons as $value=>$label): ?><option value="<?= $value ?>" <?= $item['icon_key']===$value?'selected':'' ?>><?= $label ?></option><?php endforeach; ?></select></div><div class="field"><label class="label">نمط العنصر</label><select class="select" name="badge_style"><?php foreach($investorPageStyles as $value=>$label): ?><option value="<?= $value ?>" <?= $item['badge_style']===$value?'selected':'' ?>><?= $label ?></option><?php endforeach; ?></select></div><div class="field"><label class="label">الرابط الأول</label><input class="input ltr-input" name="primary_url" value="<?= htmlspecialchars($item['primary_url']) ?>"></div><div class="field"><label class="label">الرابط الثاني</label><input class="input ltr-input" name="secondary_url" value="<?= htmlspecialchars($item['secondary_url']) ?>"></div><div class="field admin-knowledge-order"><label class="label">الترتيب</label><input class="input" type="number" min="0" name="sort_order" value="<?= (int)$item['sort_order'] ?>" required></div></div>
-                  <div class="admin-sector-editor-actions"><button class="btn btn-primary btn-sm" type="submit" name="action" value="update_investor_page_item">حفظ التعديلات</button><button class="btn btn-sm admin-delete-button" type="submit" name="action" value="delete_investor_page_item" formnovalidate onclick="return confirm('هل أنت متأكد من حذف هذا العنصر من صفحة المستثمرين؟')">حذف العنصر</button></div>
-                </form>
-              <?php endforeach; ?>
-            </div>
-          </div>
-        </div>
+        <?php include __DIR__.'/admin-investors-page-view.php'; ?>
       <?php elseif ($sectionKey === 'about'): ?>
-        <?php
-          $aboutSections=['hero'=>'مقدمة الصفحة','brand'=>'بطاقات العلامات','vmm'=>'الرؤية والرسالة والمنهجية','stat'=>'الأرقام','team_header'=>'مقدمة الفريق','team'=>'أعضاء الفريق','geo_header'=>'مقدمة التوسع','geo'=>'مناطق التوسع','cta'=>'الدعوة الأخيرة'];
-          $aboutIcons=['default'=>'بدون أيقونة','vision'=>'الرؤية','mission'=>'الرسالة','method'=>'المنهجية','experience'=>'الخبرة','building'=>'الشركة','projects'=>'المشروعات','clients'=>'العملاء','person'=>'شخص'];
-          $aboutStyles=['info'=>'أزرق','success'=>'أخضر','warning'=>'ذهبي','orange'=>'برتقالي'];
-        ?>
-        <div class="panel admin-knowledge-manager admin-about-manager" data-admin-about-manager>
-          <div class="panel-head"><div><h3>إدارة صفحة من نحن</h3><p class="hint">يمكن تعديل أو إخفاء أو حذف كل قسم وبطاقة عبر API.</p></div><span class="badge"><?= count($aboutItems) ?> عنصر</span></div>
-          <div class="panel-body">
-            <details class="admin-sector-create admin-knowledge-create">
-              <summary><span>إضافة عنصر جديد</span><small>اختر مكان ظهوره داخل الصفحة</small></summary>
-              <form method="post" class="admin-sector-create-form admin-knowledge-form" data-admin-about-form><input type="hidden" name="csrf" value="<?= htmlspecialchars(auth_csrf_token()) ?>"><input type="hidden" name="action" value="create_about_item">
-                <div class="admin-knowledge-fields"><div class="field"><label class="label">القسم</label><select class="select" name="section_key"><?php foreach($aboutSections as $value=>$label): ?><option value="<?= $value ?>"><?= $label ?></option><?php endforeach; ?></select></div><div class="field"><label class="label">العنوان</label><input class="input" name="title" required></div><div class="field"><label class="label">العنوان الفرعي / الوظيفة</label><input class="input" name="subtitle"></div><div class="field"><label class="label">النص المختصر / الشارة</label><input class="input" name="badge_label"></div></div>
-                <div class="field"><label class="label">الوصف</label><textarea class="textarea" name="body"></textarea></div>
-                <div class="admin-knowledge-fields"><div class="field"><label class="label">القيمة الرقمية أو نص الزر الثاني</label><input class="input" name="value_text"></div><div class="field"><label class="label">لاحقة القيمة</label><input class="input" name="value_suffix" placeholder="+"></div><div class="field"><label class="label">الأيقونة</label><select class="select" name="icon_key"><?php foreach($aboutIcons as $value=>$label): ?><option value="<?= $value ?>"><?= $label ?></option><?php endforeach; ?></select></div><div class="field"><label class="label">لون الشارة</label><select class="select" name="badge_style"><?php foreach($aboutStyles as $value=>$label): ?><option value="<?= $value ?>"><?= $label ?></option><?php endforeach; ?></select></div><div class="field"><label class="label">الرابط الأول</label><input class="input ltr-input" name="primary_url" placeholder="contact.php أو https://..."></div><div class="field"><label class="label">الرابط الثاني</label><input class="input ltr-input" name="secondary_url"></div></div>
-                <div class="admin-knowledge-footer"><label class="auth-check"><input type="checkbox" name="is_active" value="1" checked><span>ظاهر في الموقع</span></label><div class="field"><label class="label">الترتيب</label><input class="input" type="number" min="0" name="sort_order" value="<?= count($aboutItems)+1 ?>" required></div><button class="btn btn-primary btn-sm" type="submit">إضافة العنصر</button></div>
-              </form>
-            </details>
-            <div class="admin-knowledge-editor-grid mt-24">
-              <?php foreach($aboutItems as $item): ?>
-                <form method="post" class="admin-knowledge-editor-card" data-admin-about-form><input type="hidden" name="csrf" value="<?= htmlspecialchars(auth_csrf_token()) ?>"><input type="hidden" name="id" value="<?= htmlspecialchars($item['id']) ?>">
-                  <div class="admin-knowledge-card-head"><span class="badge"><?= htmlspecialchars($aboutSections[$item['section_key']]??$item['section_key']) ?></span><label class="auth-check"><input type="checkbox" name="is_active" value="1" <?= !empty($item['is_active'])?'checked':'' ?>><span>ظاهر</span></label></div>
-                  <div class="admin-knowledge-fields"><div class="field"><label class="label">القسم</label><select class="select" name="section_key"><?php foreach($aboutSections as $value=>$label): ?><option value="<?= $value ?>" <?= $item['section_key']===$value?'selected':'' ?>><?= $label ?></option><?php endforeach; ?></select></div><div class="field"><label class="label">العنوان</label><input class="input" name="title" value="<?= htmlspecialchars($item['title']) ?>" required></div><div class="field"><label class="label">العنوان الفرعي / الوظيفة</label><input class="input" name="subtitle" value="<?= htmlspecialchars($item['subtitle']) ?>"></div><div class="field"><label class="label">النص المختصر / الشارة</label><input class="input" name="badge_label" value="<?= htmlspecialchars($item['badge_label']) ?>"></div></div>
-                  <div class="field"><label class="label">الوصف</label><textarea class="textarea" name="body"><?= htmlspecialchars($item['body']) ?></textarea></div>
-                  <div class="admin-knowledge-fields"><div class="field"><label class="label">القيمة / نص الزر الثاني</label><input class="input" name="value_text" value="<?= htmlspecialchars($item['value_text']) ?>"></div><div class="field"><label class="label">لاحقة القيمة</label><input class="input" name="value_suffix" value="<?= htmlspecialchars($item['value_suffix']) ?>"></div><div class="field"><label class="label">الأيقونة</label><select class="select" name="icon_key"><?php foreach($aboutIcons as $value=>$label): ?><option value="<?= $value ?>" <?= $item['icon_key']===$value?'selected':'' ?>><?= $label ?></option><?php endforeach; ?></select></div><div class="field"><label class="label">لون الشارة</label><select class="select" name="badge_style"><?php foreach($aboutStyles as $value=>$label): ?><option value="<?= $value ?>" <?= $item['badge_style']===$value?'selected':'' ?>><?= $label ?></option><?php endforeach; ?></select></div><div class="field"><label class="label">الرابط الأول</label><input class="input ltr-input" name="primary_url" value="<?= htmlspecialchars($item['primary_url']) ?>"></div><div class="field"><label class="label">الرابط الثاني</label><input class="input ltr-input" name="secondary_url" value="<?= htmlspecialchars($item['secondary_url']) ?>"></div><div class="field admin-knowledge-order"><label class="label">الترتيب</label><input class="input" type="number" min="0" name="sort_order" value="<?= (int)$item['sort_order'] ?>" required></div></div>
-                  <div class="admin-sector-editor-actions"><button class="btn btn-primary btn-sm" type="submit" name="action" value="update_about_item">حفظ التعديلات</button><button class="btn btn-sm admin-delete-button" type="submit" name="action" value="delete_about_item" formnovalidate onclick="return confirm('هل أنت متأكد من حذف هذا العنصر من صفحة من نحن؟')">حذف العنصر</button></div>
-                </form>
-              <?php endforeach; ?>
-              <?php if(!$aboutItems): ?><div class="empty-state"><b>لا توجد بيانات فعلية في هذا القسم بعد</b><p>أضف عناصر صفحة من نحن من النموذج أعلاه.</p></div><?php endif; ?>
-            </div>
-          </div>
-        </div>
+        <?php include __DIR__.'/admin-about-view.php'; ?>
       <?php elseif ($sectionKey === 'content'): ?>
-        <?php $contentTypes=['article'=>'مقال','news'=>'خبر','update'=>'تحديث']; $contentStatuses=['draft'=>'مسودة','published'=>'منشور','archived'=>'مؤرشف']; ?>
-        <div class="panel admin-knowledge-manager" data-admin-news-events-manager>
-          <div class="panel-head"><div><h3>إدارة الأخبار والمقالات</h3><p class="hint">كل العمليات تتم عبر API، ولا يظهر للعامة إلا المحتوى المنشور.</p></div><span class="badge"><?= count($contentItems) ?> عنصر</span></div>
-          <div class="panel-body">
-            <details class="admin-sector-create admin-knowledge-create">
-              <summary><span>إضافة خبر أو مقال</span><small>أدخل محتوى موثقًا فقط</small></summary>
-              <form method="post" class="admin-sector-create-form admin-knowledge-form" data-admin-news-events-form><input type="hidden" name="csrf" value="<?= htmlspecialchars(auth_csrf_token()) ?>"><input type="hidden" name="action" value="create_news_item">
-                <div class="admin-knowledge-fields"><div class="field"><label class="label">العنوان</label><input class="input" name="title" required></div><div class="field"><label class="label">النوع</label><select class="select" name="content_type"><?php foreach($contentTypes as $value=>$label): ?><option value="<?= $value ?>"><?= $label ?></option><?php endforeach; ?></select></div><div class="field"><label class="label">التسمية الظاهرة</label><input class="input" name="category_label" value="مقال" required></div><div class="field"><label class="label">تاريخ النشر</label><input class="input" type="datetime-local" name="published_at" value="<?= date('Y-m-d\TH:i') ?>" required></div><div class="field"><label class="label">مدة القراءة</label><input class="input" name="reading_time" placeholder="قراءة 6 دقائق"></div><div class="field"><label class="label">الحالة</label><select class="select" name="status"><?php foreach($contentStatuses as $value=>$label): ?><option value="<?= $value ?>" <?= $value==='draft'?'selected':'' ?>><?= $label ?></option><?php endforeach; ?></select></div></div>
-                <div class="field"><label class="label">الملخص</label><textarea class="textarea" name="excerpt" required></textarea></div>
-                <div class="admin-knowledge-fields"><div class="field"><label class="label">صورة الغلاف — رابط أو مسار</label><input class="input ltr-input" name="cover_image" placeholder="assets/img/cover.png"></div><div class="field"><label class="label">رابط قراءة المحتوى</label><input class="input ltr-input" type="url" name="external_url" placeholder="https://..."></div></div>
-                <div class="admin-knowledge-footer"><label class="auth-check"><input type="checkbox" name="is_featured" value="1"><span>محتوى مميّز</span></label><div class="field"><label class="label">الترتيب</label><input class="input" type="number" min="0" name="sort_order" value="<?= count($contentItems)+1 ?>" required></div><button class="btn btn-primary btn-sm" type="submit">إضافة المحتوى</button></div>
-              </form>
-            </details>
-            <div class="admin-knowledge-editor-grid mt-24">
-              <?php foreach($contentItems as $c): ?>
-                <form method="post" class="admin-knowledge-editor-card" data-admin-news-events-form><input type="hidden" name="csrf" value="<?= htmlspecialchars(auth_csrf_token()) ?>"><input type="hidden" name="id" value="<?= htmlspecialchars($c['id']) ?>">
-                  <div class="admin-knowledge-card-head"><span class="badge"><?= htmlspecialchars($c['id']) ?></span><label class="auth-check"><input type="checkbox" name="is_featured" value="1" <?= !empty($c['is_featured'])?'checked':'' ?>><span>مميّز</span></label></div>
-                  <div class="admin-knowledge-fields"><div class="field"><label class="label">العنوان</label><input class="input" name="title" value="<?= htmlspecialchars($c['title']) ?>" required></div><div class="field"><label class="label">النوع</label><select class="select" name="content_type"><?php foreach($contentTypes as $value=>$label): ?><option value="<?= $value ?>" <?= $c['content_type']===$value?'selected':'' ?>><?= $label ?></option><?php endforeach; ?></select></div><div class="field"><label class="label">التسمية الظاهرة</label><input class="input" name="category_label" value="<?= htmlspecialchars($c['category_label']) ?>" required></div><div class="field"><label class="label">تاريخ النشر</label><input class="input" type="datetime-local" name="published_at" value="<?= htmlspecialchars(date('Y-m-d\TH:i',strtotime((string)$c['published_at']))) ?>" required></div><div class="field"><label class="label">مدة القراءة</label><input class="input" name="reading_time" value="<?= htmlspecialchars($c['reading_time']) ?>"></div><div class="field"><label class="label">الحالة</label><select class="select" name="status"><?php foreach($contentStatuses as $value=>$label): ?><option value="<?= $value ?>" <?= $c['status']===$value?'selected':'' ?>><?= $label ?></option><?php endforeach; ?></select></div></div>
-                  <div class="field"><label class="label">الملخص</label><textarea class="textarea" name="excerpt" required><?= htmlspecialchars($c['excerpt']) ?></textarea></div>
-                  <div class="admin-knowledge-fields"><div class="field"><label class="label">صورة الغلاف</label><input class="input ltr-input" name="cover_image" value="<?= htmlspecialchars($c['cover_image']) ?>"></div><div class="field"><label class="label">رابط القراءة</label><input class="input ltr-input" type="url" name="external_url" value="<?= htmlspecialchars($c['external_url']) ?>"></div><div class="field admin-knowledge-order"><label class="label">الترتيب</label><input class="input" type="number" min="0" name="sort_order" value="<?= (int)$c['sort_order'] ?>" required></div></div>
-                  <div class="admin-sector-editor-actions"><button class="btn btn-primary btn-sm" type="submit" name="action" value="update_news_item">حفظ التعديلات</button><button class="btn btn-sm admin-delete-button" type="submit" name="action" value="delete_news_item" formnovalidate onclick="return confirm('هل أنت متأكد من حذف هذا المحتوى؟')">حذف المحتوى</button></div>
-                </form>
-              <?php endforeach; ?>
-              <?php if(!$contentItems): ?><div class="empty-state"><b>لا توجد بيانات فعلية في هذا القسم بعد</b><p>ستظهر الأخبار والمقالات هنا بعد إضافتها.</p></div><?php endif; ?>
-            </div>
-          </div>
-        </div>
+        <?php include __DIR__ . '/admin-news-page-view.php'; ?>
+      <?php elseif ($sectionKey === 'seven-tech-page'): ?>
+        <?php include __DIR__ . '/admin-seven-tech-page-view.php'; ?>
+      <?php elseif ($sectionKey === 'contact-page'): ?>
+        <?php include __DIR__ . '/admin-contact-page-view.php'; ?>
+      <?php elseif ($sectionKey === 'footer'): ?>
+        <?php include __DIR__ . '/admin-footer-view.php'; ?>
       <?php elseif ($sectionKey === 'stories'): ?>
-        <?php $storyCategories=['fintech'=>'تقنية مالية','health'=>'صحة رقمية','logistics'=>'لوجستيات','ai'=>'ذكاء اصطناعي','saas'=>'SaaS','other'=>'أخرى']; ?>
-        <div class="panel admin-stories-manager">
-          <div class="panel-head"><div><h3>إدارة قصص النجاح</h3><p class="hint">الإضافة والتعديل والحذف تتم عبر API، والقصص الظاهرة تُنشر تلقائيًا في الموقع.</p></div><span class="badge"><?= count($successStories) ?> قصة</span></div>
-          <div class="panel-body">
-            <details class="admin-sector-create admin-story-create">
-              <summary><span>إضافة قصة نجاح</span><small>أدخل بيانات موثقة فقط</small></summary>
-              <form method="post" class="admin-sector-create-form admin-story-form"><input type="hidden" name="csrf" value="<?= htmlspecialchars(auth_csrf_token()) ?>"><input type="hidden" name="action" value="create_success_story">
-                <div class="admin-story-fields"><div class="field"><label class="label">القطاع</label><input class="input" name="sector_label" required></div><div class="field"><label class="label">التصنيف</label><select class="select" name="category_key"><?php foreach($storyCategories as $key=>$label): ?><option value="<?= $key ?>"><?= $label ?></option><?php endforeach; ?></select></div><div class="field"><label class="label">العنوان</label><input class="input" name="title" required></div><div class="field"><label class="label">المدة</label><input class="input" name="duration" placeholder="9 أسابيع" required></div></div>
-                <div class="field"><label class="label">المشكلة</label><textarea class="textarea" name="problem_text" required></textarea></div><div class="field"><label class="label">الحل</label><textarea class="textarea" name="solution_text" required></textarea></div>
-                <div class="admin-story-metrics"><?php for($i=1;$i<=3;$i++): ?><div><input class="input ltr-input" name="metric_<?= $i ?>_value" placeholder="القيمة" required><input class="input" name="metric_<?= $i ?>_label" placeholder="اسم المؤشر" required></div><?php endfor; ?></div>
-                <div class="admin-story-footer"><label class="auth-check"><input type="checkbox" name="is_active" value="1" checked><span>نشر فورًا</span></label><input class="input" type="number" min="0" name="sort_order" value="<?= count($successStories)+1 ?>" aria-label="الترتيب" required><button class="btn btn-primary btn-sm" type="submit">إضافة ونشر</button></div>
-              </form>
-            </details>
-            <div class="admin-story-editor-grid mt-24">
-              <?php foreach($successStories as $story): $storyMetrics=json_decode((string)$story['metrics_json'],true); ?>
-                <form method="post" class="admin-story-editor-card"><input type="hidden" name="csrf" value="<?= htmlspecialchars(auth_csrf_token()) ?>"><input type="hidden" name="id" value="<?= htmlspecialchars($story['id']) ?>">
-                  <div class="admin-story-card-head"><span class="badge"><?= htmlspecialchars($story['id']) ?></span><label class="auth-check"><input type="checkbox" name="is_active" value="1" <?= !empty($story['is_active'])?'checked':'' ?>><span>ظاهرة</span></label></div>
-                  <div class="admin-story-fields"><div class="field"><label class="label">القطاع</label><input class="input" name="sector_label" value="<?= htmlspecialchars($story['sector_label']) ?>" required></div><div class="field"><label class="label">التصنيف</label><select class="select" name="category_key"><?php foreach($storyCategories as $key=>$label): ?><option value="<?= $key ?>" <?= $story['category_key']===$key?'selected':'' ?>><?= $label ?></option><?php endforeach; ?></select></div><div class="field"><label class="label">العنوان</label><input class="input" name="title" value="<?= htmlspecialchars($story['title']) ?>" required></div><div class="field"><label class="label">المدة</label><input class="input" name="duration" value="<?= htmlspecialchars($story['duration']) ?>" required></div></div>
-                  <div class="field"><label class="label">المشكلة</label><textarea class="textarea" name="problem_text" required><?= htmlspecialchars($story['problem_text']) ?></textarea></div><div class="field"><label class="label">الحل</label><textarea class="textarea" name="solution_text" required><?= htmlspecialchars($story['solution_text']) ?></textarea></div>
-                  <div class="admin-story-metrics"><?php for($i=0;$i<3;$i++): $metric=$storyMetrics[$i]??['value'=>'','label'=>'']; ?><div><input class="input ltr-input" name="metric_<?= $i+1 ?>_value" value="<?= htmlspecialchars((string)$metric['value']) ?>" required><input class="input" name="metric_<?= $i+1 ?>_label" value="<?= htmlspecialchars((string)$metric['label']) ?>" required></div><?php endfor; ?></div>
-                  <div class="field admin-story-order"><label class="label">الترتيب</label><input class="input" type="number" min="0" name="sort_order" value="<?= (int)$story['sort_order'] ?>" required></div>
-                  <div class="admin-sector-editor-actions"><button class="btn btn-primary btn-sm" type="submit" name="action" value="update_success_story">حفظ التعديلات</button><button class="btn btn-sm admin-delete-button" type="submit" name="action" value="delete_success_story" formnovalidate onclick="return confirm('هل أنت متأكد من حذف هذه القصة؟')">حذف القصة</button></div>
-                </form>
-              <?php endforeach; ?>
-            </div>
-          </div>
-        </div>
+        <?php include __DIR__ . '/admin-stories-page-view.php'; ?>
       <?php elseif ($sectionKey === 'events'): ?>
         <?php $eventStatuses=['draft'=>'مسودة','published'=>'منشورة','completed'=>'مكتملة','cancelled'=>'ملغاة']; ?>
         <div class="panel admin-knowledge-manager" data-admin-news-events-manager>
@@ -505,9 +415,8 @@ function admin_side_link($key, $label, $icon, $count = null, $muted = false) {
 </div>
 <div class="scrim" onclick="closeOverlays()"></div>
 <script src="../assets/js/app.js"></script>
-<?php if ($sectionKey === 'stories'): ?><script src="../assets/js/admin-success-stories.js?v=20260804" defer></script><?php endif; ?>
-<?php if (in_array($sectionKey, ['content','events'], true)): ?><script src="../assets/js/admin-news-events.js?v=20260804" defer></script><?php endif; ?>
-<?php if ($sectionKey === 'about'): ?><script src="../assets/js/admin-about.js?v=20260804" defer></script><?php endif; ?>
+<?php if ($sectionKey === 'events'): ?><script src="../assets/js/admin-news-events.js?v=20260804" defer></script><?php endif; ?>
 <?php if ($sectionKey === 'investors-page'): ?><script src="../assets/js/admin-investors-page.js?v=20260804" defer></script><?php endif; ?>
 <?php if ($sectionKey === 'entrepreneurs-page'): ?><script src="../assets/js/admin-entrepreneurs-page.js?v=20260804" defer></script><?php endif; ?>
 </body></html>
+

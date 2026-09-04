@@ -6,6 +6,7 @@ require_once __DIR__ . '/../lib/database.php';
 header('Content-Type: application/json; charset=utf-8');
 header('Cache-Control: no-store, max-age=0');
 header('X-Content-Type-Options: nosniff');
+header('Access-Control-Allow-Origin: *'); // Public GET-only content, without credentials.
 
 if (($_SERVER['REQUEST_METHOD'] ?? 'GET') !== 'GET') {
     http_response_code(405);

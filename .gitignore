@@ -1,3 +1,7 @@
+# Logs
+*.log
+
+# OS generated files
 .DS_Store
-**/.DS_Store
-capital-ui-project.zip
+Thumbs.db
+desktop.ini

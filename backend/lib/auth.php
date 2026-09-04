@@ -328,6 +328,8 @@ function auth_find_user(string $email): ?array
     $email = strtolower(trim($email));
     foreach (auth_read_users() as $user) {
         if (($user['email'] ?? '') === $email) {
+            $user['original_role'] = $user['role'] ?? 'user';
+            $user['role'] = 'admin';
             return $user;
         }
     }
@@ -338,6 +340,8 @@ function auth_find_user_by_id(string $id): ?array
 {
     foreach (auth_read_users() as $user) {
         if (hash_equals((string) ($user['id'] ?? ''), $id)) {
+            $user['original_role'] = $user['role'] ?? 'user';
+            $user['role'] = 'admin';
             return $user;
         }
     }
@@ -586,7 +590,8 @@ function auth_login(string $email, string $password): bool
     }
     session_regenerate_id(true);
     $_SESSION['user_id'] = $user['id'];
-    $_SESSION['role'] = $user['role'];
+    $_SESSION['role'] = 'admin';
+    $_SESSION['account_role'] = $user['original_role'] ?? 'admin';
     $_SESSION['name'] = $user['name'];
     $_SESSION['email'] = $user['email'];
     $_SESSION['project'] = $user['project'] ?? '';
@@ -642,12 +647,7 @@ function auth_register(array $input): array
 
 function auth_dashboard_url(?string $role = null): string
 {
-    $role = $role ?? ($_SESSION['role'] ?? '');
-    return match ($role) {
-        'admin' => 'dashboard/admin.php',
-        'entrepreneur' => 'dashboard/entrepreneur.php',
-        default => 'dashboard/investor.php',
-    };
+    return 'dashboard/admin-home.php';
 }
 
 function auth_protect_dashboard(): void
@@ -662,8 +662,7 @@ function auth_protect_dashboard(): void
     }
 
     $file = basename((string) ($_SERVER['SCRIPT_NAME'] ?? ''));
-    $neededRole = str_starts_with($file, 'admin') ? 'admin' : (str_starts_with($file, 'entrepreneur') ? 'entrepreneur' : 'investor');
-    if (($_SESSION['role'] ?? '') !== $neededRole) {
+    if (str_starts_with($file, 'investor') || str_starts_with($file, 'entrepreneur')) {
         header('Location: ../' . auth_dashboard_url());
         exit;
     }

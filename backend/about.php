@@ -1,5 +1,5 @@
 <?php $base=''; $title='من نحن'; $active='about'; include 'partials/head.php'; include 'partials/nav.php'; ?>
-<main id="main" data-about-page data-api="api/about.php" aria-busy="true">
+<main id="main" data-about-page aria-busy="true">
 
 <section class="page-hero about-hero" data-about-section="hero">
   <div class="hero-dots"></div>
@@ -37,5 +37,6 @@
 </section>
 
 </main>
-<script src="assets/js/about.js?v=20260804" defer></script>
+<script src="assets/js/api-config.js?v=1"></script>
+<script src="assets/js/about.js?v=2" defer></script>
 <?php include 'partials/footer.php'; ?>

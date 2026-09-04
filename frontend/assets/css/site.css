@@ -2110,7 +2110,7 @@ body:not(.page-home) .page-hero > .container {
 .investor-hero-side .cta-actions { margin-top: 26px; }
 .investor-types-section { background: var(--surface-2); }
 .investor-type-grid {
-  display: grid; grid-template-columns: repeat(5, minmax(0, 1fr));
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 12px;
 }
 .investor-type-card {
@@ -2284,7 +2284,7 @@ body:not(.page-home) .page-hero > .container {
 }
 .support-stage-grid {
   display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 14px;
 }
 .support-stage-card {
@@ -4093,3 +4093,7 @@ body:not(.page-home) .page-hero > .container {
 .to-top:active { transform: translateY(0) scale(.96); }
 .to-top svg { width: 20px; height: 20px; }
 @media (max-width: 560px) { .to-top { inset-block-end: 16px; inset-inline-end: 16px; width: 44px; height: 44px; } }
+
+[data-investors-page] #journey { scroll-margin-top: calc(var(--nav-h) + 24px); }
+
+[data-entrepreneurs-page] #stages, [data-entrepreneurs-page] #apply { scroll-margin-top: calc(var(--nav-h) + 24px); }

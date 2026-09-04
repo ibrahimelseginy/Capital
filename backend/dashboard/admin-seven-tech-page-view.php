@@ -1,0 +1,10 @@
+<?php
+require_once __DIR__.'/../lib/seven-tech-sections.php';require_once __DIR__.'/content-editor-fields.php';try{$sevenTechSections=seven_tech_read();}catch(Throwable $error){error_log('Seven Tech editor: '.$error->getMessage());echo '<div class="auth-message auth-message-error">تعذر تحميل المحتوى. شغّل MySQL في MAMP ثم أعد تحميل الصفحة.</div>';return;}
+?>
+<link rel="stylesheet" href="../assets/css/home-editor.css?v=<?= filemtime(__DIR__.'/../assets/css/home-editor.css') ?>">
+<div class="home-manager" data-home-manager data-endpoint="../api/admin-seven-tech-sections.php">
+  <div class="panel home-manager-intro"><div><h3>التحكم في صفحة Seven Tech</h3><p>افتح القسم المطلوب وعدّل محتواه ثم اضغط «حفظ ونشر القسم».</p><p class="hint">يمكنك إضافة الخدمات ونقاط تقليل المخاطر والإحصائيات وترتيبها وإظهارها أو إخفاؤها.</p></div><a href="../seven-tech.php" target="_blank" rel="noopener" class="btn btn-ghost">معاينة Seven Tech ↗</a></div>
+  <nav class="home-editor-nav" aria-label="أقسام صفحة Seven Tech"><?php foreach(seven_tech_schema() as $key=>$schema):?><a href="#edit-<?= $key ?>" class="btn btn-soft btn-sm"><?= home_escape($schema['label']) ?></a><?php endforeach;?></nav>
+  <div class="home-editor-sections"><?php foreach(seven_tech_schema() as $key=>$schema):$section=$sevenTechSections[$key];?><details class="home-editor-section" id="edit-<?= $key ?>"><summary><span><?= home_escape($schema['label']) ?></span><span class="badge" data-section-state><?= $section['content']['is_active']?'ظاهر':'مخفي' ?></span></summary><form data-home-form data-section="<?= $key ?>" data-revision="<?= (int)$section['revision'] ?>" class="home-editor-form"><input type="hidden" name="csrf" value="<?= home_escape(auth_csrf_token()) ?>"><?php home_editor_fields($schema['fields'],$section['content']);?><div class="home-save-row"><span role="status" aria-live="polite" data-home-result>المحتوى المحفوظ حاليًا</span><button type="submit" class="btn btn-primary">حفظ ونشر القسم</button></div></form></details><?php endforeach;?></div>
+</div>
+<script src="../assets/js/admin-home.js?v=<?= filemtime(__DIR__.'/../assets/js/admin-home.js') ?>" defer></script>

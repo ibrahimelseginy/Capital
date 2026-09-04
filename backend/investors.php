@@ -13,5 +13,6 @@
 
 <section class="section investor-cta" data-investors-section="cta"><div class="container"><div class="cta-band" data-investors-cta></div></div></section>
 </main>
-<script src="assets/js/investors-page.js?v=20260804" defer></script>
+<script src="assets/js/api-config.js?v=1"></script>
+<script src="assets/js/investors-page.js?v=20260831-sections" defer></script>
 <?php include 'partials/footer.php'; ?>

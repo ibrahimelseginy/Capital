@@ -3,6 +3,14 @@ CREATE DATABASE IF NOT EXISTS capital_ui
   COLLATE utf8mb4_unicode_ci;
 USE capital_ui;
 
+-- Home content is seeded once from config/home-defaults.json by lib/home.php.
+CREATE TABLE IF NOT EXISTS home_page_sections (
+  section_key VARCHAR(30) NOT NULL PRIMARY KEY,
+  content_json MEDIUMTEXT NOT NULL,
+  revision INT UNSIGNED NOT NULL DEFAULT 1,
+  updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 CREATE TABLE IF NOT EXISTS users (
   id VARCHAR(32) NOT NULL,
   name VARCHAR(160) NOT NULL,

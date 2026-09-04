@@ -1,0 +1,86 @@
+{
+  "hero": {
+    "badge": "صندوق قيد التأسيس", "region": "نطاق إقليمي للنمو",
+    "title": "نَبني المشروع قبل أن نُفعّل", "highlight": "الاستثمار.",
+    "description": "Seven Tech Capital صندوق استثماري مدعوم بذراع تقني بخبرة تمتد إلى 20 عامًا في تأسيس وتشغيل الشركات التقنية. نختبر الفكرة، نبني المنتج، ونُجهّز المشروع للتشغيل قبل تفعيل رأس المال — لتقليل مخاطر التنفيذ وصناعة فرص أكثر جاهزية للنمو.",
+    "primary_label": "سجّل كمستثمر", "primary_url": "login.php?tab=register",
+    "secondary_label": "قدّم مشروعك الآن", "secondary_url": "entrepreneurs.php#apply",
+    "proofs": [{"text":"بوابات مراجعة قبل التمويل"},{"text":"ذراع تقني للتنفيذ"},{"text":"متابعة شفافة للمحفظة"}],
+    "ledger_tag": "CAPITAL · STATUS", "ledger_title": "سجل جاهزية رأس المال", "ledger_status": "مُقفَل",
+    "ledger_description": "لا يتم تحرير التمويل إلا بعد مرور المشروع ببوابات التحقق والبناء والتشغيل.",
+    "gates": [
+      {"title":"الفكرة والتحقق","description":"بحث المشكلة والسوق واختبار الفرضيات","status":"مُجتاز","style":"done"},
+      {"title":"الدراسة والتأسيس","description":"النموذج المالي والقانوني وخطة العمل","status":"مُجتاز","style":"done"},
+      {"title":"البناء التقني","description":"MVP · ويب · موبايل · ذكاء اصطناعي وتكاملات","status":"جارٍ","style":"active"},
+      {"title":"التمويل والتوظيف","description":"هيكلة الجولة وبناء الفريق الأساسي","status":"بانتظار","style":"waiting"},
+      {"title":"التشغيل — يُفعَّل رأس المال","description":"عند الجاهزية للتشغيل يُفتح القفل ويُحرَّر التمويل","status":"الإفراج","style":"unlock"}
+    ],
+    "meter_label":"تفعيل رأس المال", "meter_status":"قيد الإعداد", "progress":60
+  },
+  "stats": {"items":[
+    {"value":"20+","label":"عامًا خبرة تراكمية للفريق","icon":"award"},
+    {"value":"15","label":"عامًا عمر شركة Seven Tech","icon":"company"},
+    {"value":"$50M","label":"قيمة مشروعات شارك بها الفريق","icon":"growth"},
+    {"value":"500+","label":"عميل في مصر والدول العربية","icon":"people"}
+  ]},
+  "why": {
+    "eyebrow":"لماذا Seven Tech Capital", "title":"استثمار يمر ببوابات مراجعة وجاهزية قبل تحرير التمويل",
+    "description":"نحن لا نكتفي بتمويل الفكرة، بل نبنيها ونُجهّزها ونُشغّلها — بخبرة تقنية وتشغيلية عميقة ومجلس استشاري قوي.",
+    "items":[
+      {"title":"آمن ومدروس","description":"إظهار أن الاستثمار يمر ببوابات مراجعة وجاهزية وتشغيل قبل تحرير التمويل.","icon":"shield","featured":true},
+      {"title":"تقني ومستقبلي","description":"تجربة رقمية حديثة، حركة هادئة، وبيانات واضحة — ليست مجرد مؤثرات بصرية.","icon":"chip","featured":false},
+      {"title":"جريء وواثق","description":"رسائل مباشرة ومساحات واسعة وتباين قوي، مع البرتقالي كإشارة قرار.","icon":"bolt","featured":false},
+      {"title":"مؤسسي وشفاف","description":"عرض المراحل والحالات والتقارير والمستندات وسجل الإجراءات بوضوح.","icon":"growth","featured":false}
+    ]
+  },
+  "sectors": {
+    "eyebrow":"القطاعات المستهدفة", "title":"نستثمر في القطاعات التي نفهمها ونبنيها",
+    "description":"نركّز على قطاعات قابلة للبناء والقياس، حيث يمكن للذراع التقني تحويل الفكرة إلى منتج وتشغيل فعلي.",
+    "button_label":"استعرض كل القطاعات", "button_url":"sectors.php", "items":[
+      {"title":"البرمجيات و SaaS","description":"منصات ومنتجات برمجية قابلة للتوسع.","icon":"software","button_label":"أمثلة الفرص","url":"sectors.php#sector-01"},
+      {"title":"التقنية المالية","description":"حلول مالية وأسواق مال ومدفوعات.","icon":"fintech","button_label":"أمثلة الفرص","url":"sectors.php#sector-02"},
+      {"title":"الذكاء الاصطناعي","description":"التنبؤ والتحليلات والأتمتة.","icon":"ai","button_label":"أمثلة الفرص","url":"sectors.php#sector-03"},
+      {"title":"الصحة الرقمية","description":"منصات رعاية وخدمات صحية.","icon":"health","button_label":"أمثلة الفرص","url":"sectors.php#sector-04"},
+      {"title":"التعليم التقني","description":"منصات تعلم ومهارات رقمية.","icon":"education","button_label":"أمثلة الفرص","url":"sectors.php#sector-05"},
+      {"title":"إنترنت الأشياء","description":"أجهزة وشبكات ذكية متصلة.","icon":"iot","button_label":"أمثلة الفرص","url":"sectors.php#sector-06"},
+      {"title":"التوصيل واللوجستيات","description":"سلاسل إمداد وتوصيل ذكية.","icon":"logistics","button_label":"أمثلة الفرص","url":"sectors.php#sector-07"},
+      {"title":"التحول الرقمي","description":"إدارة وتشغيل وأتمتة العمليات.","icon":"digital","button_label":"أمثلة الفرص","url":"sectors.php#sector-08"}
+    ]
+  },
+  "paths": {
+    "eyebrow":"مسارات المنصة", "title":"مساران، منصة واحدة، سجل تدقيق كامل",
+    "description":"اختر المسار المناسب لك. كل رحلة لها متطلبات واضحة، حالات متابعة، وخطوة تالية ظاهرة داخل المنصة.",
+    "items":[
+      {"badge":"للمستثمرين","title":"استثمر في فرص أكثر جاهزية","description":"تأهيل يدوي، اتفاقيات سرية، فرص محمية، ومتابعة كاملة للمحفظة عبر لوحة تحكم مخصصة.","icon":"growth","style":"investor","button_label":"ابدأ كمستثمر","url":"investors.php","features":[{"text":"تأهيل KYC/AML يدوي محكم خلال 3–5 أيام"},{"text":"فرص لا تُعرض إلا بعد الاعتماد وتوقيع NDA"},{"text":"خيارات: الصندوق · فرصة محددة · مسار هجين"},{"text":"متابعة المحفظة والتقارير والاجتماعات"}]},
+      {"badge":"لرواد الأعمال","title":"من الفكرة إلى التشغيل والتوسع","description":"اختر نوع الدعم المناسب، قدّم مشروعك، وتابع مراحل التقييم والاجتماعات والمهام من لوحة واحدة.","icon":"edit","style":"entrepreneur","button_label":"قدّم مشروعك","url":"entrepreneurs.php#apply","features":[{"text":"نموذج تقديم متعدد الخطوات مع حفظ تلقائي"},{"text":"رفع Pitch Deck ودراسة جدوى وملفات"},{"text":"خط مراجعة شفاف: جديد ← تقييم ← قرار ← تعاقد"},{"text":"دعم يشمل البناء والتمويل والتشغيل"}]}
+    ]
+  },
+  "stories": {
+    "eyebrow":"قصص النجاح", "title":"دراسات حالة موثقة — دون أسماء العملاء",
+    "description":"نستخدم قصصًا مجهّلة لعرض أثر البناء التقني والتشغيلي دون كشف بيانات العملاء أو الفرص الحساسة.",
+    "button_label":"استعرض كل القصص", "button_url":"success-stories.php",
+    "note":"تُعرض المؤشرات بعد التحقق والمراجعة القانونية والتسويقية. الأرقام أعلاه تمثيلية في هذا النموذج.",
+    "preview_label":"معاينة", "modal_badge":"موثقة ومُعتمَدة",
+    "modal_note":"تمت دراسة هذه الحالة والتأكد من المؤشرات عبر الفريق التقني والمالي لـ Seven Tech Capital.",
+    "modal_button_label":"سجّل كمستثمر للاطلاع على المزيد من الفرص المشابهة", "modal_button_url":"login.php?tab=register",
+    "items":[
+      {"category":"التقنية المالية","title":"منصة مدفوعات B2B","description":"خفض زمن التسوية وتحسين تجربة التاجر عبر بنية حديثة.","modal_description":"خفض زمن التسوية وتحسين تجربة التاجر عبر بنية حديثة.","metrics":[{"value":"-64%","label":"زمن العملية","style":"is-reduction"},{"value":"3.5x","label":"نمو المعاملات","style":"is-positive"},{"value":"9 أسابيع","label":"للإطلاق","style":"is-time"}]},
+      {"category":"الصحة الرقمية","title":"منصة حجوزات ورعاية","description":"توحيد تجربة المريض ورقمنة العمليات التشغيلية.","modal_description":"توحيد تجربة المريض ورقمنة العمليات التشغيلية.","metrics":[{"value":"+180%","label":"مستخدمون","style":"is-positive"},{"value":"-38%","label":"التكلفة","style":"is-reduction"},{"value":"12 أسبوع","label":"للإطلاق","style":"is-time"}]},
+      {"category":"اللوجستيات","title":"نظام توصيل ذكي","description":"تحسين المسارات والتتبع اللحظي وأتمتة الأسطول.","modal_description":"تحسين المسارات والتتبع اللحظي وأتمتة الأسطول.","metrics":[{"value":"+42%","label":"كفاءة","style":"is-positive"},{"value":"-27%","label":"زمن التسليم","style":"is-reduction"},{"value":"8 أسابيع","label":"للإطلاق","style":"is-time"}]}
+    ]
+  },
+  "news": {
+    "eyebrow":"الأخبار والفعاليات", "title":"آخر المستجدات",
+    "description":"تحديثات المنصة، منهجية الاستثمار، والشراكات المؤسسية في مكان واحد.",
+    "button_label":"عرض كل المستجدات", "button_url":"news-events.php", "items":[
+      {"category":"فعالية","style":"is-event","title":"إطلاق الإصدار التشغيلي الأول للمنصة","description":"نستعرض بوابتَي المستثمر ورائد الأعمال ولوحة الإدارة.","date":"2026-07-17","date_label":"17 يوليو 2026","featured":true,"button_label":"اقرأ المزيد","url":"news-events.php#news-CNT-002"},
+      {"category":"مقال","style":"is-article","title":"منهجية تقليل مخاطر التنفيذ في الاستثمار الجريء","description":"كيف نُجهّز المشروع للتشغيل قبل تفعيل رأس المال.","date":"2026-07-10","date_label":"10 يوليو 2026","featured":false,"button_label":"اقرأ المزيد","url":"news-events.php#news-CNT-001"},
+      {"category":"شراكة","style":"is-partner","title":"توسع مؤسسي مستهدف نحو السعودية والإمارات","description":"خطة التوسع الجغرافي مع فصل بيانات كل دولة.","date":"2026-07-02","date_label":"2 يوليو 2026","featured":false,"button_label":"اقرأ المزيد","url":"news-events.php#news-CNT-003"}
+    ]
+  },
+  "cta": {
+    "eyebrow":"ابدأ الرحلة المناسبة لك", "title":"جاهز لتبدأ رحلتك الاستثمارية؟",
+    "description":"سجّل كمستثمر معتمد أو قدّم مشروعك اليوم. تأهيل يدوي محكم، سرية كاملة، وتجربة رقمية شفافة بثلاث لغات.",
+    "primary_label":"سجّل كمستثمر", "primary_url":"login.php?tab=register", "secondary_label":"قدّم مشروعك الآن", "secondary_url":"entrepreneurs.php#apply"
+  }
+}

@@ -1198,3 +1198,11 @@
     });
   }
 })();
+
+(function loadManagedFooter(){
+  if(!document.querySelector('footer.footer')||document.querySelector('script[data-managed-footer]'))return;
+  var loader=document.createElement('script');
+  var current=document.currentScript;
+  loader.src=new URL('footer.js?v=20260901-managed',current&&current.src?current.src:location.href).href;
+  loader.defer=true;loader.dataset.managedFooter='true';document.head.appendChild(loader);
+})();
