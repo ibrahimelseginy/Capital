@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script>
+    (function () {
+      var d = document.documentElement;
+      d.classList.add('js');
+      try {
+        var t = localStorage.getItem('stc-theme');
+        if (t !== 'dark' && t !== 'light') {
+          t = window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        d.setAttribute('data-theme', t);
+      } catch (e) {}
+    })();
+  </script>
+  <title>نظام التصميم · Seven Tech Capital</title>
+  <meta name="description" content="توثيق نظام التصميم — مرجع تفاعلي لجميع مكونات واجهة Seven Tech Capital.">
+  <link rel="icon" type="image/svg+xml" href="../assets/img/favicon.svg">
+  <link rel="stylesheet" href="../assets/css/design-system.css">
+  <link rel="stylesheet" href="../assets/css/site.css">
+  <style>
+    /* Documentation-specific styles */
+    .doc-section { margin-bottom: 56px; }
+    .doc-section h2 { font-size: 28px; margin-bottom: 8px; }
+    .doc-section > p { color: var(--text-2); font-size: 15px; margin-bottom: 24px; }
+    .doc-grid { display: grid; gap: 16px; }
+    .doc-row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-bottom: 16px; }
+    .doc-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-lg); padding: 24px; }
+    .doc-label { font-family: var(--font-mono); font-size: 12px; color: var(--text-3); display: block; margin-bottom: 6px; }
+    .color-swatch { display: inline-flex; align-items: center; gap: 12px; padding: 6px 12px 6px 6px; border-radius: var(--r-sm); border: 1px solid var(--border); background: var(--surface); }
+    .color-swatch .sw { width: 40px; height: 40px; border-radius: var(--r-sm); flex: none; }
+    .color-swatch .meta { font-size: 13px; }
+    .color-swatch .meta b { display: block; font-family: var(--font-head); }
+    .color-swatch .meta code { font-family: var(--font-mono); font-size: 11px; color: var(--text-3); }
+    .token-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    .token-table th { text-align: start; font-family: var(--font-head); font-weight: 600; font-size: 12px; color: var(--text-3); text-transform: uppercase; letter-spacing: .04em; padding: 10px 12px; border-bottom: 1px solid var(--border); }
+    .token-table td { padding: 10px 12px; border-bottom: 1px solid var(--border); }
+    .token-table td:first-child { font-family: var(--font-mono); font-size: 13px; color: var(--orange-text); }
+    .token-table td:last-child { color: var(--text-2); }
+    .doc-nav { position: sticky; top: 0; z-index: 100; background: color-mix(in srgb, var(--bg) 85%, transparent); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); padding: 16px 0; }
+    .doc-nav .container { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  </style>
+</head>
+<body>
+  <header class="doc-nav">
+    <div class="container">
+      <a href="../index.php" class="brand" style="font-size:16px">
+        <img class="logo-mark" src="../assets/img/icon.png" width="30" height="30" alt="Seven Tech Capital" decoding="async">
+        <span>Seven Tech<small>Design System</small></span>
+      </a>
+      <div class="spacer"></div>
+      <button class="icon-btn" onclick="toggleTheme()" aria-label="تبديل الوضع الفاتح والداكن"><span data-theme-icon></span></button>
+      <a href="../index.php" class="btn btn-ghost btn-sm">العودة للموقع</a>
+    </div>
+  </header>
+
+  <main id="main" style="padding: 48px 0 96px;">
+    <div class="container" style="max-width:1100px">
+      <div class="center" style="max-width:640px;margin:0 auto 56px">
+        <span class="eyebrow" style="justify-content:center">مرجع تفاعلي</span>
+        <h1 style="font-size:clamp(32px,4vw,48px);margin-top:16px">نظام التصميم</h1>
+        <p class="section-lead" style="margin-inline:auto">جميع المكونات، الألوان، والرموز المستخدمة في واجهة Seven Tech Capital — مع أمثلة تفاعلية وحالات مختلفة.</p>
+      </div>
+
+      <!-- ======================== COLORS ======================== -->
+      <section class="doc-section" id="colors">
+        <h2>الألوان</h2>
+        <p>لوحة ألوان مبنية على نظام Design Tokens مع دعم كامل للوضع الفاتح والداكن.</p>
+
+        <h3 style="font-size:16px;margin-bottom:16px">ألوان العلامة التجارية</h3>
+        <div class="doc-row">
+          <div class="color-swatch"><span class="sw" style="background:#FF5000"></span><div class="meta"><b>Orange (Primary)</b><code>--orange: #FF5000</code></div></div>
+          <div class="color-swatch"><span class="sw" style="background:#111111"></span><div class="meta"><b>Black</b><code>--black: #111111</code></div></div>
+          <div class="color-swatch"><span class="sw" style="background:#FAF7F3"></span><div class="meta"><b>Warm Gray</b><code>--warm-gray: #FAF7F3</code></div></div>
+          <div class="color-swatch"><span class="sw" style="background:#252525"></span><div class="meta"><b>Charcoal</b><code>--charcoal: #252525</code></div></div>
+        </div>
+
+        <h3 style="font-size:16px;margin:24px 0 16px">ألوان الحالة</h3>
+        <div class="doc-row">
+          <div class="color-swatch"><span class="sw" style="background:var(--success)"></span><div class="meta"><b>Success</b><code>--success</code></div></div>
+          <div class="color-swatch"><span class="sw" style="background:var(--warning)"></span><div class="meta"><b>Warning</b><code>--warning</code></div></div>
+          <div class="color-swatch"><span class="sw" style="background:var(--danger)"></span><div class="meta"><b>Danger</b><code>--danger</code></div></div>
+          <div class="color-swatch"><span class="sw" style="background:var(--info)"></span><div class="meta"><b>Info</b><code>--info</code></div></div>
+        </div>
+      </section>
+
+      <!-- ======================== TYPOGRAPHY ======================== -->
+      <section class="doc-section" id="typography">
+        <h2>الخطوط</h2>
+        <p>ثلاث عائلات خطوط: عناوين عربية، نصوص عربية، وأرقام/بيانات.</p>
+        <div class="doc-card">
+          <div style="margin-bottom:24px">
+            <span class="doc-label">--font-head: Noto Kufi Arabic</span>
+            <p style="font-family:var(--font-head);font-size:28px;font-weight:800">نَبني المشروع قبل أن نُفعّل الاستثمار</p>
+          </div>
+          <div style="margin-bottom:24px">
+            <span class="doc-label">--font-body: Noto Sans Arabic</span>
+            <p style="font-family:var(--font-body);font-size:16px">صندوق استثماري مدعوم بذراع تقني بخبرة تمتد إلى 20 عامًا في تأسيس وتشغيل الشركات التقنية.</p>
+          </div>
+          <div>
+            <span class="doc-label">--font-mono: IBM Plex Mono</span>
+            <p class="mono" style="font-size:22px;font-weight:600">$30M &nbsp; 20+ &nbsp; 500+ &nbsp; 15</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================== SPACING ======================== -->
+      <section class="doc-section" id="spacing">
+        <h2>المسافات</h2>
+        <p>نظام مسافات 8px مع كثافة 6/10 (Standard).</p>
+        <div class="doc-card">
+          <table class="token-table">
+            <thead><tr><th>Token</th><th>القيمة</th><th>الاستخدام</th></tr></thead>
+            <tbody>
+              <tr><td>--space-xs</td><td>4px</td><td>فجوات ضيقة</td></tr>
+              <tr><td>--space-sm</td><td>8px</td><td>فجوات الأيقونات</td></tr>
+              <tr><td>--space-md</td><td>16px</td><td>padding قياسي</td></tr>
+              <tr><td>--space-lg</td><td>24px</td><td>أقسام</td></tr>
+              <tr><td>--space-xl</td><td>32px</td><td>فجوات كبيرة</td></tr>
+              <tr><td>--space-2xl</td><td>48px</td><td>هوامش أقسام</td></tr>
+              <tr><td>--space-3xl</td><td>64px</td><td>padding Hero</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ======================== BUTTONS ======================== -->
+      <section class="doc-section" id="buttons">
+        <h2>الأزرار</h2>
+        <p>أزرار مع ripple effect وتأثيرات حركة سلسة.</p>
+
+        <h3 style="font-size:16px;margin-bottom:16px">الأنماط</h3>
+        <div class="doc-card">
+          <div class="doc-row">
+            <a class="btn btn-primary">Primary</a>
+            <a class="btn btn-ghost">Ghost</a>
+            <a class="btn btn-dark">Dark</a>
+            <a class="btn btn-soft">Soft</a>
+          </div>
+          <span class="doc-label" style="margin-top:16px">الأحجام</span>
+          <div class="doc-row" style="margin-top:8px">
+            <a class="btn btn-primary btn-sm">Small</a>
+            <a class="btn btn-primary">Default</a>
+            <a class="btn btn-primary btn-lg">Large</a>
+          </div>
+          <span class="doc-label" style="margin-top:16px">حالات</span>
+          <div class="doc-row" style="margin-top:8px">
+            <a class="btn btn-primary">نشط</a>
+            <a class="btn btn-primary" aria-disabled="true">معطّل</a>
+            <a class="btn btn-primary btn-block" style="max-width:300px">كامل العرض</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================== BADGES ======================== -->
+      <section class="doc-section" id="badges">
+        <h2>الشارات والرقائق</h2>
+        <p>للحالات والتصنيفات والفلاتر.</p>
+
+        <div class="doc-card">
+          <span class="doc-label">الشارات (Badges)</span>
+          <div class="doc-row" style="margin-top:8px">
+            <span class="badge">عادي</span>
+            <span class="badge badge-orange">برتقالي</span>
+            <span class="badge badge-success">نجاح</span>
+            <span class="badge badge-warning">تحذير</span>
+            <span class="badge badge-danger">خطر</span>
+            <span class="badge badge-info">معلومات</span>
+          </div>
+          <span class="doc-label" style="margin-top:20px">الرقائق (Chips)</span>
+          <div class="doc-row" style="margin-top:8px">
+            <button class="chip active">نشط</button>
+            <button class="chip">غير نشط</button>
+            <button class="chip">SaaS</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================== CARDS ======================== -->
+      <section class="doc-section" id="cards">
+        <h2>البطاقات</h2>
+        <p>بطاقات مع تأثيرات hover محسّنة وانتقالات سلسة.</p>
+
+        <div class="doc-grid" style="grid-template-columns:repeat(3,1fr)">
+          <div class="card card-hover">
+            <div class="sector-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+            <h3 class="mt-16">آمن ومدروس</h3>
+            <p class="mt-8 text-2" style="font-size:14px">بطاقة قياسية مع تأثير hover.</p>
+          </div>
+          <div class="card card-hover">
+            <div class="sector-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6v6H9z"/></svg></div>
+            <h3 class="mt-16">تقني ومستقبلي</h3>
+            <p class="mt-8 text-2" style="font-size:14px">بتأثير hover وحدود برتقالية.</p>
+          </div>
+          <div class="card card-pad-lg" style="border-color:var(--border-strong)">
+            <span class="badge badge-orange">مميّز</span>
+            <h3 class="mt-16" style="font-size:20px">بطاقة مميّزة</h3>
+            <p class="text-2 mt-8">مع padding إضافي وحدود أقوى.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================== FORMS ======================== -->
+      <section class="doc-section" id="forms">
+        <h2>النماذج</h2>
+        <p>حقول إدخال مع validation وحالات focus بارزة.</p>
+
+        <div class="doc-card" style="max-width:500px">
+          <div class="field">
+            <label class="label" for="demo-name">الاسم <span class="req">*</span></label>
+            <input class="input" id="demo-name" placeholder="اكتب اسمك…">
+          </div>
+          <div class="field">
+            <label class="label" for="demo-email">البريد الإلكتروني</label>
+            <input class="input" id="demo-email" type="email" placeholder="you@example.com">
+          </div>
+          <div class="field">
+            <label class="label" for="demo-select">القطاع</label>
+            <select class="select" id="demo-select">
+              <option>البرمجيات و SaaS</option>
+              <option>التقنية المالية</option>
+              <option>الذكاء الاصطناعي</option>
+            </select>
+          </div>
+          <div class="field">
+            <label class="label" for="demo-msg">الرسالة</label>
+            <textarea class="textarea" id="demo-msg" placeholder="اكتب هنا…"></textarea>
+          </div>
+          <div class="field">
+            <label class="label">حقل معطّل</label>
+            <input class="input" disabled value="غير قابل للتعديل">
+          </div>
+          <div class="row gap-8">
+            <input type="checkbox" id="demo-cb" checked><label for="demo-cb" style="cursor:pointer">خانة اختيار</label>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================== PROGRESS & DATA VIZ ======================== -->
+      <section class="doc-section" id="data">
+        <h2>البيانات والتقدم</h2>
+        <p>مكونات العرض المالي والبيانات.</p>
+
+        <div class="doc-card">
+          <span class="doc-label">شريط التقدم</span>
+          <div class="progress" style="margin-top:8px;margin-bottom:24px"><span style="width:62%"></span></div>
+
+          <span class="doc-label">الاتجاهات</span>
+          <div class="doc-row" style="margin-top:8px">
+            <span class="trend up"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M7 17L17 7M17 7H9M17 7v8"/></svg> +12%</span>
+            <span class="trend down"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M7 7L17 17M17 17H9M17 17v-8"/></svg> -5%</span>
+            <span class="trend flat">ثابت</span>
+          </div>
+
+          <span class="doc-label" style="margin-top:20px">الأرقام المالية</span>
+          <div class="doc-row" style="margin-top:8px">
+            <span class="num num-pos" style="font-size:20px">+$24,500</span>
+            <span class="num num-neg" style="font-size:20px">-$3,200</span>
+            <span class="num" style="font-size:20px">$185,000</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================== SKELETON ======================== -->
+      <section class="doc-section" id="skeleton">
+        <h2>حالة التحميل (Skeleton)</h2>
+        <p>عناصر بديلة تظهر أثناء تحميل المحتوى.</p>
+
+        <div class="doc-card" style="max-width:400px">
+          <div class="row gap-12" style="margin-bottom:16px">
+            <div class="avatar skeleton">&nbsp;</div>
+            <div style="flex:1">
+              <div class="skeleton" style="height:14px;width:60%;margin-bottom:6px">&nbsp;</div>
+              <div class="skeleton" style="height:11px;width:40%">&nbsp;</div>
+            </div>
+          </div>
+          <div class="skeleton" style="height:120px;margin-bottom:12px">&nbsp;</div>
+          <div class="skeleton" style="height:14px;width:80%;margin-bottom:6px">&nbsp;</div>
+          <div class="skeleton" style="height:14px;width:55%">&nbsp;</div>
+        </div>
+      </section>
+
+      <!-- ======================== ACCESSIBILITY ======================== -->
+      <section class="doc-section" id="a11y">
+        <h2>إمكانية الوصول</h2>
+        <p>مبادئ إمكانية الوصول المطبّقة في نظام التصميم.</p>
+
+        <div class="doc-card">
+          <table class="token-table">
+            <thead><tr><th>المبدأ</th><th>التطبيق</th></tr></thead>
+            <tbody>
+              <tr><td>Skip Link</td><td>رابط "تخطّي إلى المحتوى" يظهر عند التركيز بلوحة المفاتيح</td></tr>
+              <tr><td>Focus Visible</td><td>حدود برتقالية + هالة بيضاء عند التركيز بالمفاتيح</td></tr>
+              <tr><td>WCAG 2.1 AA</td><td>نسبة تباين 4.5:1 كحد أدنى لكل النصوص</td></tr>
+              <tr><td>Reduced Motion</td><td>إلغاء الحركات عند تفعيل "تقليل الحركة" في النظام</td></tr>
+              <tr><td>Screen Reader</td><td>فئة <code>.sr-only</code> للنصوص المخفية بصريًا</td></tr>
+              <tr><td>Touch Targets</td><td>≥44px على الشاشات الصغيرة لكل العناصر التفاعلية</td></tr>
+              <tr><td>Roving Tabindex</td><td>تنقل بلوحة المفاتيح في التبويبات والفلاتر والمجموعات</td></tr>
+              <tr><td>ARIA Live</td><td>إعلانات ديناميكية للتغييرات (toast, tabs, filters)</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <footer style="text-align:center;padding:24px;color:var(--text-3);font-size:13px;border-top:1px solid var(--border)">
+    Seven Tech Capital — Design System v1.0 · بُني وفق UI/UX Skill Guidelines
+  </footer>
+
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>

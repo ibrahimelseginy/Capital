@@ -1,0 +1,169 @@
+<?php
+require_once __DIR__ . '/lib/auth.php';
+auth_boot();
+
+$error = '';
+$success = '';
+$activeTab = isset($_GET['tab']) && $_GET['tab'] === 'register' ? 'register' : 'login';
+
+if (!empty($_SESSION['user_id']) && $_SERVER['REQUEST_METHOD'] !== 'POST') {
+  if (auth_find_user_by_id((string) $_SESSION['user_id'])) {
+    header('Location: ' . auth_dashboard_url());
+    exit;
+  }
+  $_SESSION = [];
+  session_regenerate_id(true);
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+  if (!auth_verify_csrf($_POST['csrf'] ?? null)) {
+    $error = 'انتهت صلاحية الطلب. حدّث الصفحة وحاول مرة أخرى.';
+  } elseif (($_POST['action'] ?? '') === 'login') {
+    if (auth_login((string) ($_POST['email'] ?? ''), (string) ($_POST['password'] ?? ''))) {
+      header('Location: ' . auth_dashboard_url());
+      exit;
+    }
+    $error = 'البريد الإلكتروني أو كلمة المرور غير صحيحة.';
+  } elseif (($_POST['action'] ?? '') === 'register') {
+    $activeTab = 'register';
+    [$created, $error] = auth_register($_POST);
+    if ($created) {
+      header('Location: ' . auth_dashboard_url());
+      exit;
+    }
+  }
+}
+
+if (isset($_GET['logged_out'])) $success = 'تم تسجيل الخروج بنجاح.';
+if (isset($_GET['auth'])) $error = 'يجب تسجيل الدخول أولًا للوصول إلى هذه الصفحة.';
+
+$base=''; $title='تسجيل الدخول'; include 'partials/head.php';
+?>
+<div class="auth-wrap">
+  <!-- Visual side -->
+  <aside class="auth-visual">
+    <a href="index.php" class="brand auth-brand" aria-label="Seven Tech Capital — الرئيسية">
+      <?php include 'partials/logo.php'; ?>
+      <span>Seven Tech Capital<small>· A Venture Studio</small></span>
+    </a>
+    <div class="auth-visual-copy">
+      <span class="auth-kicker">بوابة آمنة</span>
+      <h2>نَبني المشروع قبل أن نُفعّل الاستثمار.</h2>
+      <p>
+        انضم إلى منصة استثمارية تمر بكل فرصة عبر بوابات مراجعة وجاهزية وتشغيل قبل تحرير التمويل.
+      </p>
+      <div class="auth-benefits">
+        <div><b>01</b><span>تأهيل يدوي محكم وسرية كاملة</span></div>
+        <div><b>02</b><span>كلمات مرور مشفرة وجلسات دخول محمية</span></div>
+        <div><b>03</b><span>كل حساب ينتقل إلى مساحته المخصصة حسب نوعه</span></div>
+      </div>
+    </div>
+    <p class="auth-visual-footnote">إجراءات الحساب والتأهيل تتم داخل بيئة رقمية آمنة.</p>
+  </aside>
+
+  <!-- Form side -->
+  <main class="auth-form-side">
+    <div class="auth-card">
+      <div class="auth-card-top">
+        <a href="index.php" class="auth-back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M19 12H5M12 5l-7 7 7 7"/></svg> العودة للرئيسية</a>
+      </div>
+
+      <div class="seg auth-seg" id="authSeg" role="tablist" aria-label="تسجيل الدخول أو إنشاء حساب">
+        <button class="active" id="segLogin" type="button" role="tab" aria-selected="true" aria-controls="panel-login" onclick="showAuth('login')">تسجيل الدخول</button>
+        <button id="segReg" type="button" role="tab" aria-selected="false" aria-controls="panel-register" onclick="showAuth('register')">حساب جديد</button>
+      </div>
+
+      <?php if ($error): ?><div class="auth-message auth-message-error" role="alert"><?= htmlspecialchars($error) ?></div><?php endif; ?>
+      <?php if ($success): ?><div class="auth-message auth-message-success" role="status"><?= htmlspecialchars($success) ?></div><?php endif; ?>
+
+      <!-- LOGIN -->
+      <div id="panel-login" class="auth-panel" role="tabpanel" aria-labelledby="segLogin">
+        <h2>مرحبًا بعودتك</h2>
+        <p>ادخل إلى مساحتك الاستثمارية وتابع فرصك وطلباتك من مكان واحد.</p>
+        <form class="mt-24" method="post" action="login.php">
+          <input type="hidden" name="action" value="login"><input type="hidden" name="csrf" value="<?= htmlspecialchars(auth_csrf_token()) ?>">
+          <div class="field"><label class="label" for="login-email">البريد الإلكتروني</label><input class="input" id="login-email" name="email" type="email" inputmode="email" autocomplete="email" spellcheck="false" value="<?= htmlspecialchars((string) ($_POST['action'] ?? '') === 'login' ? (string) ($_POST['email'] ?? '') : '') ?>" placeholder="you@example.com" required></div>
+          <div class="field">
+            <div class="field-row"><label class="label" for="login-pass">كلمة المرور</label></div>
+            <input class="input" id="login-pass" name="password" type="password" autocomplete="current-password" placeholder="••••••••" required>
+            <a href="forgot-password.php" class="hint auth-forgot-link">نسيت كلمة المرور؟</a>
+          </div>
+          <div class="auth-check"><input type="checkbox" id="rm" name="remember" value="1" checked><label for="rm">تذكّرني على هذا الجهاز</label></div>
+          <button class="btn btn-primary btn-block btn-lg" type="submit">دخول آمن</button>
+        </form>
+        <p class="auth-secure"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> كلمات المرور لا تُخزّن بصورتها الأصلية</p>
+      </div>
+
+      <!-- REGISTER -->
+      <div id="panel-register" class="hide auth-panel auth-register-panel" role="tabpanel" aria-labelledby="segReg" hidden>
+        <h2>أنشئ حسابك</h2>
+        <p>حدد نوع حسابك للبدء في رحلة تأهيل واضحة وآمنة.</p>
+        <div class="register-steps" aria-label="خطوات إنشاء الحساب">
+          <span><b>01</b> الحساب</span>
+          <span><b>02</b> التحقق</span>
+          <span><b>03</b> التأهيل</span>
+        </div>
+
+        <div class="mt-24">
+          <label class="label auth-inline-label">أرغب في التسجيل كـ</label>
+          <div class="seg auth-role-seg">
+            <button class="active" type="button" onclick="pickSeg(this,'inv');setRegistrationRole('investor')">مستثمر</button>
+            <button type="button" onclick="pickSeg(this,'ent');setRegistrationRole('entrepreneur')">رائد أعمال</button>
+          </div>
+        </div>
+
+        <form method="post" action="login.php?tab=register">
+          <input type="hidden" name="action" value="register"><input type="hidden" name="csrf" value="<?= htmlspecialchars(auth_csrf_token()) ?>">
+          <input type="hidden" name="role" id="reg-role" value="investor"><input type="hidden" name="investor_type" id="reg-investor-type" value="فرد مؤهل">
+          <div data-role-panel="inv">
+            <label class="label auth-inline-label">نوع المستثمر</label>
+            <div class="investor-types" role="radiogroup" aria-label="نوع المستثمر">
+              <button type="button" class="itype sel" role="radio" aria-checked="true" onclick="pickType(this);setInvestorType(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg><b>فرد مؤهل</b></button>
+              <button type="button" class="itype" role="radio" aria-checked="false" onclick="pickType(this);setInvestorType(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="1"/><path d="M9 8h2M13 8h2M9 12h2M13 12h2"/></svg><b>شركة</b></button>
+              <button type="button" class="itype" role="radio" aria-checked="false" onclick="pickType(this);setInvestorType(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-6h6v6"/></svg><b>صندوق استثماري</b></button>
+              <button type="button" class="itype" role="radio" aria-checked="false" onclick="pickType(this);setInvestorType(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 21h18M6 21v-8M18 21v-8M4 13l8-8 8 8"/></svg><b>مكتب عائلي</b></button>
+            </div>
+          </div>
+          <div data-role-panel="ent" class="hide">
+            <div class="field"><label class="label" for="reg-proj">اسم المشروع / الشركة</label><input class="input" id="reg-proj" name="project" autocomplete="organization" placeholder="مثال: منصة X"></div>
+          </div>
+
+          <div class="auth-two-col">
+            <div class="field"><label class="label" for="reg-name">الاسم الكامل <span class="req">*</span></label><input class="input" id="reg-name" name="name" autocomplete="name" required placeholder="الاسم الكامل"></div>
+            <div class="field"><label class="label" for="reg-country">الدولة <span class="req">*</span></label>
+              <select class="select" id="reg-country" name="country" autocomplete="country-name"><option>مصر</option><option>السعودية</option><option>الإمارات</option><option>قطر</option><option>الكويت</option><option>جنوب أفريقيا</option></select>
+            </div>
+          </div>
+          <div class="auth-two-col">
+            <div class="field"><label class="label" for="reg-email">البريد الإلكتروني <span class="req">*</span></label><input class="input" id="reg-email" name="email" type="email" inputmode="email" autocomplete="email" spellcheck="false" required placeholder="you@example.com"></div>
+            <div class="field"><label class="label" for="reg-tel">رقم واتساب <span class="req">*</span></label><input class="input ltr-input" id="reg-tel" name="whatsapp" type="tel" inputmode="tel" autocomplete="tel" spellcheck="false" required placeholder="+966539555889"></div>
+          </div>
+          <div class="field"><label class="label" for="reg-pass">كلمة المرور <span class="req">*</span></label><input class="input" id="reg-pass" name="password" type="password" autocomplete="new-password" required placeholder="8+ أحرف، رموز وأرقام"><span class="password-hint">استخدم 8 أحرف على الأقل مع رقم ورمز.</span></div>
+          <div class="auth-check auth-check-top"><input type="checkbox" name="terms" value="1" required id="tos"><label for="tos">أوافق على <a href="#" onclick="demoAction(event)">الشروط</a> و<a href="#" onclick="demoAction(event)">سياسة الخصوصية</a> و KYC/AML.</label></div>
+          <button class="btn btn-primary btn-block btn-lg" type="submit">إنشاء الحساب</button>
+          <p class="register-safe-note">بعد إنشاء الحساب سنرسل تأكيد البريد وواتساب قبل طلب أي مستندات.</p>
+        </form>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+  function showAuth(which){
+    const card = document.querySelector('.auth-card');
+    document.getElementById('panel-login').classList.toggle('hide', which!=='login');
+    document.getElementById('panel-register').classList.toggle('hide', which!=='register');
+    document.getElementById('segLogin').classList.toggle('active', which==='login');
+    document.getElementById('segReg').classList.toggle('active', which==='register');
+    document.getElementById('segLogin').setAttribute('aria-selected', which==='login' ? 'true' : 'false');
+    document.getElementById('segReg').setAttribute('aria-selected', which==='register' ? 'true' : 'false');
+    document.getElementById('panel-login').toggleAttribute('hidden', which!=='login');
+    document.getElementById('panel-register').toggleAttribute('hidden', which!=='register');
+    if (card) card.classList.toggle('is-register', which==='register');
+  }
+  function setRegistrationRole(role){ document.getElementById('reg-role').value = role; }
+  function setInvestorType(button){ document.getElementById('reg-investor-type').value = button.textContent.trim(); }
+  <?php if ($activeTab === 'register'): ?>showAuth('register');<?php endif; ?>
+</script>
+<script src="assets/js/app.js"></script>
+</body></html>

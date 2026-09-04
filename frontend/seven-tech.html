@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Set theme + mark JS before first paint: kills the light/dark flash (FOUC)
+       and lets the reveal animations degrade gracefully when JS is unavailable. -->
+  <script>
+    (function () {
+      var d = document.documentElement;
+      d.classList.add('js');
+      try {
+        var t = localStorage.getItem('stc-theme');
+        if (t !== 'dark' && t !== 'light') {
+          t = window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        d.setAttribute('data-theme', t);
+      } catch (e) {}
+    })();
+  </script>
+  <meta name="description" content="Seven Tech Capital — صندوق استثماري مدعوم بذراع تقني بخبرة 20 عامًا. نبني المشروع قبل أن نُفعّل الاستثمار.">
+  <meta name="theme-color" content="#FAF7F3" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0D0D0D" media="(prefers-color-scheme: dark)">
+  <title>Seven Tech · Seven Tech Capital</title>
+  <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+  <link rel="apple-touch-icon" href="assets/img/icon.png">
+  <!-- Perf: preconnect to font CDNs before the CSS @import kicks in -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="assets/css/design-system.css?v=1785237575">
+  <link rel="stylesheet" href="assets/css/site.css?v=1785852299">
+  <link rel="stylesheet" href="assets/css/responsive.css?v=1785851121">
+</head>
+<body class="page-seventech">
+<a href="#main" class="skip-link">تخطّي إلى المحتوى الرئيسي</a>
+<div class="site-topbar" aria-label="معلومات التواصل والإعدادات">
+  <div class="container site-topbar-inner">
+    <div class="topbar-contact">
+      <a href="mailto:hello@seventech.capital">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/><path d="M22 6l-10 7L2 6"/></svg>
+        hello@seventech.capital
+      </a>
+      <a href="tel:+966539555889">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.12.9.32 1.77.59 2.61a2 2 0 0 1-.45 2.11L8 9.7a16 16 0 0 0 6.3 6.3l1.26-1.25a2 2 0 0 1 2.11-.45c.84.27 1.71.47 2.61.59A2 2 0 0 1 22 16.92z"/></svg>
+        <span class="ltr-number">+966539555889</span>
+      </a>
+    </div>
+
+    <div class="topbar-actions">
+      <div class="topbar-social" aria-label="روابط التواصل الاجتماعي">
+        <a href="#" onclick="demoAction(event,'رابط LinkedIn يُفعّل في النسخة الحية.')" aria-label="LinkedIn">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.94 8.98H3.46v11.09h3.48V8.98ZM5.2 3.48a2.02 2.02 0 1 0 0 4.04 2.02 2.02 0 0 0 0-4.04Zm14.88 10.23c0-3.04-1.62-4.46-3.78-4.46a3.27 3.27 0 0 0-2.95 1.62h-.05V8.98H9.97v11.09h3.48v-5.49c0-1.45.27-2.85 2.07-2.85 1.77 0 1.79 1.66 1.79 2.94v5.4h3.48v-6.36h-.71Z"/></svg>
+        </a>
+        <a href="#" onclick="demoAction(event,'رابط X يُفعّل في النسخة الحية.')" aria-label="X">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13.82 10.77 20.85 2.6h-1.67l-6.1 7.1-4.88-7.1H2.58l7.37 10.73-7.37 8.57h1.67l6.44-7.49 5.14 7.49h5.62l-7.63-11.13Zm-2.28 2.65-.75-1.07L4.86 3.86h2.54l4.8 6.86.75 1.07 6.23 8.92h-2.54l-5.1-7.29Z"/></svg>
+        </a>
+        <a href="#" onclick="demoAction(event,'رابط Instagram يُفعّل في النسخة الحية.')" aria-label="Instagram">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="3.4"/><circle cx="17.2" cy="6.8" r="1"/></svg>
+        </a>
+      </div>
+      <div class="dropdown">
+        <button class="topbar-tool" data-dropdown title="اللغة" aria-label="اختيار اللغة" aria-haspopup="true" aria-expanded="false" aria-controls="langMenu">
+          <span data-lang-label>AR</span>
+        </button>
+        <div class="dropdown-menu" id="langMenu" role="menu">
+          <button data-lang="ar" role="menuitemradio" aria-checked="true"  onclick="setLang('ar')"><span class="lang-code">AR</span> العربية</button>
+          <button data-lang="en" role="menuitemradio" aria-checked="false" onclick="setLang('en')"><span class="lang-code">EN</span> English</button>
+          <button data-lang="fr" role="menuitemradio" aria-checked="false" onclick="setLang('fr')"><span class="lang-code">FR</span> Français</button>
+        </div>
+      </div>
+      <button class="theme-switch" onclick="toggleTheme()" title="الوضع الفاتح/الداكن" aria-label="تبديل الوضع الفاتح والداكن" aria-pressed="false">
+        <span class="theme-switch-track" aria-hidden="true"><span class="theme-switch-thumb"><span data-theme-icon></span></span></span>
+      </button>
+    </div>
+  </div>
+</div>
+<header class="nav">
+  <div class="container nav-inner">
+    <a href="index.html" class="brand" aria-label="Seven Tech Capital — الرئيسية">
+      <img class="logo-mark" src="assets/img/icon.png" width="34" height="34" alt="Seven Tech Capital" decoding="async">
+    </a>
+
+    <nav class="nav-links">
+      <a href="index.html"            class="">الرئيسية</a>
+      <a href="about.html"            class="">من نحن</a>
+      <a href="investors.html"        class="">المستثمرون</a>
+      <a href="entrepreneurs.html"    class="">رواد الأعمال</a>
+      <a href="sectors.html"          class="">القطاعات</a>
+      <a href="success-stories.html"  class="">قصص النجاح</a>
+      <a href="news-events.html"      class="">الأخبار</a>
+      <a href="seven-tech.html"       class="active" aria-current="page">Seven Tech</a>
+      <a href="contact.html"          class="">تواصل</a>
+    </nav>
+
+    <div class="nav-actions">
+      <!-- Login -->
+      <a href="login.html" class="btn btn-ghost btn-sm hide-mobile">دخول</a>
+      <a href="login.html?tab=register" class="btn btn-primary btn-sm hide-mobile">سجّل كمستثمر</a>
+      <!-- Mobile toggle -->
+      <button class="icon-btn menu-toggle" onclick="toggleMobileMenu()" aria-label="القائمة" aria-expanded="false" aria-controls="mobileMenu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" focusable="false"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- Mobile menu -->
+<div class="scrim" onclick="closeOverlays()"></div>
+<div class="mobile-menu" id="mobileMenu" role="dialog" aria-modal="true" aria-label="قائمة التنقّل">
+  <div class="row" style="justify-content:space-between;margin-bottom:20px;">
+    <span class="brand" style="font-size:16px;">Seven Tech Capital</span>
+    <button class="icon-btn" onclick="toggleMobileMenu()" aria-label="إغلاق القائمة"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+  </div>
+  <div class="mobile-tools" aria-label="إعدادات سريعة">
+    <button class="mobile-tool" type="button" onclick="setLang('ar')" data-lang="ar" aria-label="العربية">AR</button>
+    <button class="mobile-tool" type="button" onclick="setLang('en')" data-lang="en" aria-label="English">EN</button>
+    <button class="mobile-tool" type="button" onclick="setLang('fr')" data-lang="fr" aria-label="Français">FR</button>
+    <button class="mobile-tool" type="button" onclick="toggleTheme()" aria-label="تبديل الوضع الفاتح والداكن" aria-pressed="false"><span data-theme-icon></span></button>
+  </div>
+  <nav aria-label="القائمة الرئيسية" style="display:contents;">
+    <a href="index.html">الرئيسية</a>
+    <a href="about.html">من نحن</a>
+    <a href="investors.html">المستثمرون</a>
+    <a href="entrepreneurs.html">رواد الأعمال</a>
+    <a href="sectors.html">القطاعات</a>
+    <a href="success-stories.html">قصص النجاح</a>
+    <a href="news-events.html">الأخبار والفعاليات</a>
+    <a href="seven-tech.html">Seven Tech</a>
+    <a href="contact.html">تواصل</a>
+    <div class="row gap-12 mt-24">
+      <a href="login.html" class="btn btn-ghost btn-block">دخول</a>
+      <a href="login.html?tab=register" class="btn btn-primary btn-block">سجّل</a>
+    </div>
+  </nav>
+</div>
+
+<main id="main">
+<section class="page-hero seven-tech-hero">
+  <div class="hero-dots"></div>
+  <div class="container">
+    <div class="seven-tech-hero-grid">
+      <div>
+        <div class="seven-tech-brand reveal"><img class="logo-mark" src="assets/img/icon.png" width="34" height="34" alt="Seven Tech Capital" decoding="async">
+<span>Seven Tech<small>الذراع التقني</small></span></div>
+        <h1 class="reveal mt-16">الذراع التقني الذي يبني ويُشغّل</h1>
+        <p class="reveal">شركة تقنية بخبرة 15 عامًا وأكثر من 500 عميل، مسؤولة عن بناء المنتجات والأنظمة ودعم التشغيل، وهي المحرّك خلف منهجية تقليل المخاطر في Seven Tech Capital.</p>
+      </div>
+      <aside class="seven-tech-hero-card reveal">
+        <span>الذراع التقني</span>
+        <b>نبني قبل رأس المال</b>
+        <small>منتج، أنظمة، تكاملات، وتشغيل مستمر قبل وبعد الاستثمار.</small>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- Services -->
+<section class="section-sm seven-tech-services">
+  <div class="container">
+    <div class="seven-tech-section-head reveal">
+      <span class="eyebrow">الخدمات</span>
+      <h2 class="section-title mt-16">ما نبنيه</h2>
+      <p class="section-lead">قدرات تقنية وتشغيلية تغطي دورة المنتج من أول نسخة قابلة للاختبار حتى البنية السحابية والدعم المستمر.</p>
+    </div>
+    <div class="seven-tech-service-grid mt-40">
+            <article class="seven-tech-service-card reveal">
+        <div class="service-card-top">
+          <div class="service-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div>
+          <span>01</span>
+        </div>
+        <h3>بناء المنتجات</h3>
+        <p>MVP، تطبيقات ويب وموبايل، ومنتجات قابلة للتوسع.</p>
+      </article>
+            <article class="seven-tech-service-card reveal">
+        <div class="service-card-top">
+          <div class="service-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 16V8a2 2 0 0 0-1-1.7l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.7l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg></div>
+          <span>02</span>
+        </div>
+        <h3>الأنظمة والتكاملات</h3>
+        <p>بنى خلفية، APIs، تكاملات، وأتمتة العمليات.</p>
+      </article>
+            <article class="seven-tech-service-card reveal">
+        <div class="service-card-top">
+          <div class="service-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg></div>
+          <span>03</span>
+        </div>
+        <h3>الذكاء الاصطناعي</h3>
+        <p>نماذج تنبؤ وتحليلات ومساعدون أذكياء.</p>
+      </article>
+            <article class="seven-tech-service-card reveal">
+        <div class="service-card-top">
+          <div class="service-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><path d="M7 14l4-4 3 3 5-6"/></svg></div>
+          <span>04</span>
+        </div>
+        <h3>التحول الرقمي</h3>
+        <p>رقمنة العمليات ولوحات القرار.</p>
+      </article>
+            <article class="seven-tech-service-card reveal">
+        <div class="service-card-top">
+          <div class="service-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83"/></svg></div>
+          <span>05</span>
+        </div>
+        <h3>دعم التشغيل</h3>
+        <p>مراقبة، صيانة، وتطوير مستمر.</p>
+      </article>
+            <article class="seven-tech-service-card reveal">
+        <div class="service-card-top">
+          <div class="service-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg></div>
+          <span>06</span>
+        </div>
+        <h3>البنية السحابية</h3>
+        <p>AWS، أمان، نسخ احتياطي، وقابلية توسع.</p>
+      </article>
+          </div>
+  </div>
+</section>
+
+<!-- Role -->
+<section class="section seven-tech-role">
+  <div class="container">
+    <div class="seven-tech-role-grid">
+      <div class="reveal">
+        <span class="eyebrow">الدور في المنظومة</span>
+        <h2 class="section-title mt-16">كيف يقلّل Seven Tech المخاطر</h2>
+        <p class="section-lead">قبل تفعيل أي تمويل، يبني الذراع التقني المنتج ويُجهّز المشروع للتشغيل — فتصل الفرص للمستثمرين أكثر جاهزية.</p>
+        <div class="risk-list mt-24">
+                    <div class="risk-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg><span>نبني المنتج ونختبره في السوق قبل الجولة</span></div>
+                    <div class="risk-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg><span>نُجهّز البنية التقنية والتشغيلية للنمو</span></div>
+                    <div class="risk-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg><span>ندعم التنفيذ بعد الاستثمار لضمان الاستمرارية</span></div>
+                  </div>
+      </div>
+      <div class="seven-tech-stats reveal">
+        <div><b>15</b><span>عامًا خبرة</span></div>
+        <div><b>500+</b><span>عميل</span></div>
+        <div><b>10+</b><span>مشروعات</span></div>
+        <div><b class="money-value"><span class="currency">$</span><span>50</span><span class="suffix">M</span></b><span>قيمة مشروعات</span></div>
+      </div>
+    </div>
+    <div class="seven-tech-note reveal mt-40">صفحة تعريفية بالذراع التقني دون نموذج طلب خدمات في هذا الإصدار.</div>
+  </div>
+</section>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand-col">
+        <div class="brand">
+          <img class="logo-mark" src="assets/img/icon.png" width="34" height="34" alt="Seven Tech Capital" decoding="async">
+        </div>
+        <p>
+          صندوق استثماري مدعوم بذراع تقني بخبرة تمتد إلى 20 عامًا. نبني المشروع ونُجهّزه للتشغيل قبل تفعيل رأس المال.
+        </p>
+      </div>
+      <nav class="footer-links-col" aria-label="روابط المنصة">
+        <h5>المنصة</h5>
+        <a href="investors.html">للمستثمرين</a>
+        <a href="entrepreneurs.html">لرواد الأعمال</a>
+        <a href="sectors.html">القطاعات المستهدفة</a>
+        <a href="success-stories.html">قصص النجاح</a>
+        <a href="login.html">تسجيل الدخول</a>
+      </nav>
+      <nav class="footer-links-col" aria-label="روابط الشركة">
+        <h5>الشركة</h5>
+        <a href="about.html">من نحن</a>
+        <a href="seven-tech.html">الذراع التقني</a>
+        <a href="news-events.html">الأخبار والفعاليات</a>
+        <a href="contact.html">تواصل معنا</a>
+      </nav>
+      <div class="footer-contact-col">
+        <h5>تواصل سريع</h5>
+        <a href="mailto:hello@seventech.capital" class="footer-contact-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/><path d="M22 6l-10 7L2 6"/></svg>
+          hello@seventech.capital
+        </a>
+        <a href="tel:+966539555889" class="footer-contact-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.12.9.32 1.77.59 2.61a2 2 0 0 1-.45 2.11L8 9.7a16 16 0 0 0 6.3 6.3l1.26-1.25a2 2 0 0 1 2.11-.45c.84.27 1.71.47 2.61.59A2 2 0 0 1 22 16.92z"/></svg>
+          <span class="ltr-number">+966539555889</span>
+        </a>
+        <div class="footer-contact-link footer-address">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+          <span>القاهرة، مصر · نطاق العمل MENA والخليج</span>
+        </div>
+        <div class="footer-social" aria-label="روابط التواصل الاجتماعي">
+          <a href="#" onclick="demoAction(event,'رابط LinkedIn يُفعّل في النسخة الحية.')" aria-label="LinkedIn">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.94 8.98H3.46v11.09h3.48V8.98ZM5.2 3.48a2.02 2.02 0 1 0 0 4.04 2.02 2.02 0 0 0 0-4.04Zm14.88 10.23c0-3.04-1.62-4.46-3.78-4.46a3.27 3.27 0 0 0-2.95 1.62h-.05V8.98H9.97v11.09h3.48v-5.49c0-1.45.27-2.85 2.07-2.85 1.77 0 1.79 1.66 1.79 2.94v5.4h3.48v-6.36h-.71Z"/></svg>
+          </a>
+          <a href="#" onclick="demoAction(event,'رابط X يُفعّل في النسخة الحية.')" aria-label="X">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13.82 10.77 20.85 2.6h-1.67l-6.1 7.1-4.88-7.1H2.58l7.37 10.73-7.37 8.57h1.67l6.44-7.49 5.14 7.49h5.62l-7.63-11.13Zm-2.28 2.65-.75-1.07L4.86 3.86h2.54l4.8 6.86.75 1.07 6.23 8.92h-2.54l-5.1-7.29Z"/></svg>
+          </a>
+          <a href="#" onclick="demoAction(event,'رابط Instagram يُفعّل في النسخة الحية.')" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="3.4"/><circle cx="17.2" cy="6.8" r="1"/></svg>
+          </a>
+        </div>
+      </div>
+      <div class="footer-legal-col">
+        <h5>قانوني</h5>
+        <button type="button" class="footer-legal" onclick="demoAction(event)">الشروط والأحكام</button>
+        <button type="button" class="footer-legal" onclick="demoAction(event)">سياسة الخصوصية</button>
+        <button type="button" class="footer-legal" onclick="demoAction(event)">إخلاء المسؤولية</button>
+        <button type="button" class="footer-legal" onclick="demoAction(event)">سياسة KYC/AML</button>
+        <button type="button" class="footer-legal" onclick="demoAction(event)">ملفات تعريف الارتباط</button>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Seven Tech Capital — جميع الحقوق محفوظة.</span>
+      <a href="contact.html">تواصل مع الفريق</a>
+    </div>
+  </div>
+</footer>
+<script src="assets/js/app.js"></script>
+</body>
+</html>
